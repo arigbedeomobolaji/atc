@@ -10,7 +10,6 @@ import {
   Open_Sans,
 } from "next/font/google";
 import "./globals.css";
-import "flowbite";
 
 const oswald = Oswald({
   weight: ["400", "700"],

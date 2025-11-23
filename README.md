@@ -35,7 +35,6 @@ The app will auto-reload as you edit files in the `app/` directory.
 - **React 18**
 - **TailwindCSS**
 - **Framer Motion**
-- **Flowbite / shadcn/ui components**
 - **react-flow** for organogram structures
 
 ## 📁 Development Notes

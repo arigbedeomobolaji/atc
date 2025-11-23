@@ -222,7 +222,7 @@ export function Navbar() {
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="font-link text-[16px] flex flex-col gap-6 lg:gap-10 text-right w-full pr-5"
+              className="font-opensans text-[16px] flex flex-col gap-6 lg:gap-10 text-right w-full pr-10"
             >
               {navItems.map((item, index) => {
                 const parentActive = isParentActive(item.href, item.children);
