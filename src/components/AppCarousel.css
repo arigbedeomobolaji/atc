@@ -1,0 +1,25 @@
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--color-primary) !important;
+  background-color: white !important;
+  padding: 10px;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 100%;
+}
+
+/* Center the arrow icon */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+/* Position tweaks (optional) */
+.swiper-button-next {
+  right: 20px !important;
+}
+
+.swiper-button-prev {
+  left: 20px !important;
+}
