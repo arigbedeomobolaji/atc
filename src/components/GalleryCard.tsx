@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import BlurryBgImage from "./BlurryBgImage";
 import CustomModal from "./CustomModal";
-import { Button } from "./ui/button";
 
 function shortenWords(text: string, limit = 15) {
   const words = text.split(" ");
