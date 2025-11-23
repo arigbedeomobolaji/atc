@@ -39,8 +39,8 @@ export function HeroSection() {
         transition={{ duration: 1.2, ease: "easeOut" }}
         className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-5"
       >
-        <div className="bg-white/5 backdrop-blur-xs rounded-lg p-8">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-wide mb-4 drop-shadow-lg">
+        <div className="bg-white/5 rounded-lg p-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide mb-4 drop-shadow-lg">
             AIR TRAINING COMMAND, KADUNA
           </h1>
         </div>

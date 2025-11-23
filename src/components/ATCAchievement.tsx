@@ -37,9 +37,8 @@ export default function ATCAchievements() {
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.8 }}
-      viewport={{ once: false, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.2, margin: "0px 0px -80px 0px" }}
       className="py-10 leading-10"
       id="achievements"
     >
@@ -62,9 +61,8 @@ export default function ATCAchievements() {
               className="pl-5 lg:pl-10"
               initial={{ opacity: 0, x: -30, scale: 0.96 }}
               whileInView={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 30, scale: 0.95 }}
               viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.7, delay: index * 0.15 }}
             >
               <strong>{item.title}</strong> {item.content}
             </motion.li>
