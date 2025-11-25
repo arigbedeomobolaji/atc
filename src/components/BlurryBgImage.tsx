@@ -1,7 +1,8 @@
 import Image, { StaticImageData } from "next/image";
 
 interface BlurryBgImageProps {
-  imageSrc: StaticImageData | string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  imageSrc: any;
   caption: string;
 }
 

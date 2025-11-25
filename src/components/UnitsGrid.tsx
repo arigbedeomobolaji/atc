@@ -10,6 +10,7 @@ export default function UnitsGrid() {
           unit={item.unit}
           description={item.description}
           abbreviation={item.abbreviation}
+          imageSrc={item.imageSrc}
         />
       ))}
     </div>
