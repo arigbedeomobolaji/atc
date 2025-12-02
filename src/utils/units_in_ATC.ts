@@ -11,6 +11,11 @@ import ATCTS from "../assets/UNIT_LOGOS/ATSTC.jpg";
 import CAOCC from "../assets/UNIT_LOGOS/CAOCC.jpg";
 import NAFSAINT from "../assets/UNIT_LOGOS/NAFSAINT.jpg";
 import AFGCS_ABUJA from "../assets/UNIT_LOGOS/AFGCS_ABUJA.jpg";
+import NAFH_461 from "../assets/UNIT_LOGOS/461_NAFH.jpg";
+import NAFH_465 from "../assets/UNIT_LOGOS/465_NAFH.jpg";
+import NAFIS from "../assets/UNIT_LOGOS/NAFIS.jpg";
+import CFS_410 from "../assets/UNIT_LOGOS/410_CFS.jpeg";
+import CIS_441 from "../assets/UNIT_LOGOS/441_CIS.jpg";
 
 export const units_in_atc = [
   {
@@ -53,7 +58,7 @@ export const units_in_atc = [
     description:
       "The 410 Central Flying School, currently a virtual school located in Katsina, is responsible for training all instructor pilots in the NAF. It also conducts air displays and functions as the NAF aerobatic team.",
     abbreviation: "410 CFS",
-    imageSrc: null,
+    imageSrc: CFS_410,
   },
   {
     unit: "413 Force Protection Group Kaduna",
@@ -74,7 +79,7 @@ export const units_in_atc = [
     description:
       "The 441 Communications and Information Systems Group (441 CIS Gp), located in Kaduna, implements communications, radar, IT, and space technology policies from HQ NAF. It manages installation, maintenance, and operations of communications, navigation aids, electronic warfare systems, and electro-optics.",
     abbreviation: "441 CIS Gp",
-    imageSrc: null,
+    imageSrc: CIS_441,
   },
   {
     unit: "453 Base Services Group Kaduna",
@@ -94,15 +99,15 @@ export const units_in_atc = [
     unit: "461 NAF Hospital Kaduna",
     description:
       "The 461 NAF Hospital, located in Kaduna, provides healthcare services to NAF personnel, dependants, and NHIS civilian enrollees. It collaborates with the 061 Aero Medical Centre to support air operations and conducts medical outreaches.",
-    abbreviation: "461 NAF Hosp",
-    imageSrc: null,
+    abbreviation: "461 NAFH",
+    imageSrc: NAFH_461,
   },
   {
     unit: "465 NAF Hospital Kano",
     description:
       "The 465 NAF Hospital in Kano provides primary, secondary, and selected tertiary healthcare services to NAF personnel, their dependants, and NHIS subscribers. It serves as a referral centre for various military and civil medical facilities and supports CIMIC initiatives through medical outreaches.",
-    abbreviation: "465 NAF Hosp",
-    imageSrc: null,
+    abbreviation: "465 NAFH",
+    imageSrc: NAFH_465,
   },
   {
     unit: "Air Traffic Services Training Centre",
@@ -123,7 +128,7 @@ export const units_in_atc = [
     description:
       "The Nigerian Air Force Institute of Safety (NAFIS), located in Ipetu-Ijesha, promotes safety through training and education. It develops programmes that help personnel identify hazards, analyse risks, and trains standard evaluators for the NAF Standards and Evaluation Branch.",
     abbreviation: "NAFIS",
-    imageSrc: null,
+    imageSrc: NAFIS,
   },
   {
     unit: "Nigerian Air Force School of Air Intelligence Makurdi",

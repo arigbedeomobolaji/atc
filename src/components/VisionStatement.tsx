@@ -15,8 +15,8 @@ export function VisionStatement() {
         {/* Vision Statement Container */}
         <div className="text-center w-2/3">
           <div className="flex flex-col items-center">
-            <p className="text-4xl md:text-9xl text-blue-950/95 font-heading leading-none">
-              AOC&apos;S
+            <p className="text-4xl md:text-5xl text-blue-950/95 font-heading font-extrabold leading-none whitespace-pre-line">
+              {`AIR\nOFFICER\nCOMMANDING'S`}
             </p>
 
             <p className="text-4xl md:text-9xl text-white font-heading leading-none -mt-2 md:-mt-5">

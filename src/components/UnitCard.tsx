@@ -46,7 +46,7 @@ export default function UnitCard({
               src={imageSrc}
               alt={abbreviation}
               priority
-              className="rounded-lg object-contain max-h-[85%]"
+              className="rounded-full object-contain max-h-[85%]"
             />
           </div>
         </div>

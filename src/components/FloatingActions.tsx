@@ -25,7 +25,7 @@ export const FloatingActions = () => {
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ scale: 1.08 }}
-        className="bg-primary text-white p-4 rounded-full shadow-lg hover:bg-primary/80 transition"
+        className="bg-dark text-white p-4 rounded-full shadow-lg hover:bg-primary/80 transition"
       >
         <Phone size={22} />
       </motion.a>

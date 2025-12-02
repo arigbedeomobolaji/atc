@@ -83,6 +83,26 @@ export function Navbar() {
         </Link>
       </div>
 
+      {/* Moving text in a masked container */}
+      <div
+        className={`overflow-hidden w-56 md:w-72 xl:w-80 2xl:w-80 font-mono  ${
+          isFixed ? " text-white" : "bg-transparent text-dark"
+        }`}
+      >
+        <motion.p
+          className="capitalize font-extrabold text-sm md:text-md xl:text-xl 2xl:text-2xl whitespace-nowrap"
+          initial={{ x: "-100%" }}
+          animate={{ x: ["-100%", "0%", "100%"] }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          WE TRAIN TO DEFEND
+        </motion.p>
+      </div>
+
       {/* Links + Hamburger */}
       <div className="flex gap-5 items-center">
         {/* Desktop Links*/}
