@@ -44,3 +44,39 @@ Main files to edit:
 - `app/page.tsx` – homepage
 - `components/` – UI components
 - `lib/` – utilities and shared logic
+
+<!-- NEWS PAGE -->
+
+## Features
+
+- Next.js (App Router)
+- MongoDB Atlas + GridFS for images
+- Admin auth (bcrypt + JWT cookie)
+- News CRUD with TipTap rich editor
+- Image upload to GridFS and served via API
+- Deployable to Vercel
+
+## Setup
+
+1. Install dependencies:
+
+npm install
+
+2. Create `.env.local` with:
+   MONGODB_URI=...
+   MONGODB_DB=atc_db
+   JWT_SECRET=...
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+3. Seed admin (locally):
+
+ADMIN_USERNAME=admin ADMIN_PASSWORD=P@ssw0rd node -r ts-node/register scripts/seedAdmin.ts
+
+4. Run locally:
+
+npm run dev
+
+## Deploy
+
+- Push to GitHub and connect repository to Vercel.
+- Add env vars in Vercel Dashboard.
