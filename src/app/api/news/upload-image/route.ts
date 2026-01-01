@@ -1,4 +1,82 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { NextResponse } from "next/server";
+import { getGridFSBucket } from "@/lib/db";
+
+const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+export async function POST(req: Request) {
+  try {
+    const { filename, data } = await req.json();
+
+    if (!filename || !data) {
+      return NextResponse.json(
+        { error: "Filename and image data are required." },
+        { status: 400 }
+      );
+    }
+
+    // Extract base64 + mime
+    const match = data.match(/^data:(image\/.+);base64,(.+)$/);
+    if (!match) {
+      return NextResponse.json(
+        { error: "Invalid image format." },
+        { status: 400 }
+      );
+    }
+
+    const contentType = match[1];
+    const base64 = match[2];
+
+    if (!ALLOWED_TYPES.includes(contentType)) {
+      return NextResponse.json(
+        { error: "Unsupported image type." },
+        { status: 415 }
+      );
+    }
+
+    const buffer = Buffer.from(base64, "base64");
+
+    if (buffer.length > MAX_SIZE) {
+      return NextResponse.json(
+        { error: "Image exceeds 5MB limit." },
+        { status: 413 }
+      );
+    }
+
+    const safeName = filename.replace(/[^a-zA-Z0-9_.-]/g, "_");
+
+    const bucket = await getGridFSBucket();
+    const uploadStream = bucket.openUploadStream(safeName, {
+      contentType,
+      metadata: {
+        originalName: filename,
+        uploadedAt: new Date(),
+      },
+    } as any);
+
+    uploadStream.end(buffer);
+
+    await new Promise<void>((resolve, reject) => {
+      uploadStream.on("finish", resolve);
+      uploadStream.on("error", reject);
+    });
+
+    return NextResponse.json({
+      success: true,
+      fileId: uploadStream.id.toString(),
+    });
+  } catch (error) {
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { error: "Image upload failed." },
+      { status: 500 }
+    );
+  }
+}
+
 // import { NextResponse } from "next/server";
 // import { getGridFSBucket } from "@/lib/db";
 
@@ -22,7 +100,9 @@
 //     }
 
 //     const bucket = await getGridFSBucket();
-//     const uploadStream = bucket.openUploadStream(filename, { contentType });
+//     const uploadStream = bucket.openUploadStream(filename, {
+//       contentType,
+//     } as any);
 //     uploadStream.end(buffer);
 
 //     await new Promise((resolve, reject) => {
@@ -39,74 +119,3 @@
 //     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
 //   }
 // }
-
-import { NextRequest, NextResponse } from "next/server";
-
-import { GridFSBucket } from "mongodb";
-import { sanitizeHTML } from "@/lib/sanitize";
-import { connectToDatabase } from "@/lib/db";
-
-export const config = {
-  api: {
-    bodyParser: false, // required for file streaming
-    sizeLimit: "5mb", // hard limit for uploads
-  },
-};
-
-export async function POST(req: NextRequest) {
-  try {
-    const contentType = req.headers.get("content-type") || "";
-
-    // ENFORCE FILE SIZE CHECK
-    const contentLength = Number(req.headers.get("content-length") || 0);
-    if (contentLength > 5_000_000) {
-      return NextResponse.json(
-        { error: "File too large. Max file size: 5MB." },
-        { status: 413 }
-      );
-    }
-
-    // Only allow images
-    if (!contentType.includes("image/")) {
-      return NextResponse.json(
-        { error: "Only image uploads are allowed." },
-        { status: 400 }
-      );
-    }
-
-    const { db } = await connectToDatabase();
-    const bucket = new GridFSBucket(db, { bucketName: "uploads" });
-
-    // STREAM upload
-    const fileName = `img-${Date.now()}`;
-    const uploadStream = bucket.openUploadStream(fileName);
-
-    const stream = req.body;
-    if (!stream) throw new Error("Invalid stream");
-
-    const reader = stream.getReader();
-
-    async function pump() {
-      const { done, value } = await reader.read();
-      if (done) {
-        uploadStream.end();
-        return;
-      }
-      uploadStream.write(Buffer.from(value));
-      return pump();
-    }
-
-    await pump();
-
-    return NextResponse.json({
-      success: true,
-      fileId: uploadStream.id.toString(),
-      fileName,
-    });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Upload failed" },
-      { status: 500 }
-    );
-  }
-}

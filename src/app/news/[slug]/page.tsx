@@ -1,23 +1,21 @@
 // app/news/[slug]/page.tsx - public news detail (server component)
 
 import { connectToDatabase } from "@/lib/db";
-import { ObjectId } from "mongodb";
 
 async function getBySlug(slug: string) {
   const { db } = await connectToDatabase();
-  const news = await db.collection("news").findOne({ _id: new ObjectId(slug) });
-  console.log({ news });
+  const news = await db.collection("news").findOne({ slug });
   return news;
-  // return db.collection("news").findOne({ slug });
 }
 
 export default async function NewsDetail({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const data = await getBySlug(params.slug);
-  console.log({ data });
+  const { slug } = await params;
+  console.log({ slug });
+  const data = await getBySlug(slug);
   if (!data) return <div className="p-6">Not found</div>;
 
   return (

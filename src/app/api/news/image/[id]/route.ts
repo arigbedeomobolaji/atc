@@ -42,7 +42,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const { db } = await connectToDatabase();
 
     const bucket = new (await import("mongodb")).GridFSBucket(db, {

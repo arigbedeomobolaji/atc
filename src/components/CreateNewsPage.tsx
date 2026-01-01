@@ -9,7 +9,6 @@ export default function CreateNewsPage() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [content, setContent] = useState("");
-  const [images, setImages] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const router = useRouter();
 
@@ -19,7 +18,7 @@ export default function CreateNewsPage() {
     const res = await fetch("/api/news/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, slug, content, images }),
+      body: JSON.stringify({ title, slug, content }),
     });
     const json = await res.json();
     setSaving(false);
@@ -47,17 +46,7 @@ export default function CreateNewsPage() {
           onChange={(e) => setSlug(e.target.value)}
         />
         <RichTextEditor content={content} onChange={setContent} />
-        <div className="flex gap-2">
-          {images.map((id) => (
-            <Image
-              priority
-              key={id}
-              src={`/api/news/image/${id}`}
-              alt={id}
-              className="h-16 w-16 object-cover rounded"
-            />
-          ))}
-        </div>
+
         <button className="bg-blue-600 text-white p-3 rounded">
           {saving ? "Saving..." : "Save News"}
         </button>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/admin/news/edit/[id]/page.tsx
+// app/admin/news/edit/[id]/[slug]page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,52 +8,54 @@ import RichTextEditor from "@/components/RichTextEditor";
 import Image from "next/image";
 
 export default function EditNewsPage() {
-  const params = useParams();
-  const id = (params as any).id;
+  const { id, slug } = useParams<{ id: string; slug: string }>();
   const router = useRouter();
+
+  console.log({ id, slug });
 
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
+
     async function load() {
       const res = await fetch(`/api/news/${id}`);
       const j = await res.json();
-      if (res.ok && j.news) {
-        const n = j.news;
-        setTitle(n.title);
-        setSlug(n.slug);
-        setContent(n.content || "");
-        setImages(
-          (n.images || []).map((o: any) => (o.toString ? o.toString() : o))
-        );
-      } else {
-        alert("Not found");
+
+      if (!res.ok || !j.news) {
         router.push("/admin/news");
+        return;
       }
+
+      setTitle(j.news.title);
+      setContent(j.news.content || "");
+      setImages(j.news.images || []);
       setLoading(false);
     }
+
     load();
   }, [id, router]);
 
-  async function handleSave(e: any) {
+  async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const res = await fetch("/api/news/update", {
-      method: "POST",
+
+    const res = await fetch(`/api/news/${id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, title, slug, content, images }),
+      body: JSON.stringify({ title, content }),
     });
-    const j = await res.json();
+
     setSaving(false);
+
     if (res.ok) {
       router.push("/admin/news");
     } else {
-      alert(j.error || "Failed");
+      alert("Update failed");
     }
   }
 
@@ -62,31 +64,29 @@ export default function EditNewsPage() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-xl font-semibold mb-4">Edit News</h2>
+
       <form onSubmit={handleSave} className="space-y-4">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
           className="w-full p-3 border rounded"
         />
-        <input
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-          placeholder="Slug"
-          className="w-full p-3 border rounded"
-        />
+
         <RichTextEditor content={content} onChange={setContent} />
+
         <div className="flex gap-2">
-          {images.map((id) => (
+          {images.map((imgId) => (
             <Image
-              priority
-              alt={id}
-              key={id}
-              src={`/api/news/image/${id}`}
-              className="h-16 w-16 object-cover rounded"
+              key={imgId}
+              src={`/api/news/image/${imgId}`}
+              alt=""
+              width={64}
+              height={64}
+              className="rounded object-cover"
             />
           ))}
         </div>
+
         <button className="bg-blue-600 text-white p-3 rounded">
           {saving ? "Saving..." : "Save"}
         </button>

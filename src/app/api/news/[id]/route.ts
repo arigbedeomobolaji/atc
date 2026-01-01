@@ -1,15 +1,21 @@
-// app/api/news/[slug]/route.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// app/api/news/[id]/route.ts
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { ObjectId } from "mongodb";
 
 export async function GET(
   req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const slug = params.slug;
+    const { id } = await params;
+    console.log({ id });
     const { db } = await connectToDatabase();
-    const item = await db.collection("news").findOne({ slug });
+    const item = await db
+      .collection("news")
+      .findOne({ _id: new ObjectId(id) as any });
+    console.log({ item });
     if (!item)
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ news: item });
