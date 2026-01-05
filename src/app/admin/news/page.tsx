@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type NewsItem = {
   _id: string;
@@ -17,6 +18,17 @@ export default function AdminNewsList() {
   const [rows, setRows] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
+  useEffect(() => {
+    async function check() {
+      const res = await fetch("/api/auth/me");
+      const json = await res.json();
+      setLoading(false);
+      if (!json.authenticated) router.push("/admin/login");
+    }
+    check();
+  }, [router]);
+
   useEffect(() => {
     fetch("/api/news/list")
       .then((r) => r.json())
@@ -25,6 +37,8 @@ export default function AdminNewsList() {
         setLoading(false);
       });
   }, []);
+
+  if (loading) return <div className="p-8">Loading...</div>;
 
   if (loading) return <div className="p-6">Loading...</div>;
 

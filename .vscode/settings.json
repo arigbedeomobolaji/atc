@@ -10,5 +10,11 @@
       "{?\\s?[\\w].*:\\s*?[\"'`]([^\"'`]*).*?,?\\s?}?"
     ]
   ],
-  "cSpell.words": ["MUSHSHACK", "MUSHSHAK", "Organogram"]
+  "cSpell.words": [
+    "Dropcursor",
+    "excerptify",
+    "MUSHSHACK",
+    "MUSHSHAK",
+    "Organogram"
+  ]
 }

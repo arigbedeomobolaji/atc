@@ -7,7 +7,7 @@ interface EditorProps {
   onChange: (value: string) => void;
 }
 
-const RichTextEditor = dynamic<EditorProps>(() => import("./RichTextEditor"), {
+const RichTextEditor = dynamic<EditorProps>(() => import("./RichTextEditor2"), {
   ssr: false,
   loading: () => <p>Loading editor...</p>,
 });

@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import RichTextEditor from "@/components/RichTextEditor";
+import RichTextEditor from "@/components/RichTextEditor2";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function CreateNewsPage() {
   const [title, setTitle] = useState("");
@@ -23,7 +22,7 @@ export default function CreateNewsPage() {
     const json = await res.json();
     setSaving(false);
     if (res.ok) {
-      router.push(`/news/${json.id}`);
+      router.push(`/news/${json.slug}`);
     } else {
       alert(json.error || "Failed to create news");
     }

@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { getGridFSBucket } from "@/lib/db";
+import sharp from "sharp";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -46,6 +47,19 @@ export async function POST(req: Request) {
       );
     }
 
+    /* -----------------------------
+       🔥 SERVER-SIDE IMAGE RESIZING
+    ------------------------------ */
+    const resizedBuffer = await sharp(buffer)
+      .resize({
+        width: 800,
+        height: 800,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .toFormat("webp", { quality: 80 })
+      .toBuffer();
+
     const safeName = filename.replace(/[^a-zA-Z0-9_.-]/g, "_");
 
     const bucket = await getGridFSBucket();
@@ -57,7 +71,7 @@ export async function POST(req: Request) {
       },
     } as any);
 
-    uploadStream.end(buffer);
+    uploadStream.end(resizedBuffer);
 
     await new Promise<void>((resolve, reject) => {
       uploadStream.on("finish", resolve);
@@ -76,46 +90,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// import { NextResponse } from "next/server";
-// import { getGridFSBucket } from "@/lib/db";
-
-// export async function POST(req: Request) {
-//   try {
-//     const body = await req.json();
-//     const { filename, data } = body;
-//     if (!filename || !data) {
-//       return NextResponse.json({ error: "Missing data" }, { status: 400 });
-//     }
-
-//     // data may be: "data:image/png;base64,...." or plain base64
-//     const matches = data.match(/^data:(.+);base64,(.*)$/);
-//     let buffer: Buffer;
-//     let contentType = "application/octet-stream";
-//     if (matches) {
-//       contentType = matches[1];
-//       buffer = Buffer.from(matches[2], "base64");
-//     } else {
-//       buffer = Buffer.from(data, "base64");
-//     }
-
-//     const bucket = await getGridFSBucket();
-//     const uploadStream = bucket.openUploadStream(filename, {
-//       contentType,
-//     } as any);
-//     uploadStream.end(buffer);
-
-//     await new Promise((resolve, reject) => {
-//       uploadStream.on("finish", resolve);
-//       uploadStream.on("error", reject);
-//     });
-
-//     // file id
-//     const fileId = uploadStream.id.toString();
-
-//     return NextResponse.json({ success: true, fileId: fileId.toString() });
-//   } catch (err) {
-//     console.error(err);
-//     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
-//   }
-// }

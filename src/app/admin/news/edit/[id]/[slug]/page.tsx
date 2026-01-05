@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import RichTextEditor from "@/components/RichTextEditor";
+import RichTextEditor from "@/components/editor/RichTextEditor";
 import Image from "next/image";
 
 export default function EditNewsPage() {
@@ -18,6 +18,16 @@ export default function EditNewsPage() {
   const [content, setContent] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function check() {
+      const res = await fetch("/api/auth/me");
+      const json = await res.json();
+      setLoading(false);
+      if (!json.authenticated) router.push("/admin/login");
+    }
+    check();
+  }, [router]);
 
   useEffect(() => {
     if (!id) return;
@@ -60,7 +70,7 @@ export default function EditNewsPage() {
   }
 
   if (loading) return <div className="p-6">Loading...</div>;
-
+  console.log({ content });
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-xl font-semibold mb-4">Edit News</h2>
@@ -72,7 +82,9 @@ export default function EditNewsPage() {
           className="w-full p-3 border rounded"
         />
 
-        <RichTextEditor content={content} onChange={setContent} />
+        {content !== "" && (
+          <RichTextEditor content={content} onChange={setContent} />
+        )}
 
         <div className="flex gap-2">
           {images.map((imgId) => (

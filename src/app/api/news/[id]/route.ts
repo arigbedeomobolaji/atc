@@ -24,3 +24,46 @@ export async function GET(
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
+export async function PUT(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const body = await req.json();
+    const { title, content } = body;
+
+    if (!title || !content) {
+      return NextResponse.json(
+        { error: "Missing title or content" },
+        { status: 400 }
+      );
+    }
+    // ✅ regenerate excerpt from updated content
+    const excerpt = content.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 160);
+
+    const { db } = await connectToDatabase();
+
+    const result = await db.collection("news").updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          title,
+          content,
+          excerpt,
+          updatedAt: new Date(),
+        },
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Update failed" }, { status: 500 });
+  }
+}
