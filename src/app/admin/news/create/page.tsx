@@ -7,7 +7,7 @@ import RichTextEditor from "@/components/editor/RichTextEditor";
 export default function CreateNewsPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [images, setImages] = useState<string[]>([]);
+  const [coverImage, setCoverImage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const router = useRouter();
 
@@ -31,7 +31,11 @@ export default function CreateNewsPage() {
     const res = await fetch("/api/news/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({
+        title,
+        content,
+        coverImage,
+      }),
     });
     const json = await res.json();
     console.log({ json });
@@ -55,6 +59,13 @@ export default function CreateNewsPage() {
         />
 
         <RichTextEditor content={content} onChange={setContent} />
+
+        <input
+          className="w-full p-3 border rounded"
+          placeholder="Cover image URL (optional)"
+          value={coverImage || ""}
+          onChange={(e) => setCoverImage(e.target.value || null)}
+        />
 
         <button className="bg-blue-600 text-white p-3 rounded">
           {saving ? "Saving..." : "Save News"}

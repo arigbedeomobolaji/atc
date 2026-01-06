@@ -6,10 +6,11 @@ import { useRef } from "react";
 
 export function HeroSection() {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
+  // const { scrollYProgress } = useScroll({
+  //   target: ref,
+  //   offset: ["start start", "end start"],
+  // });
+  const { scrollYProgress } = useScroll();
 
   // Parallax transform (moves text slower than scroll)
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);

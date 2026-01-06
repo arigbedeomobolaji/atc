@@ -1,43 +1,59 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Level } from "@tiptap/extension-heading";
+"use client";
+
 import { Editor, useEditorState } from "@tiptap/react";
-import { useCallback, useState } from "react";
+import { Level } from "@tiptap/extension-heading";
+import { useCallback, useState, useEffect } from "react";
+
+import {
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  Code,
+  Highlighter,
+  List,
+  ListOrdered,
+  Quote,
+  Undo,
+  Redo,
+  Link as LinkIcon,
+  Unlink,
+  Image as ImageIcon,
+  Eraser,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  Heading,
+} from "lucide-react";
 
 export function EditorToolbar({ editor }: { editor: Editor }) {
   const [uploading, setUploading] = useState(false);
+  const [caption, setCaption] = useState("");
+  const [showHeading, setShowHeading] = useState(false);
 
-  const level: Level[] = [1, 2, 3, 4, 5, 6];
+  const imageAttrs = editor.getAttributes("image");
+
+  useEffect(() => {
+    if (imageAttrs?.caption) {
+      setCaption(imageAttrs.caption);
+    }
+  }, [editor.isActive("image")]);
+
+  const headingLevels: Level[] = [1, 2, 3, 4, 5, 6];
 
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt(
-      "Enter the URL starting with https://www.google.com or http://www.google.com ",
-      previousUrl
-    );
+    const url = window.prompt("Enter URL", previousUrl);
 
-    // cancelled
-    if (url === null) {
-      return;
-    }
+    if (url === null) return;
 
-    // empty
     if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-
+      editor.chain().focus().unsetLink().run();
       return;
     }
 
-    // update link
-    try {
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: url })
-        .run();
-    } catch (e) {
-      alert((e as Error).message);
-    }
+    editor.chain().focus().setLink({ href: url }).run();
   }, [editor]);
 
   async function handleImageUpload(file: File) {
@@ -80,167 +96,184 @@ export function EditorToolbar({ editor }: { editor: Editor }) {
 
   const editorState = useEditorState({
     editor,
-    selector: (ctx: { editor: { isActive: (arg0: string) => any } }) => ({
+    selector: (ctx) => ({
       isLink: ctx.editor.isActive("link"),
     }),
   });
 
-  if (!editor) {
-    console.log("No editor instance found");
-    return null;
-  }
+  if (!editor) return null;
+
+  const IconBtn = ({
+    onClick,
+    children,
+    active = false,
+  }: {
+    onClick: () => void;
+    children: React.ReactNode;
+    active?: boolean;
+  }) => (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`p-2 rounded hover:bg-gray-200 ${active ? "bg-gray-300" : ""}`}
+    >
+      {children}
+    </button>
+  );
 
   return (
-    <div className="flex flex-wrap gap-2 p-2 border-b bg-gray-50">
-      <div className="flex flex-wrap gap-2 p-2 border-b bg-gray-50">
-        {/* Text styles */}
-        {(
-          [
-            ["Bold", () => editor?.chain().focus().toggleBold().run()],
-            ["Italic", () => editor?.chain().focus().toggleItalic().run()],
-            [
-              "Underline",
-              () => editor?.chain().focus().toggleUnderline().run(),
-            ],
-            ["Strike", () => editor?.chain().focus().toggleStrike().run()],
-            ["Code", () => editor?.chain().focus().toggleCode().run()],
-            [
-              "Clear marks",
-              () => editor?.chain().focus().unsetAllMarks().run(),
-            ],
-            ["Clear nodes", () => editor?.chain().focus().clearNodes().run()],
-          ] as [string, () => void][]
-        ).map(([label, action]) => (
-          <button
-            disabled={!editor}
-            key={label} // now TS knows it's a string
-            type="button"
-            onClick={action}
-            className="btn"
-          >
-            {label}
-          </button>
-        ))}
+    <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-gray-50">
+      {/* Heading Dropdown */}
+      <div className="relative">
+        <IconBtn onClick={() => setShowHeading((s) => !s)}>
+          <Heading size={18} />
+        </IconBtn>
 
-        {/* Headings */}
-        <button
-          disabled={!editor}
-          className="btn"
-          type="button"
-          onClick={() => editor.chain().focus().setParagraph().run()}
-        >
-          P
-        </button>
-        {level.map((level) => (
-          <button
-            disabled={!editor}
-            className="btn"
-            type="button"
-            key={level}
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level }).run()
-            }
-          >
-            H{level}
-          </button>
-        ))}
-
-        {/* Lists & blocks & History */}
-        {(
-          [
-            [
-              "Bullet list",
-              () => editor?.chain().focus().toggleBulletList().run(),
-            ],
-            [
-              "Ordered list",
-              () => editor?.chain().focus().toggleOrderedList().run(),
-            ],
-            [
-              "Code block",
-              () => editor?.chain().focus().toggleCodeBlock().run(),
-            ],
-            [
-              "Blockquote",
-              () => editor?.chain().focus().toggleBlockquote().run(),
-            ],
-            [
-              "Horizontal rule",
-              () => editor?.chain().focus().setHorizontalRule().run(),
-            ],
-            ["Hard break", () => editor?.chain().focus().setHardBreak().run()],
-            ["Undo", () => editor?.chain().focus().undo().run()],
-            ["Redo", () => editor?.chain().focus().redo().run()],
-          ] as [string, () => void][]
-        ).map(([label, action]) => (
-          <button
-            disabled={!editor}
-            key={label}
-            type="button"
-            onClick={action as any}
-            className="btn"
-          >
-            {label}
-          </button>
-        ))}
-
-        <button
-          type="button"
-          onClick={() =>
-            editor.chain().focus().toggleHighlight({ color: "#ccddf" }).run()
-          }
-          className={`${editor.isActive("highlight") ? "is-active" : ""} btn`}
-        >
-          Toggle highlight
-        </button>
-
-        {/* Link */}
-        <div className="button-group">
-          <button type="button" onClick={setLink} className="btn">
-            Set link
-          </button>
-          <button
-            type="button"
-            className="btn"
-            onClick={() => editor.chain().focus().unsetLink().run()}
-            disabled={!editorState.isLink}
-          >
-            Unset link
-          </button>
-        </div>
-
-        {/* Image upload */}
-        <label className="cursor-pointer text-sm px-2 py-1 border rounded bg-white">
-          {uploading ? "Uploading..." : "Image"}
-          <input
-            type="file"
-            accept="image/*"
-            className="btn"
-            multiple
-            hidden
-            onChange={(e) => {
-              if (!e.target.files) return;
-              Array.from(e.target.files).forEach(handleImageUpload);
-              e.currentTarget.value = "";
-            }}
-          />
-        </label>
+        {showHeading && (
+          <div className="absolute z-10 mt-1 bg-white border rounded shadow">
+            <button
+              onClick={() => {
+                editor.chain().focus().setParagraph().run();
+                setShowHeading(false);
+              }}
+              className="block w-full px-3 py-1 hover:bg-gray-100 text-left"
+            >
+              Paragraph
+            </button>
+            {headingLevels.map((lvl) => (
+              <button
+                key={lvl}
+                onClick={() => {
+                  editor.chain().focus().toggleHeading({ level: lvl }).run();
+                  setShowHeading(false);
+                }}
+                className="block w-full px-3 py-1 hover:bg-gray-100 text-left"
+              >
+                Heading {lvl}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Selected image metadata */}
-      {/* Selected image metadata */}
-      {editor?.isActive("image") && (
-        <div className="flex gap-2 p-2 bg-gray-100 border-t">
+      {/* Text formatting */}
+      <IconBtn onClick={() => editor.chain().focus().toggleBold().run()}>
+        <Bold size={18} />
+      </IconBtn>
+
+      <IconBtn onClick={() => editor.chain().focus().toggleItalic().run()}>
+        <Italic size={18} />
+      </IconBtn>
+
+      <IconBtn onClick={() => editor.chain().focus().toggleUnderline().run()}>
+        <Underline size={18} />
+      </IconBtn>
+
+      <IconBtn onClick={() => editor.chain().focus().toggleStrike().run()}>
+        <Strikethrough size={18} />
+      </IconBtn>
+
+      <IconBtn onClick={() => editor.chain().focus().toggleCode().run()}>
+        <Code size={18} />
+      </IconBtn>
+
+      <IconBtn
+        onClick={() =>
+          editor.chain().focus().toggleHighlight({ color: "#fde68a" }).run()
+        }
+      >
+        <Highlighter size={18} />
+      </IconBtn>
+
+      {/* Lists */}
+      <IconBtn onClick={() => editor.chain().focus().toggleBulletList().run()}>
+        <List size={18} />
+      </IconBtn>
+
+      <IconBtn onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+        <ListOrdered size={18} />
+      </IconBtn>
+
+      <IconBtn onClick={() => editor.chain().focus().toggleBlockquote().run()}>
+        <Quote size={18} />
+      </IconBtn>
+
+      {/* Alignment (optional but important UX) */}
+      <IconBtn
+        onClick={() => editor.chain().focus().setTextAlign("left").run()}
+      >
+        <AlignLeft size={18} />
+      </IconBtn>
+
+      <IconBtn
+        onClick={() => editor.chain().focus().setTextAlign("center").run()}
+      >
+        <AlignCenter size={18} />
+      </IconBtn>
+
+      <IconBtn
+        onClick={() => editor.chain().focus().setTextAlign("right").run()}
+      >
+        <AlignRight size={18} />
+      </IconBtn>
+
+      {/* Link */}
+      <IconBtn onClick={setLink}>
+        <LinkIcon size={18} />
+      </IconBtn>
+
+      <IconBtn
+        onClick={() => editor.chain().focus().unsetLink().run()}
+        active={editorState.isLink}
+      >
+        <Unlink size={18} />
+      </IconBtn>
+
+      {/* Image upload */}
+      <label className="p-2 rounded hover:bg-gray-200 cursor-pointer">
+        <ImageIcon size={18} />
+        <input
+          type="file"
+          hidden
+          accept="image/*"
+          multiple
+          onChange={(e) => {
+            if (!e.target.files) return;
+            Array.from(e.target.files).forEach(handleImageUpload);
+            e.currentTarget.value = "";
+          }}
+        />
+      </label>
+
+      {/* Clear formatting */}
+      <IconBtn onClick={() => editor.chain().focus().unsetAllMarks().run()}>
+        <Eraser size={18} />
+      </IconBtn>
+
+      {/* History */}
+      <IconBtn onClick={() => editor.chain().focus().undo().run()}>
+        <Undo size={18} />
+      </IconBtn>
+
+      <IconBtn onClick={() => editor.chain().focus().redo().run()}>
+        <Redo size={18} />
+      </IconBtn>
+
+      {/* Image caption */}
+      {editor.isActive("image") && (
+        <div className="w-full mt-2">
           <input
-            placeholder="Caption"
-            className="border p-1 text-sm block text-center w-full"
-            onChange={(e) =>
+            placeholder="Image caption..."
+            className="w-full border px-2 py-1 text-sm rounded"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            onBlur={() => {
               editor
-                ?.chain()
+                .chain()
                 .focus()
-                .updateAttributes("image", { caption: e.target.value })
-                .run()
-            }
+                .updateAttributes("image", { caption })
+                .run();
+            }}
           />
         </div>
       )}

@@ -20,6 +20,7 @@ import HorizontalRule from "@tiptap/extension-horizontal-rule";
 import CodeBlock from "@tiptap/extension-code-block";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
+import TextAlign from "@tiptap/extension-text-align";
 
 import { EditorToolbar } from "./EditorToolbar";
 
@@ -53,6 +54,9 @@ export default function RichTextEditor({
       History,
       CustomImage,
       Dropcursor,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       Link.configure({
         openOnClick: true,
         autolink: true,

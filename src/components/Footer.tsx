@@ -50,7 +50,14 @@ export function Footer() {
           <h1 className="font-heading font-bold leading-8">Relevant Links</h1>
           <div className="flex flex-col gap-3 items-center">
             <div className="flex items-center gap-1 cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:translate-y-1 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-              <Image src={NAFLogo} alt="NAF" width={25} height={25} priority />
+              <Image
+                src={NAFLogo}
+                alt="NAF"
+                width={25}
+                height={25}
+                priority
+                style={{ width: "auto", height: "auto" }}
+              />
               <Link href="https://www.airforce.mil.ng/" className="font-link">
                 NAF Website
               </Link>

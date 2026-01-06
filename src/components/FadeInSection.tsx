@@ -31,6 +31,7 @@ export function FadeInSection({ children, delay = 0 }: FadeInSectionProps) {
         visible: { opacity: 1, y: 0 },
       }}
       transition={{ duration: 0.8, ease: "easeOut", delay }}
+      className="relative"
     >
       {children}
     </motion.div>

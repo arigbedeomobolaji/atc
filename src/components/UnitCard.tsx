@@ -28,15 +28,13 @@ export default function UnitCard({
     <div className="bg-white shadow-md rounded-2xl p-4 border hover:shadow-lg transition">
       {/* Placeholder Image */}
       {imageSrc ? (
-        <div
-          className="relative w-full h-40
-        rounded-lg overflow-hidden"
-        >
-          {/* Background Blur */}
+        <div className="relative w-full h-40 rounded-lg overflow-hidden">
+          {/* Background Image */}
           <Image
             src={imageSrc}
             alt={abbreviation}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover blur-md"
           />
 
@@ -45,8 +43,11 @@ export default function UnitCard({
             <Image
               src={imageSrc}
               alt={abbreviation}
+              width={120}
+              height={120}
               priority
-              className="rounded-full object-contain max-h-[85%]"
+              style={{ width: "auto", height: "auto" }}
+              className="rounded-full object-contain"
             />
           </div>
         </div>
