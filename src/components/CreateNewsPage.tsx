@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import RichTextEditor from "@/components/RichTextEditor2";
 import { useRouter } from "next/navigation";
+import RichTextEditor from "./editor/RichTextEditor";
 
 export default function CreateNewsPage() {
   const [title, setTitle] = useState("");
