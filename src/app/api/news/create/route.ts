@@ -27,7 +27,6 @@ export async function POST(req: Request) {
     const payload = await req.json();
     const { title, content, coverImage } = payload;
 
-    console.log({ title, content, coverImage });
     if (!title || !content)
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 
@@ -56,7 +55,7 @@ export async function POST(req: Request) {
     };
 
     const result = await db.collection("news").insertOne(doc);
-    console.log({ result });
+
     return NextResponse.json({
       success: true,
       id: result.insertedId.toString(),

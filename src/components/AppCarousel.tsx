@@ -14,6 +14,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import "./AppCarousel.css";
+import { useRouter } from "next/navigation";
 
 type CarouselNews = {
   _id: string;
@@ -26,6 +27,7 @@ const FALLBACK_IMAGE = "/images/placeholder-rect.jpeg";
 
 export function AppCarousel() {
   const [newsSlides, setNewsSlides] = useState<CarouselNews[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function loadCarouselNews() {
@@ -42,7 +44,7 @@ export function AppCarousel() {
   }, []);
 
   return (
-    <div className="relative w-full h-[300px] sm:h-[450px] xl:h-[650px] rounded-lg overflow-hidden shadow-lg">
+    <div className="relative w-full max-w-[2000px] mx-auto h-[500px] xl:h-[750px] rounded-lg overflow-hidden shadow-lg">
       <Swiper
         modules={[Autoplay, Navigation, Pagination, EffectFade]}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
@@ -59,18 +61,27 @@ export function AppCarousel() {
             <Link href={`/news/${item.slug}`}>
               <div className="relative w-full h-full overflow-hidden group cursor-pointer">
                 <motion.div
-                  className="absolute inset-0"
+                  // className="absolute inset-0"
                   initial={{ scale: 1.05, y: 40 }}
                   animate={{ scale: 1, y: 0 }}
                   transition={{ duration: 1.8, ease: "easeOut" }}
                 >
+                  {/* Background Blur */}
                   <Image
                     src={item.coverImage || FALLBACK_IMAGE}
                     alt={item.title}
                     fill
-                    priority
-                    className="object-cover"
+                    className="object-cover blur-md"
                   />
+                  {/* Foreground Image */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Image
+                      src={item.coverImage || FALLBACK_IMAGE}
+                      alt={item.title}
+                      fill
+                      className="rounded-lg object-contain "
+                    />
+                  </div>
                 </motion.div>
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -81,12 +92,15 @@ export function AppCarousel() {
                   transition={{ duration: 1, delay: 0.5 }}
                   className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center max-w-3xl bg-white/20 backdrop-blur-md rounded-xl px-6 py-4 shadow-lg"
                 >
-                  <p className="font-heading font-semibold text-gray-100 text-sm sm:text-lg md:text-2xl">
+                  <p className="font-heading font-semibold text-gray-100 text-md lg:text-xl">
                     {item.title}
                   </p>
-                  <span className="mt-2 inline-block text-xs sm:text-sm text-gray-200 underline">
-                    Read more →
-                  </span>
+                  <button
+                    onClick={() => router.push(`/news/${item.slug}`)}
+                    className="font-link text-sm px-5 py-1 bg-dark text-white rounded-md"
+                  >
+                    Read More
+                  </button>
                 </motion.div>
               </div>
             </Link>
@@ -121,7 +135,7 @@ export function AppCarousel() {
                     transition={{ duration: 1, delay: 0.5 }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center max-w-3xl bg-white/20 backdrop-blur-md rounded-xl px-6 py-4 shadow-lg"
                   >
-                    <p className="font-heading font-semibold text-gray-100 text-sm sm:text-lg md:text-2xl">
+                    <p className="font-heading font-semibold text-gray-100 text-sm sm:text-lg lg:text-2xl">
                       {caption}
                     </p>
                   </motion.div>

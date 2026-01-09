@@ -6,10 +6,7 @@ import { useRef } from "react";
 
 export function HeroSection() {
   const ref = useRef(null);
-  // const { scrollYProgress } = useScroll({
-  //   target: ref,
-  //   offset: ["start start", "end start"],
-  // });
+
   const { scrollYProgress } = useScroll();
 
   // Parallax transform (moves text slower than scroll)
@@ -41,12 +38,12 @@ export function HeroSection() {
         className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-5"
       >
         <div className="bg-white/5 rounded-lg p-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide mb-4 drop-shadow-lg">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-wide mb-4 drop-shadow-lg">
             AIR TRAINING COMMAND, KADUNA
           </h1>
         </div>
 
-        <p className="text-sm sm:text-lg md:text-xl max-w-2xl text-gray-200 mb-6">
+        <p className="text-sm sm:text-lg lg:text-xl max-w-2xl text-gray-200 mb-6">
           Where precision meets excellence. Training tomorrow’s air warriors
           today.
         </p>

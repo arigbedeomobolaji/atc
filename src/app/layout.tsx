@@ -110,9 +110,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} 
-        ${poppins.variable} ${manrope.variable} ${oswald.variable} 
-        ${roboto.variable} ${openSans.variable} antialiased`}
+      ${poppins.variable} ${manrope.variable} ${oswald.variable} 
+      ${roboto.variable} ${openSans.variable} antialiased`}
       >
         {children}
       </body>

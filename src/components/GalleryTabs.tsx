@@ -69,7 +69,7 @@ export default function GalleryTabs() {
   return (
     <div className="w-full p-4">
       {/* Tabs */}
-      <div className="flex gap-3 overflow-x-auto border-b pb-2 mb-4">
+      <div className="flex gap-3 overflow-x-auto scrollbar-hideauto scrollbar-hide border-b pb-2 mb-4">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -87,7 +87,7 @@ export default function GalleryTabs() {
       </div>
 
       {/* Image Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-4 gap-4">
         {galleryData[activeTab].length === 0 ? (
           <p className="text-gray-500 col-span-full text-center">
             No images yet.

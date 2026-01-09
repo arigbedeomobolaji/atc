@@ -15,16 +15,16 @@ export function VisionStatement() {
         {/* Vision Statement Container */}
         <div className="text-center w-2/3">
           <div className="flex flex-col items-center">
-            <p className="text-4xl md:text-5xl text-blue-950/95 font-heading font-extrabold leading-none whitespace-pre-line">
+            <p className="text-4xl lg:text-5xl text-blue-950/95 font-heading font-extrabold leading-none whitespace-pre-line">
               {`AIR\nOFFICER\nCOMMANDING'S`}
             </p>
 
-            <p className="text-4xl md:text-9xl text-white font-heading leading-none -mt-2 md:-mt-5">
+            <p className="text-4xl lg:text-9xl text-white font-heading leading-none -mt-2 lg:-mt-5">
               VISION
             </p>
           </div>
 
-          <blockquote className="mt-6 text-gray-700 text-xs sm:text-sm md:text-base font-sans max-w-md mx-auto leading-relaxed italic border-l-4 border-blue-300 pl-4">
+          <blockquote className="mt-6 text-gray-700 text-xs sm:text-sm lg:text-base font-sans max-w-md mx-auto leading-relaxed italic border-l-4 border-blue-300 pl-4">
             &quot;To lead in aviation training and operational excellence,
             fostering a generation of airmen and officers equipped with advanced
             skills, strategic thinking, and unwavering discipline, committed to

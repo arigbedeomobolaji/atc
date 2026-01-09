@@ -51,7 +51,7 @@ export default function ContactPage() {
           <div className="mt-16">
             <HeaderText title="Contact Information" />
 
-            <div className="px-10 lg:px-20 grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
+            <div className="px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10">
               {/* Phone */}
               <FadeInSection delay={0.1}>
                 <motion.div

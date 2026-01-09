@@ -1,29 +1,20 @@
 // app/news/[slug]/page.tsx - public news detail (server component)
 
 import Breadcrumb from "@/components/Breadcrunb";
-import NewsViewer from "@/components/editor/NewsViewer";
+import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { WelcomeBanner } from "@/components/WelcomeBanner";
 import { connectToDatabase } from "@/lib/db";
+import { normalizeImages } from "@/lib/normalizeImages";
+import { convertDate } from "@/utils/covertDate";
+import { getPaginatedNews } from "@/lib/services/news.services";
+import Link from "next/link";
+import { SidebarNews } from "@/components/news/SidebarNews";
 
 async function getBySlug(slug: string) {
   const { db } = await connectToDatabase();
   const news = await db.collection("news").findOne({ slug });
   return news;
-}
-
-function normalizeImages(html: string) {
-  return html.replace(
-    /<img([^>]*)>(.*?)<span>Source:\s*(.*?)<\/span>/g,
-    `
-    <figure class="editor-figure">
-      <img $1 />
-     
-      <span class="editor-source">Source: $3</span>
-       <figcaption class="editor-caption">$2</figcaption>
-    </figure>
-    `
-  );
 }
 
 export default async function NewsDetail({
@@ -32,8 +23,9 @@ export default async function NewsDetail({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  console.log({ slug });
   const data = await getBySlug(slug);
+  const { news } = await getPaginatedNews({ page: 1, limit: 10 });
+
   if (!data) return <div className="p-6">Not found</div>;
 
   return (
@@ -46,13 +38,32 @@ export default async function NewsDetail({
       </div>
 
       <Breadcrumb rootLabel="Home" rootHref="/" startIndex={0} />
-      <div className="max-w-4xl">
-        <h1 className="text-3xl font-bold">{data.title}</h1>
-        <div
-          className="prose max-w-none"
-          dangerouslySetInnerHTML={{ __html: data.content }}
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
+        {/* Main News */}
+        <div className="max-w-4xl space-y-3 p-3 col-span-1 lg:col-span-3">
+          <h1 className="text-4xl text-dark font-heading font-extrabold">
+            {data.title}
+          </h1>
+          <div className="flex justify-between items-center">
+            <p className="text-gray-600 font-mono italic text-xs hover:underline">
+              Posted by ATC Admin
+            </p>
+            <p className="text-sm font-bold">
+              {convertDate(data.createdAt, false)}
+            </p>
+          </div>
+          <div
+            className="prose max-w-none text-justify"
+            dangerouslySetInnerHTML={{
+              __html: normalizeImages(data.content),
+            }}
+          />
+        </div>
+        {/* hottest news */}
+        <SidebarNews news={news} slug={slug} />
       </div>
+
+      <Footer />
     </div>
   );
 }

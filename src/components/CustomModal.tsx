@@ -17,7 +17,7 @@ export default function CustomModal({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="relative bg-white rounded-lg p-4 max-w-xl w-[95%] h-[80vh] shadow-xl animate-fadeIn overflow-y-auto">
+      <div className="relative bg-white rounded-lg p-4 max-w-xl w-[95%] h-[80vh] shadow-xl animate-fadeIn overflow-y-auto scrollbar-hideauto">
         {/* Close Button */}
         <button
           onClick={onClose}

@@ -38,7 +38,7 @@ export default function CreateNewsPage() {
       }),
     });
     const json = await res.json();
-    console.log({ json });
+
     setSaving(false);
     if (res.ok) {
       router.push(`/news/${json.slug}`);

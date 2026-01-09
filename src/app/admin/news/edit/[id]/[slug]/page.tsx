@@ -11,8 +11,6 @@ export default function EditNewsPage() {
   const { id, slug } = useParams<{ id: string; slug: string }>();
   const router = useRouter();
 
-  console.log({ id, slug });
-
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -70,7 +68,7 @@ export default function EditNewsPage() {
   }
 
   if (loading) return <div className="p-6">Loading...</div>;
-  console.log({ content });
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-xl font-semibold mb-4">Edit News</h2>

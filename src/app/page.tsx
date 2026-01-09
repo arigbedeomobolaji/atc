@@ -6,8 +6,11 @@ import { VisionStatement } from "@/components/VisionStatement";
 import { FadeInSection } from "@/components/FadeInSection";
 import { Footer } from "@/components/Footer";
 import UnitsGrid from "@/components/UnitsGrid";
+import { SidebarNews } from "@/components/news/SidebarNews";
+import { getPaginatedNews } from "@/lib/services/news.services";
 
-export default function Home() {
+export default async function Home() {
+  const { news } = await getPaginatedNews({ page: 1, limit: 15 });
   return (
     <div className="relative">
       <WelcomeBanner />
@@ -32,8 +35,13 @@ export default function Home() {
         <FadeInSection delay={0.4}>
           <VisionStatement />
         </FadeInSection>
-
+        <br />
         <FadeInSection delay={0.5}>
+          <SidebarNews news={news} layout="horizontal" slug="" />
+        </FadeInSection>
+        <br />
+
+        <FadeInSection delay={0.6}>
           <UnitsGrid />
         </FadeInSection>
         <Footer />

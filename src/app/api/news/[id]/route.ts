@@ -10,12 +10,12 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    console.log({ id });
+
     const { db } = await connectToDatabase();
     const item = await db
       .collection("news")
       .findOne({ _id: new ObjectId(id) as any });
-    console.log({ item });
+
     if (!item)
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ news: item });

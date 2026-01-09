@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 
 interface BlurryBgImageProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,7 +13,7 @@ export default function BlurryBgImage({
   return (
     <div
       className="relative w-full 
-  h-[220px] sm:h-[230px] md:h-[240px] lg:h-[250px]
+  h-[220px] sm:h-[230px] lg:h-[240px] lg:h-[250px]
   rounded-lg overflow-hidden"
     >
       {/* Background Blur */}

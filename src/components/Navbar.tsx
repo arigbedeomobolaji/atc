@@ -79,7 +79,7 @@ export function Navbar() {
   async function logout() {
     const res = await fetch("/api/auth/logout", { method: "POST" });
     const json = await res.json();
-    console.log(json);
+
     if (json.success) {
       setIsLoggedIn(false);
       router.replace("/");
@@ -130,12 +130,12 @@ export function Navbar() {
 
         {/* Moving text */}
         <div
-          className={`overflow-hidden w-56 md:w-72 xl:w-80 2xl:w-80 font-mono ${
+          className={`overflow-hidden w-56 lg:w-72 xl:w-80 2xl:w-80 font-mono ${
             isFixed ? "text-white" : "text-dark"
           }`}
         >
           <motion.p
-            className="capitalize font-extrabold text-sm md:text-md xl:text-xl 2xl:text-2xl whitespace-nowrap"
+            className="capitalize font-extrabold text-sm lg:text-md xl:text-xl 2xl:text-2xl whitespace-nowrap"
             initial={{ x: "-100%" }}
             animate={{ x: ["-100%", "0%", "100%"] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -146,7 +146,7 @@ export function Navbar() {
 
         {/* Desktop Links */}
         <div className="flex gap-5 items-center">
-          <motion.div className="font-link text-[16px] font-medium hidden md:flex gap-5 lg:gap-14">
+          <motion.div className="font-link text-[16px] font-medium hidden lg:flex gap-5 lg:gap-14">
             {[...navItems, ...(isLoggedIn ? adminNavItems : [])].map(
               (item, index) => {
                 const parentActive = isParentActive(item.href, item.children);
@@ -213,7 +213,7 @@ export function Navbar() {
 
           {/* Hamburger */}
           <div
-            className="hover:-translate-y-1 transition-all duration-300 cursor-pointer md:hidden"
+            className="hover:-translate-y-1 transition-all duration-300 cursor-pointer lg:hidden"
             onClick={() => setShowNavbar((prev) => !prev)}
           >
             {showNavbar ? <X size={40} /> : <TextAlignEnd size={40} />}

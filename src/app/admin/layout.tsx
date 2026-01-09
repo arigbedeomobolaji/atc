@@ -27,7 +27,6 @@ export default function AdminLayout({
 
         <nav className="flex-1 px-4 py-4 space-y-2">
           {nav.map((item) => {
-            console.log({ item, pathname });
             return (
               <Link
                 key={item.href}

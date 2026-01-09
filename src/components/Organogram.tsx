@@ -175,7 +175,7 @@ export default function Organogram() {
   ];
 
   return (
-    <div className="w-full h-[350px] md:h-[600px]">
+    <div className="w-full h-[350px] lg:h-[600px]">
       <ReactFlowProvider>
         <FlowWrapper nodes={nodes} edges={edges} />
       </ReactFlowProvider>

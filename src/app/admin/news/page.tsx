@@ -5,18 +5,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-type NewsItem = {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt?: string;
-  createdAt?: string;
-};
+import { NewsItemType } from "@/utils/types";
 
 export default function AdminNewsList() {
   const router = useRouter();
-  const [rows, setRows] = useState<NewsItem[]>([]);
+  const [rows, setRows] = useState<NewsItemType[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [page, setPage] = useState(1);
@@ -29,6 +22,14 @@ export default function AdminNewsList() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   const limit = 10;
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    q: debouncedSearch,
+    sortBy,
+    sortOrder,
+    admin: "true",
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -84,13 +85,13 @@ export default function AdminNewsList() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-xl font-semibold mb-4">Manage News</h2>
-      <div className="flex flex-col md:flex-row gap-3 mb-6">
+      <div className="flex flex-col lg:flex-row gap-3 mb-6">
         {/* Search */}
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search title, content or date..."
-          className="border px-3 py-2 rounded w-full md:w-1/2"
+          className="border px-3 py-2 rounded w-full lg:w-1/2"
         />
 
         {/* Sort */}

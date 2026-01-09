@@ -6,7 +6,7 @@ import NAFLogo from "../assets/NAF_logo.png";
 export function Footer() {
   return (
     <div className="bg-blue-950/95 text-white border-b-8 border-b-yellow-300 pb-4">
-      <div className=" flex items-center justify-around p-3 md:px-5 shadow-md hover:shadow-lg">
+      <div className=" flex items-center justify-around p-3 lg:px-5 shadow-md hover:shadow-lg">
         {/* Social Media Icons */}
         <div className="flex flex-col">
           <h1 className="font-heading font-bold leading-8">Our Social links</h1>

@@ -29,7 +29,7 @@ export function GalleryCard({
         onClick={() => setOpen(true)}
         className="cursor-pointer rounded-lg 
   hover:-translate-y-1 transition-all duration-300 
-  w-full h-[340px] sm:h-[360px] md:h-[380px] lg:h-[400px] 
+  w-full h-[340px] sm:h-[360px] lg:h-[380px] lg:h-[400px] 
   bg-white shadow-md flex flex-col"
       >
         <BlurryBgImage imageSrc={imageSrc} caption={caption} />

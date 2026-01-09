@@ -45,12 +45,12 @@ export function PageHero({ title, description, callToAction }: PageProps) {
         className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-5"
       >
         <div className="bg-white/5 backdrop-blur-xs rounded-md p-4">
-          <h1 className="text-md sm:text-xl md:text-2xl font-bold tracking-wide mb-4 drop-shadow-lg">
+          <h1 className="text-md sm:text-xl lg:text-2xl font-bold tracking-wide mb-4 drop-shadow-lg">
             {title}
           </h1>
         </div>
 
-        <p className="text-sm sm:text-lg md:text-xl max-w-2xl text-gray-200 mb-6 font-bold">
+        <p className="text-sm sm:text-lg lg:text-xl max-w-2xl text-gray-200 mb-6 font-bold">
           {description}
         </p>
         <motion.button
