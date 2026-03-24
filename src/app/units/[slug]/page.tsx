@@ -16,22 +16,12 @@ export default async function UnitPage({
 }) {
   const { slug } = await params;
   const unit = units_in_atc.find((u) => u.slug === slug);
-  console.log({ slug, unit });
+
   if (!unit) return notFound();
 
   return (
     <div className="bg-gray-50 text-gray-800">
       <UnitNavbar unit={unit} />
-
-      {/* GALLERY */}
-      <section id="gallery" className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-10">Gallery</h2>
-          <UnitGalleryCarousel
-            images={["/images/ATC_HQ.jpeg", "/images/Handing_over.jpeg"]}
-          />
-        </div>
-      </section>
 
       {/* HERO SECTION */}
       <section id="home" className="relative h-[70vh] w-full">
@@ -66,6 +56,16 @@ export default async function UnitPage({
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* GALLERY */}
+      <section id="gallery" className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl font-bold mb-10">Gallery</h2>
+          <UnitGalleryCarousel
+            images={["/images/ATC_HQ.jpeg", "/images/Handing_over.jpeg"]}
+          />
         </div>
       </section>
 

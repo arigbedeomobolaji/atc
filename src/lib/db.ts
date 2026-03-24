@@ -1,5 +1,11 @@
 // lib/db.ts
 import { MongoClient, Db, GridFSBucket } from "mongodb";
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: path.resolve(process.cwd(), ".env.local"),
+});
 
 const uri = process.env.MONGODB_URI!;
 const dbName = process.env.MONGODB_DB!;

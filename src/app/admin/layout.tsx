@@ -15,6 +15,7 @@ export default function AdminLayout({
     { name: "Dashboard", href: "/admin/dashboard" },
     { name: "Create News", href: "/admin/news/create" },
     { name: "Manage News", href: "/admin/news" },
+    { name: "Upload Gallery", href: "/admin/gallery/upload" },
   ];
 
   return (

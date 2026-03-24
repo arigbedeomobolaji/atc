@@ -24,4 +24,5 @@ async function seed() {
     .insertOne({ username, password: hashed, createdAt: new Date() });
   console.log("Admin created:", username);
 }
+
 seed().catch(console.error);
