@@ -6,6 +6,7 @@ import { ObjectId } from "mongodb";
 
 export async function POST(req: NextRequest) {
   try {
+    const { db } = await connectToDatabase();
     const formData = await req.formData();
 
     const file = formData.get("file") as File;
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest) {
     const category = formData.get("category") as string;
     const scope = formData.get("scope") as string;
     const unitId = formData.get("unitId") as string | null;
+    const eventId = formData.get("eventId") as string | null;
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -37,15 +39,31 @@ export async function POST(req: NextRequest) {
       stream.end(buffer);
     });
 
-    // Save to MongoDB
-    const { db } = await connectToDatabase();
+    // 🔥 ADD THIS BLOCK HERE
+    if (eventId) {
+      const existing = await db.collection("events").findOne({
+        _id: new ObjectId(eventId),
+      });
 
+      if (!existing?.coverImage) {
+        await db
+          .collection("events")
+          .updateOne(
+            { _id: new ObjectId(eventId) },
+            { $set: { coverImage: uploadRes.secure_url } }
+          );
+      }
+    }
+
+    // Save to MongoDB (gallery)
     const newImage = {
       imageUrl: uploadRes.secure_url,
+      publicId: uploadRes.public_id,
       caption,
       category,
       scope,
       unitId: unitId ? new ObjectId(unitId) : null,
+      eventId: eventId ? new ObjectId(eventId) : null,
       createdAt: new Date(),
     };
 

@@ -10,12 +10,21 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
   const nav = [
     { name: "Dashboard", href: "/admin/dashboard" },
+
+    // 📰 NEWS
     { name: "Create News", href: "/admin/news/create" },
     { name: "Manage News", href: "/admin/news" },
-    { name: "Upload Gallery", href: "/admin/gallery/upload" },
+
+    // 🏢 UNITS
+    { name: "Units", href: "/admin/units" },
+
+    // 🎖️ COMMANDERS
+    { name: "Commanders", href: "/admin/commanders" },
+
+    // 🎉 EVENTS (with embedded gallery system)
+    { name: "Events", href: "/admin/events" },
   ];
 
   return (

@@ -25,6 +25,8 @@ export type Gallery = {
 
   tags?: string[]; // e.g ["AOC", "handover", "2025"]
 
+  eventId?: ObjectId;
+
   uploadedBy: ObjectId;
 
   createdAt: Date;

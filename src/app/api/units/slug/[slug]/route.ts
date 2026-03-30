@@ -1,3 +1,7 @@
+// /Users/mac/omobolaji/atc/src/app/api/units/slug/[slug]/route.ts
+
+// api/units/slug/[slug]/route.ts
+
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 
@@ -6,12 +10,18 @@ import { connectToDatabase } from "@/lib/db";
  */
 export async function GET(
   req: Request,
-  { params }: { params: { slug: string } }
+  {
+    params,
+  }: {
+    params: Promise<{ slug: string }>;
+  }
 ) {
   try {
     const { db } = await connectToDatabase();
 
-    const unit = await db.collection("units").findOne({ slug: params.slug });
+    const { slug } = await params;
+
+    const unit = await db.collection("units").findOne({ slug });
 
     if (!unit) {
       return NextResponse.json({ error: "Unit not found" }, { status: 404 });
@@ -20,6 +30,7 @@ export async function GET(
     return NextResponse.json({
       ...unit,
       _id: unit._id.toString(),
+      currentCommanderId: unit.currentCommanderId?.toString() || null,
     });
   } catch (error) {
     return NextResponse.json(
