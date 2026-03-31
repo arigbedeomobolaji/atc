@@ -60,14 +60,15 @@ export async function GET(
  */
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const body = await req.json();
     const { db } = await connectToDatabase();
+    const { eventId } = await params;
 
     await db.collection("events").updateOne(
-      { _id: new ObjectId(params.eventId) },
+      { _id: new ObjectId(eventId) },
       {
         $set: {
           ...body,
