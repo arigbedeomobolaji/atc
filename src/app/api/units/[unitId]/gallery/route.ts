@@ -6,16 +6,17 @@ import { ObjectId } from "mongodb";
 
 export async function GET(
   req: Request,
-  { params }: { params: { unitId: string } }
+  { params }: { params: Promise<{ unitId: string }> }
 ) {
   try {
     const { db } = await connectToDatabase();
+    const { unitId } = await params;
 
     const images = await db
       .collection("galleries")
       .find({
         scope: "UNIT",
-        unitId: new ObjectId(params.unitId),
+        unitId: new ObjectId(unitId),
       })
       .sort({ createdAt: -1 })
       .toArray();

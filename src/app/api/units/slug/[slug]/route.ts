@@ -45,14 +45,15 @@ export async function GET(
  */
 export async function PUT(
   req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const body = await req.json();
     const { db } = await connectToDatabase();
+    const { slug } = await params;
 
     await db.collection("units").updateOne(
-      { slug: params.slug },
+      { slug },
       {
         $set: {
           ...body,
@@ -72,13 +73,14 @@ export async function PUT(
  */
 export async function DELETE(
   req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { db } = await connectToDatabase();
+    const { slug } = await params;
 
     await db.collection("units").deleteOne({
-      slug: params.slug,
+      slug: slug,
     });
 
     return NextResponse.json({ message: "Unit deleted" });
