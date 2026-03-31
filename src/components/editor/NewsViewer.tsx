@@ -5,7 +5,7 @@ import { CustomImage } from "./extensions/CustomImage";
 export default function NewsViewer({ content }: { content: string }) {
   const editor = useEditor({
     editable: false,
-    extensions: [StarterKit, CustomImage],
+    extensions: [CustomImage],
     content, // JSON from DB
   });
 
