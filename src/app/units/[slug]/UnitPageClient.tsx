@@ -131,24 +131,26 @@ export default function UnitPageClient({ unit, gallery }: any) {
             <div
               key={i}
               onClick={() => setSelectedCommander(c)}
-              className="cursor-pointer bg-white p-5 rounded-xl shadow hover:shadow-lg transition"
+              className="font-opensans w-70 bg-white p-5 rounded-sm shadow-sm shadow-blue-100 hover:shadow-md hover:border-blue-200 transition"
             >
-              <p className="font-semibold text-blue-700">
-                {c.rank} {c.name}
-              </p>
-              <p className="text-sm text-gray-500">{c.serviceNumber}</p>
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 mt-2 bg-[#1E3A8A] rounded-full" />
+
+                <div>
+                  <p className="font-semibold text-[#1E3A8A] text-sm">
+                    {c.rank} {c.name}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {c.startDate} — {c.endDate || "Present"}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 🔥 MODAL */}
-      {selectedCommander && (
-        <CommanderModal
-          commander={selectedCommander}
-          onClose={() => setSelectedCommander(null)}
-        />
-      )}
+      {/* current commander Portrait */}
 
       {/* 🔥 REAL GALLERY */}
       <section id="gallery" className="py-7 px-6">

@@ -87,18 +87,20 @@ export async function PUT(
  */
 export async function DELETE(
   req: Request,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const { db } = await connectToDatabase();
 
+    const { eventId } = await params;
+
     await db.collection("events").deleteOne({
-      _id: new ObjectId(params.eventId),
+      _id: new ObjectId(eventId),
     });
 
     // 🔥 ALSO delete related images
     await db.collection("galleries").deleteMany({
-      eventId: new ObjectId(params.eventId),
+      eventId: new ObjectId(eventId),
     });
 
     return NextResponse.json({ message: "Deleted" });

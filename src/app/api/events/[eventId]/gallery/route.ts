@@ -4,14 +4,15 @@ import { ObjectId } from "mongodb";
 
 export async function GET(
   req: Request,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const { db } = await connectToDatabase();
+    const { eventId } = await params;
 
     const images = await db
       .collection("galleries")
-      .find({ eventId: new ObjectId(params.eventId) })
+      .find({ eventId: new ObjectId(eventId) })
       .sort({ createdAt: -1 })
       .toArray();
 
