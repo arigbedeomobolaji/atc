@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 
@@ -59,7 +59,7 @@ export async function GET(
  * UPDATE EVENT
  */
 export async function PUT(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { eventId: string } }
 ) {
   try {
@@ -86,7 +86,7 @@ export async function PUT(
  * DELETE EVENT
  */
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {

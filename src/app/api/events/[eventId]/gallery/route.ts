@@ -1,14 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 
 export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ eventId: string }> }
+  request: NextRequest,
+  context: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const { db } = await connectToDatabase();
-    const { eventId } = await params;
+    const { eventId } = await context.params;
 
     const images = await db
       .collection("galleries")
