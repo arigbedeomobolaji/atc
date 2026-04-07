@@ -29,13 +29,13 @@ export default function UnitsAdminPage() {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between mb-6">
-        <h1 className="text-xl font-bold">Units</h1>
+    <div className="p-6 bg-background min-h-screen">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-foreground">Units</h1>
 
         <Link
           href="/admin/units/create"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-primary text-primary-foreground px-4 py-2 rounded-lg shadow hover:opacity-90"
         >
           + Create Unit
         </Link>
@@ -45,34 +45,34 @@ export default function UnitsAdminPage() {
         {units.map((u) => (
           <div
             key={u._id}
-            className="p-4 bg-white rounded shadow flex justify-between"
+            className="p-5 bg-card border border-border rounded-xl shadow-sm flex justify-between items-center"
           >
             <div>
-              <h2 className="font-semibold">{u.unit}</h2>
-              <p className="text-sm text-gray-500">{u.location}</p>
+              <h2 className="font-semibold text-foreground">{u.unit}</h2>
+              <p className="text-sm text-muted-foreground">{u.location}</p>
             </div>
 
             <div className="flex gap-2">
               <Link
                 href={`/units/${u.slug}`}
-                className="px-3 py-1 bg-gray-200 rounded"
+                className="bg-primary  text-white px-3 py-1 rounded-md hover:bg-secondary"
               >
                 View
               </Link>
 
               <Link
                 href={`/admin/units/${u._id}/edit`}
-                className="px-3 py-1 bg-yellow-500 text-white rounded"
+                className="px-3 py-1 rounded-md bg-accent text-accent-foreground"
               >
                 Edit
               </Link>
 
-              <button
+              {/* <button
                 onClick={() => handleDelete(u._id)}
-                className="px-3 py-1 bg-red-600 text-white rounded"
+                className="px-3 py-1 rounded-md bg-primary  text-white"
               >
                 Delete
-              </button>
+              </button> */}
             </div>
           </div>
         ))}

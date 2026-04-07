@@ -7,6 +7,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
+import imageCompression from "browser-image-compression";
 
 export default function EditCommander() {
   const { id } = useParams();
@@ -27,6 +28,8 @@ export default function EditCommander() {
     endDate: "",
     bio: "",
     portrait: "",
+    awards: "",
+    portraitPublicId: "",
   });
 
   // 🔥 Load commander + units
@@ -52,6 +55,8 @@ export default function EditCommander() {
           endDate: cmd.endDate?.split("T")[0] || "",
           bio: cmd.bio || "",
           portrait: cmd.portrait || "",
+          awards: cmd.awards || "",
+          portraitPublicId: cmd.portraitPublicId || "",
         });
 
         setPreview(cmd.portrait || null);
@@ -80,15 +85,23 @@ export default function EditCommander() {
     setSaving(true);
 
     let imageUrl = form.portrait;
+    let publicId = form.portraitPublicId;
 
     try {
       // 🔥 If new image selected → upload
       if (file) {
         const fd = new FormData();
-        fd.append("file", file);
+        const compressed = await imageCompression(file, {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1000,
+          useWebWorker: true,
+        });
+
+        fd.append("file", compressed);
         fd.append("category", "LEADERSHIP");
         fd.append("scope", "UNIT");
         fd.append("unitId", form.unitId);
+        fd.append("type", "PORTRAIT");
 
         const upload = await fetch("/api/gallery/upload", {
           method: "POST",
@@ -97,6 +110,7 @@ export default function EditCommander() {
 
         const upJson = await upload.json();
         imageUrl = upJson.data.imageUrl;
+        publicId = upJson.data.publicId;
       }
 
       // 🔥 Update commander
@@ -105,6 +119,7 @@ export default function EditCommander() {
         body: JSON.stringify({
           ...form,
           portrait: imageUrl,
+          portraitPublicId: publicId,
         }),
       });
 
@@ -126,37 +141,42 @@ export default function EditCommander() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="bg-card text-card-foreground rounded-2xl shadow-lg p-8 border border-border">
         <h1 className="text-2xl font-bold mb-6">Edit Commander</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Name */}
             <div>
-              <label className="text-sm text-gray-600">Full Name</label>
+              <label htmlFor="name" className="text-sm text-muted-foreground">
+                Full Name
+              </label>
               <input
-                className="w-full mt-1 p-3 border rounded-lg"
+                id="name"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
             </div>
 
-            {/* Rank */}
             <div>
-              <label className="text-sm text-gray-600">Rank</label>
+              <label htmlFor="rank" className="text-sm text-muted-foreground">
+                Rank
+              </label>
               <input
-                className="w-full mt-1 p-3 border rounded-lg"
+                id="rank"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.rank}
                 onChange={(e) => setForm({ ...form, rank: e.target.value })}
               />
             </div>
 
-            {/* Unit */}
             <div>
-              <label className="text-sm text-gray-600">Unit</label>
+              <label htmlFor="unit" className="text-sm text-muted-foreground">
+                Unit
+              </label>
               <select
-                className="w-full mt-1 p-3 border rounded-lg"
+                id="unit"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.unitId}
                 onChange={(e) => setForm({ ...form, unitId: e.target.value })}
               >
@@ -168,11 +188,16 @@ export default function EditCommander() {
               </select>
             </div>
 
-            {/* Appointment */}
             <div>
-              <label className="text-sm text-gray-600">Appointment</label>
+              <label
+                htmlFor="appointment"
+                className="text-sm text-muted-foreground"
+              >
+                Appointment
+              </label>
               <input
-                className="w-full mt-1 p-3 border rounded-lg"
+                id="appointment"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.appointment}
                 onChange={(e) =>
                   setForm({ ...form, appointment: e.target.value })
@@ -180,12 +205,29 @@ export default function EditCommander() {
               />
             </div>
 
-            {/* Start */}
             <div>
-              <label className="text-sm text-gray-600">Start Date</label>
+              <label htmlFor="awards" className="text-sm text-muted-foreground">
+                Awards
+              </label>
               <input
+                id="awards"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
+                value={form.awards || ""}
+                onChange={(e) => setForm({ ...form, awards: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="startDate"
+                className="text-sm text-muted-foreground"
+              >
+                Start Date
+              </label>
+              <input
+                id="startDate"
                 type="date"
-                className="w-full mt-1 p-3 border rounded-lg"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.startDate}
                 onChange={(e) =>
                   setForm({ ...form, startDate: e.target.value })
@@ -193,40 +235,49 @@ export default function EditCommander() {
               />
             </div>
 
-            {/* End */}
             <div>
-              <label className="text-sm text-gray-600">End Date</label>
+              <label
+                htmlFor="endDate"
+                className="text-sm text-muted-foreground"
+              >
+                End Date
+              </label>
               <input
+                id="endDate"
                 type="date"
-                className="w-full mt-1 p-3 border rounded-lg"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.endDate}
                 onChange={(e) => setForm({ ...form, endDate: e.target.value })}
               />
             </div>
           </div>
 
-          {/* BIO */}
           <div>
-            <label className="text-sm text-gray-600">Biography</label>
+            <label htmlFor="bio" className="text-sm text-muted-foreground">
+              Biography
+            </label>
             <textarea
-              className="w-full mt-1 p-3 border rounded-lg h-28"
+              id="bio"
+              className="w-full mt-1 p-3 rounded-lg border border-input bg-background h-28 focus:ring-2 focus:ring-primary outline-none"
               value={form.bio}
               onChange={(e) => setForm({ ...form, bio: e.target.value })}
             />
           </div>
 
-          {/* IMAGE */}
           <div>
-            <label className="text-sm text-gray-600">Commander Portrait</label>
+            <label className="text-sm text-muted-foreground">
+              Commander Portrait
+            </label>
 
             <div className="flex items-center gap-4 mt-2">
               <input
                 type="file"
+                className="text-sm"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
               />
 
               {preview && (
-                <div className="relative w-20 h-20 rounded-lg overflow-hidden border">
+                <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-border">
                   <Image
                     src={preview}
                     alt="portrait"
@@ -237,15 +288,14 @@ export default function EditCommander() {
               )}
             </div>
 
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Uploading a new image will replace the current portrait
             </p>
           </div>
 
-          {/* BUTTON */}
           <button
             disabled={saving}
-            className="w-full bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg font-semibold"
+            className="w-full bg-primary text-primary-foreground p-3 rounded-lg font-semibold hover:opacity-90 transition"
           >
             {saving ? "Updating..." : "Update Commander"}
           </button>

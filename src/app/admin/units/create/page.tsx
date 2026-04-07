@@ -1,57 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-// /Users/mac/omobolaji/atc/src/app/admin/units/create/page.tsx
 "use client";
 
+import { useState } from "react";
+import imageCompression from "browser-image-compression";
 import ArrayInput from "@/components/ArrayInput";
 import CommandersEditor from "@/components/CommandsEditor";
 import CustomSectionsEditor from "@/components/CustomSectionsEditor";
 import HistoryEditor from "@/components/HistoryEditor";
-import { useState } from "react";
 
 export default function CreateUnit() {
   const [file, setFile] = useState<File | null>(null);
+
   const [form, setForm] = useState<any>({
     unit: "",
     slug: "",
-    abbreviation: "",
     location: "",
-    role: "",
+    mission: "",
     description: "",
-    fullDescription: "",
-
     capabilities: [],
     systems: [],
     responsibilities: [],
-
     history: [],
     commanders: [],
-
     customSections: [],
   });
 
   async function handleSubmit(e: any) {
     e.preventDefault();
 
-    // 1️⃣ Create Unit
     const res = await fetch("/api/units", {
       method: "POST",
       body: JSON.stringify(form),
     });
 
     const json = await res.json();
-
-    if (!res.ok) {
-      alert(json.error);
-      return;
-    }
+    if (!res.ok) return alert(json.error);
 
     const unitId = json.id;
 
-    // 2️⃣ Upload Logo
     if (file) {
       const fd = new FormData();
-      fd.append("file", file);
+      const compressed = await imageCompression(file, { maxSizeMB: 0.5 });
+
+      fd.append("file", compressed);
       fd.append("unitId", unitId);
 
       await fetch("/api/units/upload-logo", {
@@ -64,62 +55,110 @@ export default function CreateUnit() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 max-w-xl space-y-4">
-      <input
-        placeholder="Unit Name"
-        onChange={(e) => setForm({ ...form, unit: e.target.value })}
-      />
+    <div className="min-h-screen bg-background p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-3xl mx-auto bg-card border border-border rounded-2xl p-8 space-y-5 shadow"
+      >
+        <h1 className="text-2xl font-bold text-foreground">Create Unit</h1>
 
-      <input
-        placeholder="Slug"
-        onChange={(e) => setForm({ ...form, slug: e.target.value })}
-      />
+        {/* Unit */}
+        <div>
+          <label htmlFor="unit" className="text-sm text-muted-foreground">
+            Unit Name
+          </label>
+          <input
+            id="unit"
+            className="w-full mt-1 p-3 border border-border rounded-lg bg-background"
+            onChange={(e) => setForm({ ...form, unit: e.target.value })}
+          />
+        </div>
 
-      <input
-        placeholder="Location"
-        onChange={(e) => setForm({ ...form, location: e.target.value })}
-      />
+        {/* Slug */}
+        <div>
+          <label htmlFor="slug" className="text-sm text-muted-foreground">
+            Slug
+          </label>
+          <input
+            id="slug"
+            className="w-full mt-1 p-3 border border-border rounded-lg"
+            onChange={(e) => setForm({ ...form, slug: e.target.value })}
+          />
+        </div>
 
-      <textarea
-        placeholder="Description"
-        onChange={(e) => setForm({ ...form, description: e.target.value })}
-      />
+        {/* Location */}
+        <div>
+          <label htmlFor="location" className="text-sm text-muted-foreground">
+            Location
+          </label>
+          <input
+            id="location"
+            className="w-full mt-1 p-3 border border-border rounded-lg"
+            onChange={(e) => setForm({ ...form, location: e.target.value })}
+          />
+        </div>
 
-      <ArrayInput
-        label="Capabilities"
-        value={form.capabilities}
-        onChange={(val: any) => setForm({ ...form, capabilities: val })}
-      />
+        {/* Mission */}
+        <div>
+          <label htmlFor="mission" className="text-sm text-muted-foreground">
+            Mission
+          </label>
+          <input
+            id="mission"
+            className="w-full mt-1 p-3 border border-border rounded-lg"
+            onChange={(e) => setForm({ ...form, mission: e.target.value })}
+          />
+        </div>
 
-      {/* Systems - Equipments */}
-      <ArrayInput
-        label="Systems / Equipment"
-        value={form.systems}
-        onChange={(val: any) => setForm({ ...form, systems: val })}
-      />
+        {/* Description */}
+        <div>
+          <label
+            htmlFor="description"
+            className="text-sm text-muted-foreground"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            className="w-full mt-1 p-3 border border-border rounded-lg"
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+          />
+        </div>
 
-      {/* Responsibilities */}
-      <ArrayInput
-        label="Responsibilities"
-        value={form.responsibilities}
-        onChange={(val: any) => setForm({ ...form, responsibilities: val })}
-      />
+        {/* Arrays */}
+        <ArrayInput
+          label="Capabilities"
+          value={form.capabilities}
+          onChange={(v: any) => setForm({ ...form, capabilities: v })}
+        />
+        <ArrayInput
+          label="Systems"
+          value={form.systems}
+          onChange={(v: any) => setForm({ ...form, systems: v })}
+        />
+        <ArrayInput
+          label="Responsibilities"
+          value={form.responsibilities}
+          onChange={(v: any) => setForm({ ...form, responsibilities: v })}
+        />
 
-      {/* Others fields */}
+        <HistoryEditor />
+        <CommandersEditor />
+        <CustomSectionsEditor />
 
-      <HistoryEditor />
-      <CommandersEditor />
-      <CustomSectionsEditor />
+        {/* Logo */}
+        <div>
+          <label className="text-sm text-muted-foreground">Unit Logo</label>
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
+        </div>
 
-      {/* Logo */}
-      <input
-        type="file"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
-
-      <button className="bg-blue-600 text-white p-3 rounded">
-        Create Unit
-      </button>
-    </form>
+        <button className="w-full bg-primary text-primary-foreground p-3 rounded-lg font-semibold hover:opacity-90">
+          Create Unit
+        </button>
+      </form>
+    </div>
   );
 }

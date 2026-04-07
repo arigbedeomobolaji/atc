@@ -1,75 +1,57 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import cloudinary from "@/lib/cloudinary";
 import { ObjectId } from "mongodb";
+import { GalleryDoc } from "../upload/route";
 
-export async function DELETE(
-  req: Request,
-  context: { params: Promise<{ imageId: string }> }
-) {
+export async function DELETE(req: Request) {
   try {
-    const { imageId } = await context.params;
-
-    if (!ObjectId.isValid(imageId)) {
-      return NextResponse.json({ error: "Invalid image ID" }, { status: 400 });
-    }
-
     const { db } = await connectToDatabase();
+    const { galleryId, publicId } = await req.json();
 
-    const image = await db.collection("galleries").findOne({
-      _id: new ObjectId(imageId),
-    });
-
-    if (!image) {
-      return NextResponse.json({ error: "Image not found" }, { status: 404 });
+    if (!ObjectId.isValid(galleryId)) {
+      return NextResponse.json(
+        { error: "Invalid gallery ID" },
+        { status: 400 }
+      );
     }
 
-    // 🔥 DELETE FROM CLOUDINARY
-    if (image.publicId) {
-      await cloudinary.uploader.destroy(image.publicId);
-    }
-
-    // Check if this image is used as coverImage
-    const eventUsingImage = await db.collection("events").findOne({
-      coverImage: image.imageUrl,
+    const gallery = await db.collection("galleries").findOne({
+      _id: new ObjectId(galleryId),
     });
 
-    if (eventUsingImage) {
-      // Option 1 (simple): remove cover image
+    if (!gallery) {
+      return NextResponse.json({ error: "Gallery not found" }, { status: 404 });
+    }
+
+    // 🔥 delete from cloudinary
+    await cloudinary.uploader.destroy(publicId);
+
+    // 🔥 remove from images array
+    await db.collection<GalleryDoc>("galleries").updateOne(
+      { _id: new ObjectId(galleryId) },
+      {
+        $pull: {
+          images: { publicId },
+        },
+      }
+    );
+
+    // 🔥 OPTIONAL: fix event cover
+    const isCover = await db.collection("events").findOne({
+      coverImage: { $in: gallery.images.map((img: any) => img.url) },
+    });
+
+    if (isCover) {
       await db
         .collection("events")
-        .updateOne(
-          { _id: eventUsingImage._id },
-          { $unset: { coverImage: "" } }
-        );
-
-      // ✅ OPTIONAL (better UX): auto-set next image as cover
-      const nextImage = await db.collection("galleries").findOne({
-        eventId: image.eventId,
-        _id: { $ne: image._id },
-      });
-
-      if (nextImage) {
-        await db
-          .collection("events")
-          .updateOne(
-            { _id: eventUsingImage._id },
-            { $set: { coverImage: nextImage.imageUrl } }
-          );
-      }
+        .updateOne({ _id: isCover._id }, { $unset: { coverImage: "" } });
     }
 
-    // 🔥 DELETE FROM DB
-    await db.collection("galleries").deleteOne({
-      _id: new ObjectId(imageId),
-    });
-
-    return NextResponse.json({ message: "Image deleted" });
+    return NextResponse.json({ message: "Image deleted ✅" });
   } catch (error) {
-    console.error("DELETE IMAGE ERROR:", error);
-    return NextResponse.json(
-      { error: "Failed to delete image" },
-      { status: 500 }
-    );
+    console.error(error);
+    return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }

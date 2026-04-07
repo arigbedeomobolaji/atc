@@ -1,4 +1,7 @@
-import { NextResponse } from "next/server";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// /Users/mac/omobolaji/atc/src/app/api/events/route.ts
+
+import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 
@@ -52,13 +55,24 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const { db } = await connectToDatabase();
 
+    const { searchParams } = new URL(req.url);
+    const unitId = searchParams.get("unitId");
+
+    const query: any = {};
+
+    if (unitId && ObjectId.isValid(unitId)) {
+      query.unitId = new ObjectId(unitId);
+    }
+
+    console.log(query);
+
     const events = await db
       .collection("events")
-      .find({})
+      .find(query)
       .sort({ createdAt: -1 })
       .toArray();
 

@@ -30,7 +30,7 @@ export interface ATCUnit {
   responsibilities: string[];
   aircraft?: string[];
   parentCommand?: string;
-  imageSrc: StaticImageData | string;
+  logo: StaticImageData | string;
   gallery?: string[];
   contact?: {
     address?: string;

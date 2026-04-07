@@ -20,11 +20,38 @@ export default function HistoryEditor({ value = [], onChange }: any) {
     <div className="space-y-3">
       <h3 className="font-semibold">History</h3>
 
+      <div className="flex gap-2 mt-2">
+        <input
+          disabled={true}
+          placeholder="Date"
+          className="border p-2 rounded w-1/3"
+        />
+
+        <input
+          disabled={true}
+          placeholder="Title"
+          className="border p-2 rounded w-1/3"
+        />
+
+        <input
+          disabled={true}
+          placeholder="Event"
+          className="border p-2 rounded flex-1"
+        />
+      </div>
+
       {safeValue.map((h: any, i: number) => (
         <div key={i} className="flex gap-2 mt-2">
           <input
             placeholder="Date"
             value={h.date || ""}
+            onChange={(e) => updateItem(i, "date", e.target.value)}
+            className="border p-2 rounded w-1/3"
+          />
+
+          <input
+            placeholder="Title"
+            value={h.title || ""}
             onChange={(e) => updateItem(i, "date", e.target.value)}
             className="border p-2 rounded w-1/3"
           />

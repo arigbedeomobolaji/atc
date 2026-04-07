@@ -127,7 +127,7 @@ export default function AdminNewsList() {
             <div className="flex gap-2">
               <Link
                 href={`/admin/news/edit/${r._id}/${r.slug}`}
-                className="px-3 bg-dark text-white py-1 b rounded"
+                className="px-3 bg-primary text-white py-1 b rounded"
               >
                 Edit
               </Link>

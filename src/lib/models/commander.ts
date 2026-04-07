@@ -9,11 +9,15 @@ export type Commander = {
   unitId: ObjectId;
 
   portrait: string; // Cloudinary
+  portraitPublicId: string; // Cloudinary
 
   startDate: Date;
   endDate?: Date; // null if current
 
   bio?: string;
+
+  // 🔥 Awards & Decorations
+  awards?: string;
 
   appointment: "COMMANDER" | "COMMANDANT" | "AOC";
 

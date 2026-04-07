@@ -37,23 +37,6 @@ export default async function UnitPage({ params }: any) {
   return (
     <div className="bg-gray-50">
       <UnitNavbar unit={unit} />
-
-      {/* HERO */}
-      <section className="relative h-[70vh] w-full">
-        <Image
-          src={unit.logo || "/images/default.jpg"}
-          alt={unit.unit}
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-blue-900/60 flex flex-col justify-center items-center text-center px-6">
-          <h1 className="text-4xl md:text-6xl font-bold text-white">
-            {unit.unit}
-          </h1>
-          <p className="text-blue-200 mt-4">{unit.role}</p>
-        </div>
-      </section>
-
       {/* 🔥 CLIENT SIDE UI */}
       <UnitPageClient unit={unit} gallery={gallery} />
     </div>

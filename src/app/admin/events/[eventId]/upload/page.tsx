@@ -1,5 +1,7 @@
 "use client";
 
+// /Users/mac/omobolaji/atc/src/app/admin/events/[eventId]/upload/page.tsx
+
 import { useState } from "react";
 import { useParams } from "next/navigation";
 

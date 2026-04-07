@@ -16,7 +16,8 @@ export async function POST(req: Request) {
       !body.location ||
       !body.role ||
       !body.description ||
-      !body.fullDescription
+      !body.fullDescription ||
+      !body.mission
     ) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
       // Structure
       location: body.location,
       parentCommand: body.parentCommand || "",
+      mission: body.mission,
 
       // Description
       role: body.role,

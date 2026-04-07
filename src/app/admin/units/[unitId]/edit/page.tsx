@@ -6,6 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import imageCompression from "browser-image-compression";
 import Image from "next/image";
 import ArrayInput from "@/components/ArrayInput";
 import HistoryEditor from "@/components/HistoryEditor";
@@ -27,6 +28,7 @@ export default function EditUnitPage() {
     role: "",
     description: "",
     fullDescription: "",
+    mission: "",
 
     capabilities: [],
     systems: [],
@@ -82,7 +84,13 @@ export default function EditUnitPage() {
     // 🔥 2. Upload new logo if selected
     if (file) {
       const fd = new FormData();
-      fd.append("file", file);
+      const compressed = await imageCompression(file, {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1000,
+        useWebWorker: true,
+      });
+
+      fd.append("file", compressed);
       fd.append("unitId", unitId as string);
 
       await fetch("/api/units/upload-logo", {
@@ -98,176 +106,233 @@ export default function EditUnitPage() {
   if (loading) return <div className="p-6">Loading...</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Edit Unit</h1>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="bg-card text-card-foreground rounded-2xl shadow-lg p-8 border border-border">
+        <h1 className="text-2xl font-bold mb-6 font-heading">Edit Unit</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Unit Name */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Unit Name
-          </label>
-          <input
-            className="w-full mt-1 p-3 border rounded-lg"
-            value={form.unit}
-            onChange={(e) => setForm({ ...form, unit: e.target.value })}
-          />
-        </div>
-
-        {/* Slug */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Slug
-          </label>
-          <input
-            className="w-full mt-1 p-3 border rounded-lg"
-            value={form.slug}
-            onChange={(e) => setForm({ ...form, slug: e.target.value })}
-          />
-        </div>
-
-        {/* Abbreviation */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Abbreviation
-          </label>
-          <input
-            className="w-full mt-1 p-3 border rounded-lg"
-            value={form.abbreviation}
-            onChange={(e) => setForm({ ...form, abbreviation: e.target.value })}
-          />
-        </div>
-
-        {/* Location */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Location
-          </label>
-          <input
-            className="w-full mt-1 p-3 border rounded-lg"
-            value={form.location}
-            onChange={(e) => setForm({ ...form, location: e.target.value })}
-          />
-        </div>
-
-        {/* Role */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Role
-          </label>
-          <input
-            className="w-full mt-1 p-3 border rounded-lg"
-            value={form.role}
-            onChange={(e) => setForm({ ...form, role: e.target.value })}
-          />
-        </div>
-
-        {/* Short Description */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Short Description
-          </label>
-          <textarea
-            className="w-full mt-1 p-3 border rounded-lg"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-          />
-        </div>
-
-        {/* Full Description */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Full Description
-          </label>
-          <textarea
-            className="w-full mt-1 p-3 border rounded-lg"
-            rows={5}
-            value={form.fullDescription}
-            onChange={(e) =>
-              setForm({ ...form, fullDescription: e.target.value })
-            }
-          />
-        </div>
-
-        {/* Capabilities */}
-        <ArrayInput
-          label="Capabilities"
-          value={form.capabilities}
-          onChange={(val: any) => setForm({ ...form, capabilities: val })}
-        />
-
-        {/* Systems / Equioment */}
-        <ArrayInput
-          label="Systems / Equipment"
-          value={form.systems}
-          onChange={(val: any) => setForm({ ...form, systems: val })}
-        />
-
-        {/* Responsibilties */}
-        <ArrayInput
-          label="Responsibilities"
-          value={form.responsibilities}
-          onChange={(val: any) => setForm({ ...form, responsibilities: val })}
-        />
-
-        <HistoryEditor
-          value={form.history || []}
-          onChange={(val: any) => setForm({ ...form, history: val })}
-        />
-        <CommandersEditor
-          value={form.commanders || []}
-          onChange={(val: any) => setForm({ ...form, commanders: val })}
-        />
-        <CustomSectionsEditor
-          value={form.customSections || []}
-          onChange={(val: any) => setForm({ ...form, customSections: val })}
-        />
-        {/* LOGO SECTION */}
-        <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Unit Logo
-          </label>
-
-          {/* Existing Logo */}
-          {form.logo ? (
-            <div className="flex items-center gap-4">
-              <Image
-                src={form.logo}
-                alt="Unit Logo"
-                width={100}
-                height={100}
-                className="object-contain border rounded bg-white p-2"
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Unit Name */}
+            <div>
+              <label
+                htmlFor="unit"
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                Unit Name
+              </label>
+              <input
+                id="unit"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+                value={form.unit}
+                onChange={(e) => setForm({ ...form, unit: e.target.value })}
               />
-              <span className="text-sm text-green-600">
-                Logo already uploaded
-              </span>
             </div>
-          ) : (
-            <p className="text-sm text-gray-500">No logo uploaded</p>
-          )}
 
-          {/* Upload */}
-          <input
-            type="file"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            {/* Slug */}
+            <div>
+              <label
+                htmlFor="slug"
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                Slug
+              </label>
+              <input
+                id="slug"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+                value={form.slug}
+                onChange={(e) => setForm({ ...form, slug: e.target.value })}
+              />
+            </div>
+
+            {/* Abbreviation */}
+            <div>
+              <label
+                htmlFor="abbreviation"
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                Abbreviation
+              </label>
+              <input
+                id="abbreviation"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+                value={form.abbreviation}
+                onChange={(e) =>
+                  setForm({ ...form, abbreviation: e.target.value })
+                }
+              />
+            </div>
+
+            {/* Location */}
+            <div>
+              <label
+                htmlFor="location"
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                Location
+              </label>
+              <input
+                id="location"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+                value={form.location}
+                onChange={(e) => setForm({ ...form, location: e.target.value })}
+              />
+            </div>
+
+            {/* Mission */}
+            <div>
+              <label
+                htmlFor="mission"
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                Mission
+              </label>
+              <input
+                id="mission"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+                value={form.mission}
+                onChange={(e) => setForm({ ...form, mission: e.target.value })}
+              />
+            </div>
+
+            {/* Role */}
+            <div>
+              <label
+                htmlFor="role"
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                Role
+              </label>
+              <input
+                id="role"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+                value={form.role}
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
+              />
+            </div>
+          </div>
+
+          {/* Short Description */}
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-muted-foreground"
+            >
+              Short Description
+            </label>
+            <textarea
+              id="description"
+              className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+              value={form.description}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
+            />
+          </div>
+
+          {/* Full Description */}
+          <div>
+            <label
+              htmlFor="fullDescription"
+              className="block text-sm font-medium text-muted-foreground"
+            >
+              Full Description
+            </label>
+            <textarea
+              id="fullDescription"
+              rows={5}
+              className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+              value={form.fullDescription}
+              onChange={(e) =>
+                setForm({ ...form, fullDescription: e.target.value })
+              }
+            />
+          </div>
+
+          {/* Arrays */}
+          <ArrayInput
+            label="Capabilities"
+            value={form.capabilities}
+            onChange={(val: any) => setForm({ ...form, capabilities: val })}
           />
-        </div>
 
-        {/* BUTTONS */}
-        <div className="flex gap-3 pt-4">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
-            Update Unit
-          </button>
+          <ArrayInput
+            label="Systems / Equipment"
+            value={form.systems}
+            onChange={(val: any) => setForm({ ...form, systems: val })}
+          />
 
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="bg-gray-300 px-4 py-2 rounded-lg"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+          <ArrayInput
+            label="Responsibilities"
+            value={form.responsibilities}
+            onChange={(val: any) => setForm({ ...form, responsibilities: val })}
+          />
+
+          <HistoryEditor
+            value={form.history || []}
+            onChange={(val: any) => setForm({ ...form, history: val })}
+          />
+
+          <CommandersEditor
+            value={form.commanders || []}
+            onChange={(val: any) => setForm({ ...form, commanders: val })}
+          />
+
+          <CustomSectionsEditor
+            value={form.customSections || []}
+            onChange={(val: any) => setForm({ ...form, customSections: val })}
+          />
+
+          {/* LOGO */}
+          <div className="space-y-3">
+            <label
+              htmlFor="logo"
+              className="block text-sm font-medium text-muted-foreground"
+            >
+              Unit Logo
+            </label>
+
+            {form.logo ? (
+              <div className="flex items-center gap-4">
+                <Image
+                  src={form.logo}
+                  alt="Unit Logo"
+                  width={100}
+                  height={100}
+                  className="object-contain border border-border rounded bg-background p-2"
+                />
+                <span className="text-sm text-accent font-medium">
+                  Logo already uploaded
+                </span>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">No logo uploaded</p>
+            )}
+
+            <input
+              id="logo"
+              type="file"
+              className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-secondary file:text-secondary-foreground hover:file:bg-secondary/80"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+            />
+          </div>
+
+          {/* BUTTONS */}
+          <div className="flex gap-3 pt-4">
+            <button className="flex-1 bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:opacity-90 transition">
+              Update Unit
+            </button>
+
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="flex-1 bg-muted text-foreground py-3 rounded-lg font-medium hover:bg-muted/80 transition"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

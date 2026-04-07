@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+// src/app/admin/gallery/upload/page.tsx
+
 import { useEffect, useState } from "react";
 
 type Unit = {

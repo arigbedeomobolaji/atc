@@ -3,15 +3,16 @@ import { ObjectId } from "mongodb";
 export type Gallery = {
   _id?: ObjectId;
 
-  imageUrl: string; // Cloudinary
+  images: {
+    url: string;
+    publicId: string;
+  }[];
 
   caption: string;
   description?: string;
 
-  // 🔥 VERY IMPORTANT
   scope: "COMMAND" | "UNIT";
-
-  unitId?: ObjectId; // only if scope === "UNIT"
+  unitId?: ObjectId;
 
   category:
     | "LEADERSHIP"
@@ -23,8 +24,7 @@ export type Gallery = {
     | "EVENT"
     | "ARCHIVE";
 
-  tags?: string[]; // e.g ["AOC", "handover", "2025"]
-
+  tags?: string[];
   eventId?: ObjectId;
 
   uploadedBy: ObjectId;

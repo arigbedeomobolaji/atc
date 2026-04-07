@@ -29,6 +29,7 @@ export type Unit = {
   // 🔥 NEW: Establishment & Evolution
   history?: {
     date?: string;
+    title?: string;
     event: string;
   }[];
 
@@ -72,4 +73,6 @@ export type Unit = {
 
   createdAt?: Date;
   updatedAt?: Date;
+
+  mission: string;
 };

@@ -51,6 +51,7 @@ export async function PUT(
     unit: body.unit,
     slug: body.slug,
     abbreviation: body.abbreviation,
+    mission: body.mission,
 
     // Structure
     location: body.location,

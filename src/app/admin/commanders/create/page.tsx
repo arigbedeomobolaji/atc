@@ -6,12 +6,17 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import imageCompression from "browser-image-compression";
 
 export default function CreateCommander() {
+  const params = useSearchParams();
   const [units, setUnits] = useState<any[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const type = params.get("type");
+  const isPast = type === "past";
 
   const [form, setForm] = useState({
     name: "",
@@ -21,7 +26,16 @@ export default function CreateCommander() {
     startDate: "",
     endDate: "",
     bio: "",
+    awards: "",
   });
+
+  useEffect(() => {
+    const unitId = params.get("unitId");
+
+    if (unitId) {
+      setForm((prev) => ({ ...prev, unitId }));
+    }
+  }, [params]);
 
   useEffect(() => {
     fetch("/api/units")
@@ -43,15 +57,23 @@ export default function CreateCommander() {
     setLoading(true);
 
     let imageUrl = "";
+    let publicId = "";
 
     try {
       // Upload image
       if (file) {
         const fd = new FormData();
-        fd.append("file", file);
+        const compressed = await imageCompression(file, {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1000,
+          useWebWorker: true,
+        });
+
+        fd.append("file", compressed);
         fd.append("category", "LEADERSHIP");
         fd.append("scope", "UNIT");
         fd.append("unitId", form.unitId);
+        fd.append("type", "PORTRAIT");
 
         const upload = await fetch("/api/gallery/upload", {
           method: "POST",
@@ -60,6 +82,7 @@ export default function CreateCommander() {
 
         const upJson = await upload.json();
         imageUrl = upJson.data.imageUrl;
+        publicId = upJson.data.publicId;
       }
 
       // Create commander
@@ -68,6 +91,8 @@ export default function CreateCommander() {
         body: JSON.stringify({
           ...form,
           portrait: imageUrl,
+          portraitPublicId: publicId,
+          endDate: isPast ? form.endDate : null,
         }),
       });
 
@@ -83,6 +108,7 @@ export default function CreateCommander() {
           startDate: "",
           endDate: "",
           bio: "",
+          awards: "",
         });
         setFile(null);
         setPreview(null);
@@ -99,39 +125,42 @@ export default function CreateCommander() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="bg-card text-card-foreground rounded-2xl shadow-lg p-8 border border-border">
         <h1 className="text-2xl font-bold mb-6">Add Commander</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Name */}
             <div>
-              <label className="text-sm text-gray-600">Full Name</label>
+              <label htmlFor="name" className="text-sm text-muted-foreground">
+                Full Name
+              </label>
               <input
-                className="w-full mt-1 p-3 border rounded-lg"
-                placeholder="Enter full name"
+                id="name"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
             </div>
 
-            {/* Rank */}
             <div>
-              <label className="text-sm text-gray-600">Rank</label>
+              <label htmlFor="rank" className="text-sm text-muted-foreground">
+                Rank
+              </label>
               <input
-                className="w-full mt-1 p-3 border rounded-lg"
-                placeholder="e.g Air Vice Marshal"
+                id="rank"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.rank}
                 onChange={(e) => setForm({ ...form, rank: e.target.value })}
               />
             </div>
 
-            {/* Unit */}
             <div>
-              <label className="text-sm text-gray-600">Unit</label>
+              <label htmlFor="unit" className="text-sm text-muted-foreground">
+                Unit
+              </label>
               <select
-                className="w-full mt-1 p-3 border rounded-lg"
+                id="unit"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.unitId}
                 onChange={(e) => setForm({ ...form, unitId: e.target.value })}
               >
@@ -144,12 +173,16 @@ export default function CreateCommander() {
               </select>
             </div>
 
-            {/* Appointment */}
             <div>
-              <label className="text-sm text-gray-600">Appointment</label>
+              <label
+                htmlFor="appointment"
+                className="text-sm text-muted-foreground"
+              >
+                Appointment
+              </label>
               <input
-                className="w-full mt-1 p-3 border rounded-lg"
-                placeholder="Commander / Commandant"
+                id="appointment"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.appointment}
                 onChange={(e) =>
                   setForm({ ...form, appointment: e.target.value })
@@ -157,12 +190,29 @@ export default function CreateCommander() {
               />
             </div>
 
-            {/* Start Date */}
             <div>
-              <label className="text-sm text-gray-600">Start Date</label>
+              <label htmlFor="awards" className="text-sm text-muted-foreground">
+                Awards
+              </label>
               <input
+                id="awards"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
+                value={form.awards || ""}
+                onChange={(e) => setForm({ ...form, awards: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="startDate"
+                className="text-sm text-muted-foreground"
+              >
+                Start Date
+              </label>
+              <input
+                id="startDate"
                 type="date"
-                className="w-full mt-1 p-3 border rounded-lg"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.startDate}
                 onChange={(e) =>
                   setForm({ ...form, startDate: e.target.value })
@@ -170,44 +220,48 @@ export default function CreateCommander() {
               />
             </div>
 
-            {/* End Date */}
             <div>
-              <label className="text-sm text-gray-600">
-                End Date (optional)
+              <label
+                htmlFor="endDate"
+                className="text-sm text-muted-foreground"
+              >
+                End Date
               </label>
               <input
+                id="endDate"
                 type="date"
-                className="w-full mt-1 p-3 border rounded-lg"
+                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.endDate}
                 onChange={(e) => setForm({ ...form, endDate: e.target.value })}
               />
             </div>
           </div>
 
-          {/* BIO */}
           <div>
-            <label className="text-sm text-gray-600">Biography</label>
+            <label htmlFor="bio" className="text-sm text-muted-foreground">
+              Biography
+            </label>
             <textarea
-              className="w-full mt-1 p-3 border rounded-lg h-28"
-              placeholder="Brief bio..."
+              id="bio"
+              className="w-full mt-1 p-3 rounded-lg border border-input bg-background h-28 focus:ring-2 focus:ring-primary outline-none"
               value={form.bio}
               onChange={(e) => setForm({ ...form, bio: e.target.value })}
             />
           </div>
 
-          {/* IMAGE UPLOAD */}
           <div>
-            <label className="text-sm text-gray-600">Commander Portrait</label>
+            <label className="text-sm text-muted-foreground">
+              Commander Portrait
+            </label>
 
             <div className="mt-2 flex items-center gap-4">
               <input
                 type="file"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="block"
               />
 
               {preview && (
-                <div className="relative w-20 h-20 rounded-lg overflow-hidden border">
+                <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-border">
                   <Image
                     src={preview}
                     alt="preview"
@@ -219,10 +273,9 @@ export default function CreateCommander() {
             </div>
           </div>
 
-          {/* BUTTON */}
           <button
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 transition text-white p-3 rounded-lg font-semibold"
+            className="w-full bg-primary text-primary-foreground p-3 rounded-lg font-semibold hover:opacity-90 transition"
           >
             {loading ? "Creating..." : "Create Commander"}
           </button>

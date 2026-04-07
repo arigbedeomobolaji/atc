@@ -17,32 +17,48 @@ export default function ArrayInput({ label, value, onChange }: any) {
   }
 
   return (
-    <div className="space-y-2">
-      <label className="block font-medium">{label}</label>
+    <div className="space-y-3">
+      {/* Label */}
+      <label className="block text-sm font-medium text-muted-foreground">
+        {label}
+      </label>
 
+      {/* Input + Add */}
       <div className="flex gap-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 p-2 border rounded"
+          aria-label={label}
+          className="flex-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+          placeholder={`Add ${label}`}
         />
+
         <button
           type="button"
           onClick={addItem}
-          className="px-3 bg-blue-600 text-white rounded"
+          className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
         >
           Add
         </button>
       </div>
 
+      {/* Items */}
       <div className="flex flex-wrap gap-2">
         {(value || []).map((item: string, i: number) => (
           <span
             key={i}
-            className="px-3 py-1 bg-gray-200 rounded flex items-center gap-2"
+            className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-sm"
           >
             {item}
-            <button onClick={() => removeItem(i)}>✕</button>
+
+            <button
+              type="button"
+              aria-label={`Remove ${item}`}
+              onClick={() => removeItem(i)}
+              className="text-destructive font-bold hover:opacity-70"
+            >
+              ✕
+            </button>
           </span>
         ))}
       </div>

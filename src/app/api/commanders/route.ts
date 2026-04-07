@@ -30,36 +30,28 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+    if (!body.endDate) {
+      const overlapping = await db.collection("commanders").findOne({
+        unitId,
+        endDate: null,
+      });
 
-    // 🔥 Check overlapping commanders for same unit
-    const overlapping = await db.collection("commanders").findOne({
-      unitId,
-      $or: [
-        { endDate: null }, // active commander exists
-        {
-          startDate: { $lte: new Date(body.startDate || Date.now()) },
-          endDate: { $gte: new Date(body.startDate || Date.now()) },
-        },
-      ],
-    });
-
-    if (overlapping) {
-      return NextResponse.json(
-        { error: "A commander already exists for this period" },
-        { status: 400 }
-      );
+      if (overlapping) {
+        return NextResponse.json(
+          { error: "A current commander already exists" },
+          { status: 400 }
+        );
+      }
     }
 
-    // commander can only be created for units under ATC
-    const unit = await db.collection("units").findOne({
-      _id: unitId,
-    });
+    // 🔍 Validate unit
+    const unit = await db.collection("units").findOne({ _id: unitId });
 
     if (!unit) {
       return NextResponse.json({ error: "Unit not found" }, { status: 404 });
     }
 
-    // 🔥 enforce ATC
+    // 🔥 Enforce ATC only
     if (unit.parentCommand !== "Air Training Command") {
       return NextResponse.json(
         { error: "Only ATC units can have commanders here" },
@@ -77,23 +69,52 @@ export async function POST(req: Request) {
     }
 
     // 🔥 Close previous active commander
-    await db
-      .collection("commanders")
-      .updateMany({ unitId, endDate: null }, { $set: { endDate: new Date() } });
 
+    const isPast = !!body.endDate;
+
+    if (!isPast) {
+      // ONLY for current commander
+      await db
+        .collection("commanders")
+        .updateMany(
+          { unitId, endDate: null },
+          { $set: { endDate: new Date() } }
+        );
+    }
+    // ✅ NEW COMMANDER OBJECT
     const newCommander = {
       name: body.name,
       rank: body.rank,
-      appointment: body.appointment || "Commander",
+      appointment: body.appointment || "COMMANDER",
+
       unitId,
+
       portrait: body.portrait || "",
+      portraitPublicId: body.portraitPublicId || "",
       bio: body.bio || "",
+
+      // 🔥 NEW FIELD
+      awards: body.awards || "",
+
       startDate: new Date(body.startDate || Date.now()),
-      endDate: null,
+      endDate: body.endDate ? new Date(body.endDate) : null,
+
       createdAt: new Date(),
     };
 
     const result = await db.collection("commanders").insertOne(newCommander);
+
+    // 🔥 Update unit pointer
+    if (!body.endDate) {
+      await db.collection("units").updateOne(
+        { _id: unitId },
+        {
+          $set: {
+            currentCommanderId: result.insertedId,
+          },
+        }
+      );
+    }
 
     return NextResponse.json({
       message: "Commander created",
@@ -127,7 +148,7 @@ export async function GET() {
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch commanders" },
+      { error: `Failed to fetch commanders ${error}` },
       { status: 500 }
     );
   }

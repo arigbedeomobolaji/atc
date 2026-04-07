@@ -10,18 +10,21 @@ export async function GET(
     const { db } = await connectToDatabase();
     const { eventId } = await context.params;
 
-    const images = await db
-      .collection("galleries")
-      .find({ eventId: new ObjectId(eventId) })
-      .sort({ createdAt: -1 })
-      .toArray();
+    const gallery = await db.collection("galleries").findOne({
+      eventId: new ObjectId(eventId),
+    });
 
-    return NextResponse.json(
-      images.map((img) => ({
-        ...img,
-        _id: img._id.toString(),
-      }))
-    );
+    if (!gallery) {
+      return NextResponse.json({
+        _id: null,
+        images: [],
+      });
+    }
+
+    return NextResponse.json({
+      _id: gallery._id.toString(),
+      images: gallery.images || [],
+    });
   } catch (err) {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
   }
