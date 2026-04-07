@@ -16,6 +16,8 @@ import {
   Medal,
   History,
   Image as ImageIcon,
+  Star,
+  CheckCircle2,
 } from "lucide-react";
 import {
   Dialog,
@@ -31,6 +33,209 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+
+// ============ CUSTOM SECTIONS COMPONENT (INLINE) ============
+// You can also import this from a separate file:
+// import CustomSections from "@/components/CustomSections";
+
+const customSectionFadeInUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const customSectionStagger: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+
+// Icon mapping for different section types
+const getSectionIcon = (title: string) => {
+  const lowerTitle = title.toLowerCase();
+  if (lowerTitle.includes("achievement")) return Award;
+  if (lowerTitle.includes("award")) return Star;
+  if (lowerTitle.includes("milestone")) return CheckCircle2;
+  return CheckCircle2;
+};
+
+// Custom Sections Component
+// function CustomSections({
+//   sections,
+// }: {
+//   sections: { title: string; items: string[] }[];
+// }) {
+//   if (!sections || sections.length === 0) return null;
+
+//   const headerRef = useRef(null);
+//   const isHeaderInView = useInView(headerRef, {
+//     once: true,
+//     margin: "-100px",
+//   });
+
+//   return (
+//     <section className="py-16 px-6 bg-slate-100">
+//       <div className="max-w-6xl mx-auto">
+//         {/* Section Header */}
+//         <motion.div
+//           ref={headerRef}
+//           initial="hidden"
+//           animate={isHeaderInView ? "visible" : "hidden"}
+//           variants={customSectionFadeInUp}
+//           className="mb-10"
+//         >
+//           <div className="relative mb-10 flex items-center gap-4">
+//             <motion.div className="p-3 rounded-lg bg-gradient-to-br from-[#1a365d] to-[#2d5a9d] shadow-lg">
+//               <Star className="w-6 h-6 text-white" />
+//             </motion.div>
+//             <div className="flex-1">
+//               <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-[#1a365d]">
+//                 Highlights & Achievements
+//               </h2>
+//               <div className="mt-2 flex items-center gap-2">
+//                 <div className="w-16 h-1 bg-[#c9a227] rounded-full" />
+//                 <div className="w-8 h-0.5 bg-[#1a365d]/30 rounded-full" />
+//                 <div className="w-4 h-0.5 bg-[#1a365d]/20 rounded-full" />
+//               </div>
+//             </div>
+//           </div>
+//           <p className="text-slate-600 max-w-2xl">
+//             Key accomplishments and notable developments that define our
+//             commitment to excellence.
+//           </p>
+//         </motion.div>
+
+//         {/* Custom Sections Grid */}
+//         <motion.div
+//           initial="hidden"
+//           animate={isHeaderInView ? "visible" : "hidden"}
+//           variants={customSectionStagger}
+//           className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+//         >
+//           {sections.map((section, index) => {
+//             const Icon = getSectionIcon(section.title);
+//             const bgColors = [
+//               "from-[#1a365d] to-[#2d5a9d]",
+//               "from-[#c9a227] to-[#d4af37]",
+//               "from-[#16a34a] to-[#22c55e]",
+//               "from-[#dc2626] to-[#ef4444]",
+//             ];
+//             const iconBg = bgColors[index % bgColors.length];
+
+//             return (
+//               <motion.div
+//                 key={index}
+//                 variants={customSectionFadeInUp}
+//                 className="bg-white rounded-xl shadow-lg border border-slate-200/60 overflow-hidden"
+//               >
+//                 {/* Card Header */}
+//                 <div className="bg-gradient-to-r from-slate-50 to-slate-100 px-6 py-4 border-b border-slate-200">
+//                   <div className="flex items-center gap-3">
+//                     <div
+//                       className={`p-2 rounded-lg bg-gradient-to-br ${iconBg} shadow-md`}
+//                     >
+//                       <Icon className="w-5 h-5 text-white" />
+//                     </div>
+//                     <h3 className="text-xl font-bold text-[#1a365d]">
+//                       {section.title}
+//                     </h3>
+//                   </div>
+//                 </div>
+
+//                 {/* Card Content */}
+//                 <div className="p-6">
+//                   <ul className="space-y-3">
+//                     {section.items.map((item, itemIndex) => (
+//                       <li
+//                         key={itemIndex}
+//                         className="flex items-start gap-3 group"
+//                       >
+//                         <div className="flex-shrink-0 mt-1">
+//                           <div className="w-6 h-6 rounded-full bg-[#c9a227]/10 flex items-center justify-center group-hover:bg-[#c9a227]/20 transition-colors">
+//                             <CheckCircle2 className="w-4 h-4 text-[#c9a227]" />
+//                           </div>
+//                         </div>
+//                         <span className="text-slate-700 leading-relaxed group-hover:text-[#1a365d] transition-colors">
+//                           {item}
+//                         </span>
+//                       </li>
+//                     ))}
+//                   </ul>
+//                 </div>
+
+//                 {/* Decorative Bottom Border */}
+//                 <div className="h-1 bg-gradient-to-r from-[#1a365d] via-[#c9a227] to-[#1a365d]" />
+//               </motion.div>
+//             );
+//           })}
+//         </motion.div>
+//       </div>
+//     </section>
+//   );
+// }
+
+function CustomSections({
+  sections,
+}: {
+  sections: { title: string; items: string[] }[];
+}) {
+  if (!sections || sections.length === 0) return null;
+
+  return (
+    <>
+      {sections.map((section, index) => (
+        <section
+          key={index}
+          className={`py-16 px-6 ${
+            index % 2 === 0 ? "bg-slate-100" : "bg-white"
+          }`}
+        >
+          <div className="max-w-6xl mx-auto">
+            {/* ✅ Section Header (same style as others) */}
+            <SectionHeader title={section.title} icon={CheckCircle2} />
+
+            {/* ✅ Items Grid (same style as responsibilities) */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={staggerContainer}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
+              {section.items.map((item, itemIndex) => (
+                <motion.div
+                  key={itemIndex}
+                  variants={fadeInUp}
+                  whileHover={{ y: -5 }}
+                  className="naf-card p-6 group"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-lg bg-gradient-to-br from-[#1a365d] to-[#2d5a9d] shadow-md">
+                      <CheckCircle2 className="w-5 h-5 text-white" />
+                    </div>
+
+                    <div className="flex-1">
+                      <p className="text-slate-800 font-medium leading-relaxed">
+                        {item}
+                      </p>
+
+                      <span className="text-xs text-slate-400 uppercase tracking-wider mt-2 block">
+                        {section.title} {String(itemIndex + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      ))}
+    </>
+  );
+}
+
+// ============ MAIN UNIT PAGE COMPONENT ============
 
 // Animation variants
 const fadeInUp: Variants = {
@@ -178,10 +383,9 @@ function Gallery({ galleries }: { galleries: any[] }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  if (!galleries) return;
+  if (!galleries) return null;
   return (
     <>
-      {/* GRID */}
       {/* GRID (first 3 rows only) */}
       <motion.div
         ref={ref}
@@ -300,7 +504,8 @@ function Gallery({ galleries }: { galleries: any[] }) {
   );
 }
 
-export default function UnitPageClient({ unit, gallery }: any) {
+// ============ MAIN EXPORT ============
+export default function UnitPageClientWithSection({ unit, gallery }: any) {
   const [selectedCommander, setSelectedCommander] = useState<any>(null);
   const [scrollY, setScrollY] = useState(0);
 
@@ -323,21 +528,17 @@ export default function UnitPageClient({ unit, gallery }: any) {
         const historyData = await historyRes.json();
         const galleryData = await galleryRes.json();
 
-        console.log({ galleryData });
-
-        // ✅ FIXED
         setCurrentCommander(currentData || null);
 
         const filteredHistory = historyData.filter(
           (c: any) => c.endDate !== null
         );
-
         setPastCommanders(filteredHistory);
 
         const formattedGallery = galleryData.map((g: any) => ({
           caption: g.caption,
-          cover: g.images[0]?.url, // 🔥 first image as cover
-          images: g.images, // 🔥 keep full array
+          cover: g.images[0]?.url,
+          images: g.images,
         }));
 
         setGalleryImages(formattedGallery);
@@ -354,25 +555,6 @@ export default function UnitPageClient({ unit, gallery }: any) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // useEffect(() => {
-  //   async function loadGallery() {
-  //     const res = await fetch(`/api/gallery/unit/${unitId}`);
-  //     const data = await res.json();
-
-  //     // 🔥 flatten all gallery images into one array
-  //     const allImages = data.flatMap((g: any) =>
-  //       g.images.map((img: any) => ({
-  //         url: img.url,
-  //         caption: g.caption, // 👈 gallery-level caption
-  //       }))
-  //     );
-
-  //     setGalleryImages(allImages);
-  //   }
-
-  //   if (unitId) loadGallery();
-  // }, [unitId]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -486,7 +668,7 @@ export default function UnitPageClient({ unit, gallery }: any) {
               </div>
 
               <p className="text-slate-700 leading-loose text-justify">
-                {unit.fullDescription}
+                {unit.description}
               </p>
             </div>
           </motion.div>
@@ -494,7 +676,7 @@ export default function UnitPageClient({ unit, gallery }: any) {
       </section>
 
       {/* Responsibilities Section */}
-      {unit.responsibilities && (
+      {unit.responsibilities && !!unit.responsibilities.length && (
         <section id="responsibilities" className="py-16 px-6 bg-slate-100">
           <div className="max-w-6xl mx-auto">
             <SectionHeader title="Core Responsibilities" icon={ShieldCheck} />
@@ -536,7 +718,7 @@ export default function UnitPageClient({ unit, gallery }: any) {
       )}
 
       {/* Capabilities Section */}
-      {unit.capabilities && (
+      {unit.capabilities && !!unit.capabilities.length && (
         <section id="capabilities" className="py-16 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
             <SectionHeader title="Unit Capabilities" icon={Cpu} />
@@ -590,7 +772,7 @@ export default function UnitPageClient({ unit, gallery }: any) {
       )}
 
       {/* Systems Section */}
-      {unit.systems && (
+      {unit.systems && !!unit.systems.length && (
         <section id="systems" className="py-16 px-6 bg-slate-100">
           <div className="max-w-6xl mx-auto">
             <SectionHeader title="Unit Systems / Equipment" icon={Wrench} />
@@ -630,7 +812,7 @@ export default function UnitPageClient({ unit, gallery }: any) {
       )}
 
       {/* History Timeline Section */}
-      {unit.history && (
+      {unit.history && !!unit.history.length && (
         <section className="py-16 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
             <SectionHeader title="Unit History Timeline" icon={History} />
@@ -642,8 +824,14 @@ export default function UnitPageClient({ unit, gallery }: any) {
         </section>
       )}
 
+      {/* ============ CUSTOM SECTIONS ============ */}
+      {/* This is where the custom sections are rendered */}
+      {unit.customSections && unit.customSections.length > 0 && (
+        <CustomSections sections={unit.customSections} />
+      )}
+
       {/* Current Commander Section */}
-      {currentCommander && (
+      {currentCommander?.commander && (
         <section
           id="leadership"
           className="py-16 px-6 bg-gradient-to-br from-[#1a365d] to-[#0f2744] relative overflow-hidden"
@@ -765,7 +953,7 @@ export default function UnitPageClient({ unit, gallery }: any) {
       )}
 
       {/* Past Commanders Section */}
-      {pastCommanders.length > 0 && (
+      {pastCommanders && pastCommanders.length > 0 && (
         <section id="leadership" className="py-16 px-6 bg-slate-100">
           <div className="max-w-6xl mx-auto">
             <SectionHeader title="Unit Past Commanders" icon={History} />
@@ -880,12 +1068,14 @@ export default function UnitPageClient({ unit, gallery }: any) {
       </Dialog>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-16 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <SectionHeader title="Unit Gallery" icon={ImageIcon} />
-          <Gallery galleries={galleryImages} />
-        </div>
-      </section>
+      {galleryImages && !!galleryImages.length && (
+        <section id="gallery" className="py-16 px-6 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeader title="Unit Gallery" icon={ImageIcon} />
+            <Gallery galleries={galleryImages} />
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="bg-[#1a365d] text-white py-12 px-6">

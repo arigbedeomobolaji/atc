@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import UnitPageClient from "./UnitPageClient";
-import { Shield, Radio, Cpu, History, Users, Wrench } from "lucide-react";
 
 import { UnitNavbar } from "@/components/units/UnitNavbar";
-import { UnitGalleryCarousel } from "@/components/units/UnitGalleryCarousel";
 
 async function getUnit(slug: string) {
   const res = await fetch(

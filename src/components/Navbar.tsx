@@ -194,7 +194,7 @@ export function Navbar() {
             {/* LOGIN / LOGOUT */}
             {!isLoggedIn ? (
               <Link
-                href="/login"
+                href="/admin/login"
                 className="flex items-center gap-2 hover:text-blue-300"
               >
                 <LogIn size={18} />
@@ -281,7 +281,7 @@ export function Navbar() {
               {/* MOBILE LOGIN / LOGOUT */}
               {!isLoggedIn ? (
                 <Link
-                  href="/login"
+                  href="/admin/login"
                   className="flex items-center gap-2 text-white"
                   onClick={() => setShowNavbar(false)}
                 >

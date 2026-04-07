@@ -16,7 +16,6 @@ export async function POST(req: Request) {
       !body.location ||
       !body.role ||
       !body.description ||
-      !body.fullDescription ||
       !body.mission
     ) {
       return NextResponse.json(
@@ -52,7 +51,6 @@ export async function POST(req: Request) {
       // Description
       role: body.role,
       description: body.description,
-      fullDescription: body.fullDescription,
 
       // 🔥 NEW FIELDS
       capabilities: body.capabilities || [],

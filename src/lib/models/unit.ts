@@ -44,6 +44,7 @@ export type Unit = {
 
   // 🔹 Media
   logo?: string;
+  logoPublicId?: string;
 
   // 🔹 Command (current)
   currentCommanderId?: ObjectId;

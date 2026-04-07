@@ -23,11 +23,11 @@ export default function EditUnitPage() {
   const [form, setForm] = useState<any>({
     unit: "",
     slug: "",
+    establishedDate: "",
     abbreviation: "",
     location: "",
     role: "",
     description: "",
-    fullDescription: "",
     mission: "",
 
     capabilities: [],
@@ -45,9 +45,17 @@ export default function EditUnitPage() {
     async function loadUnit() {
       const res = await fetch(`/api/units/${unitId}`);
       const data = await res.json();
+      const date = new Date(data.establishedDate);
+
+      const formattedEstablishedDate = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }).format(date);
 
       setForm({
         ...data,
+        establishedDate: formattedEstablishedDate,
         responsibilities: data.responsibilities || [],
         capabilities: data.capabilities || [],
         systems: data.systems || [],
@@ -91,9 +99,8 @@ export default function EditUnitPage() {
       });
 
       fd.append("file", compressed);
-      fd.append("unitId", unitId as string);
 
-      await fetch("/api/units/upload-logo", {
+      await fetch(`/api/units/${unitId}/upload-logo`, {
         method: "POST",
         body: fd,
       });
@@ -142,6 +149,21 @@ export default function EditUnitPage() {
                 className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
                 value={form.slug}
                 onChange={(e) => setForm({ ...form, slug: e.target.value })}
+              />
+            </div>
+
+            {/* established Date */}
+            <div>
+              <label htmlFor="slug" className="text-sm text-muted-foreground">
+                established Date
+              </label>
+              <input
+                id="establishedDate"
+                value={form.establishedDate}
+                className="w-full mt-1 p-3 border border-border rounded-lg"
+                onChange={(e) =>
+                  setForm({ ...form, establishedDate: e.target.value })
+                }
               />
             </div>
 
@@ -212,39 +234,21 @@ export default function EditUnitPage() {
             </div>
           </div>
 
-          {/* Short Description */}
+          {/*  Description */}
           <div>
             <label
-              htmlFor="description"
+              htmlFor="Description"
               className="block text-sm font-medium text-muted-foreground"
             >
-              Short Description
+              Description
             </label>
             <textarea
-              id="description"
+              id="Description"
+              rows={5}
               className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
               value={form.description}
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
-              }
-            />
-          </div>
-
-          {/* Full Description */}
-          <div>
-            <label
-              htmlFor="fullDescription"
-              className="block text-sm font-medium text-muted-foreground"
-            >
-              Full Description
-            </label>
-            <textarea
-              id="fullDescription"
-              rows={5}
-              className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
-              value={form.fullDescription}
-              onChange={(e) =>
-                setForm({ ...form, fullDescription: e.target.value })
               }
             />
           </div>

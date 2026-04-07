@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export default function HistoryEditor({ value = [], onChange }: any) {
+export default function HistoryEditor({
+  value = [],
+  onChange = () => {},
+}: any) {
   const safeValue = Array.isArray(value) ? value : [];
 
   function updateItem(index: number, key: string, val: string) {
@@ -8,7 +11,7 @@ export default function HistoryEditor({ value = [], onChange }: any) {
     onChange(updated);
   }
 
-  function addItem() {
+  function addItem(e: any) {
     onChange([...safeValue, { date: "", event: "" }]);
   }
 
@@ -44,6 +47,7 @@ export default function HistoryEditor({ value = [], onChange }: any) {
         <div key={i} className="flex gap-2 mt-2">
           <input
             placeholder="Date"
+            type="date"
             value={h.date || ""}
             onChange={(e) => updateItem(i, "date", e.target.value)}
             className="border p-2 rounded w-1/3"
@@ -52,7 +56,7 @@ export default function HistoryEditor({ value = [], onChange }: any) {
           <input
             placeholder="Title"
             value={h.title || ""}
-            onChange={(e) => updateItem(i, "date", e.target.value)}
+            onChange={(e) => updateItem(i, "title", e.target.value)}
             className="border p-2 rounded w-1/3"
           />
 

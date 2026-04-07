@@ -14,6 +14,9 @@ export default function CreateUnit() {
   const [form, setForm] = useState<any>({
     unit: "",
     slug: "",
+    establishedDate: "",
+    abbreviation: "",
+    role: "",
     location: "",
     mission: "",
     description: "",
@@ -43,9 +46,8 @@ export default function CreateUnit() {
       const compressed = await imageCompression(file, { maxSizeMB: 0.5 });
 
       fd.append("file", compressed);
-      fd.append("unitId", unitId);
 
-      await fetch("/api/units/upload-logo", {
+      await fetch(`/api/units/${unitId}/upload-logo`, {
         method: "POST",
         body: fd,
       });
@@ -83,6 +85,53 @@ export default function CreateUnit() {
             id="slug"
             className="w-full mt-1 p-3 border border-border rounded-lg"
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
+          />
+        </div>
+
+        {/* established Date */}
+        <div>
+          <label htmlFor="slug" className="text-sm text-muted-foreground">
+            Established Date
+          </label>
+          <input
+            id="establishedDate"
+            type="date"
+            className="w-full mt-1 p-3 border border-border rounded-lg"
+            onChange={(e) =>
+              setForm({ ...form, establishedDate: e.target.value })
+            }
+          />
+        </div>
+
+        {/* Abbreviation */}
+        <div>
+          <label
+            htmlFor="abbreviation"
+            className="block text-sm font-medium text-muted-foreground"
+          >
+            Abbreviation
+          </label>
+          <input
+            id="abbreviation"
+            className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+            value={form.abbreviation}
+            onChange={(e) => setForm({ ...form, abbreviation: e.target.value })}
+          />
+        </div>
+
+        {/* Role */}
+        <div>
+          <label
+            htmlFor="role"
+            className="block text-sm font-medium text-muted-foreground"
+          >
+            Role
+          </label>
+          <input
+            id="role"
+            className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+            value={form.role}
+            onChange={(e) => setForm({ ...form, role: e.target.value })}
           />
         </div>
 
@@ -142,9 +191,18 @@ export default function CreateUnit() {
           onChange={(v: any) => setForm({ ...form, responsibilities: v })}
         />
 
-        <HistoryEditor />
-        <CommandersEditor />
-        <CustomSectionsEditor />
+        <HistoryEditor
+          value={form.history}
+          onChange={(val: any) => setForm({ ...form, history: val })}
+        />
+        <CommandersEditor
+          value={form.commanders || []}
+          onChange={(val: any) => setForm({ ...form, commanders: val })}
+        />
+        <CustomSectionsEditor
+          value={form.customSections || []}
+          onChange={(val: any) => setForm({ ...form, customSections: val })}
+        />
 
         {/* Logo */}
         <div>
