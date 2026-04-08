@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import * as React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 function TooltipProvider({
   delayDuration = 0,
@@ -15,7 +15,7 @@ function TooltipProvider({
       delayDuration={delayDuration}
       {...props}
     />
-  )
+  );
 }
 
 function Tooltip({
@@ -25,13 +25,13 @@ function Tooltip({
     <TooltipProvider>
       <TooltipPrimitive.Root data-slot="tooltip" {...props} />
     </TooltipProvider>
-  )
+  );
 }
 
 function TooltipTrigger({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
 function TooltipContent({
@@ -55,7 +55,11 @@ function TooltipContent({
         <TooltipPrimitive.Arrow className="bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
-  )
+  );
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+
+// pnpm add @radix-ui/react-aspect-ratio react-day-picker @radix-ui/react-avatar @radix-ui/react-checkbox @radix-ui/react-collapsible @radix-ui/react-context-menu @radix-ui/react-label @radix-ui/react-hover-card input-otp @radix-ui/react-label @radix-ui/react-menubar @radix-ui/react-navigation-menu @radix-ui/react-popover @radix-ui/react-progress @radix-ui/react-radio-group react-resizable-panels @radix-ui/react-scroll-area @radix-ui/react-select @radix-ui/react-separator @radix-ui/react-slider next-themes @radix-ui/react-switch @radix-ui/react-toggle-group @radix-ui/react-toggle
+
+// pnpm add @radix-ui/react-aspect-ratio react-day-picker @radix-ui/react-avatar @radix-ui/react-checkbox @radix-ui/react-collapsible cmdk @radix-ui/react-context-menu vaul @radix-ui/react-label @radix-ui/react-hover-card input-otp @radix-ui/react-label @radix-ui/react-menubar @radix-ui/react-navigation-menu @radix-ui/react-popover @radix-ui/react-progress @radix-ui/react-radio-group react-resizable-panels @radix-ui/react-scroll-area @radix-ui/react-select @radix-ui/react-separator @radix-ui/react-slider next-themes @radix-ui/react-switch @radix-ui/react-toggle-group @radix-ui/react-toggle
