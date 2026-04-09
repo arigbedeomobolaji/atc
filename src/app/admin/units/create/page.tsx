@@ -7,6 +7,7 @@ import ArrayInput from "@/components/ArrayInput";
 import CommandersEditor from "@/components/CommandsEditor";
 import CustomSectionsEditor from "@/components/CustomSectionsEditor";
 import HistoryEditor from "@/components/HistoryEditor";
+import InputFile from "@/components/widget/InputFile";
 
 export default function CreateUnit() {
   const [file, setFile] = useState<File | null>(null);
@@ -41,7 +42,7 @@ export default function CreateUnit() {
 
     const unitId = json.id;
 
-    if (file) {
+    if (file instanceof File && file.type.startsWith("image/")) {
       const fd = new FormData();
       const compressed = await imageCompression(file, { maxSizeMB: 0.5 });
 
@@ -55,6 +56,26 @@ export default function CreateUnit() {
 
     alert("Unit created ✅");
   }
+  // function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const selected = e.target.files?.[0];
+
+  //   if (!selected) return;
+
+  //   // ✅ 1. Check file type
+  //   if (!selected.type.startsWith("image/")) {
+  //     alert("Only image files are allowed ❌");
+  //     return;
+  //   }
+
+  //   // ✅ 2. Check file size (before compression)
+  //   const maxSizeMB = 5;
+  //   if (selected.size > maxSizeMB * 1024 * 1024) {
+  //     alert(`Image must be less than ${maxSizeMB}MB ❌`);
+  //     return;
+  //   }
+
+  //   setFile(selected);
+  // }
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -207,10 +228,7 @@ export default function CreateUnit() {
         {/* Logo */}
         <div>
           <label className="text-sm text-muted-foreground">Unit Logo</label>
-          <input
-            type="file"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-          />
+          <InputFile file={file} setFile={setFile} />
         </div>
 
         <button className="w-full bg-primary text-primary-foreground p-3 rounded-lg font-semibold hover:opacity-90">

@@ -12,6 +12,32 @@ import ArrayInput from "@/components/ArrayInput";
 import HistoryEditor from "@/components/HistoryEditor";
 import CommandersEditor from "@/components/CommandsEditor";
 import CustomSectionsEditor from "@/components/CustomSectionsEditor";
+import { formatDateSafe } from "@/lib/utils";
+import InputFile from "@/components/widget/InputFile";
+
+type UnitForm = {
+  unit: string;
+  slug: string;
+  establishedDate: string;
+  abbreviation: string;
+  location: string;
+  role: string;
+  description: string;
+  mission: string;
+  capabilities: string[];
+  systems: string[];
+  responsibilities: string[];
+  history: any[];
+  commanders: any[];
+  customSections: any[];
+  logo?: string;
+  links?: string[];
+  contact?: {
+    address: string;
+    phone: string;
+    email: string;
+  };
+};
 
 export default function EditUnitPage() {
   const { unitId } = useParams();
@@ -20,7 +46,7 @@ export default function EditUnitPage() {
   const [loading, setLoading] = useState(true);
   const [file, setFile] = useState<File | null>(null);
 
-  const [form, setForm] = useState<any>({
+  const [form, setForm] = useState<UnitForm>({
     unit: "",
     slug: "",
     establishedDate: "",
@@ -29,47 +55,59 @@ export default function EditUnitPage() {
     role: "",
     description: "",
     mission: "",
-
     capabilities: [],
     systems: [],
     responsibilities: [],
-
     history: [],
     commanders: [],
-
     customSections: [],
   });
 
   // 🔥 Load unit data
   useEffect(() => {
     async function loadUnit() {
-      const res = await fetch(`/api/units/${unitId}`);
-      const data = await res.json();
-      const date = new Date(data.establishedDate);
+      try {
+        const res = await fetch(`/api/units/${unitId}`);
 
-      const formattedEstablishedDate = new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }).format(date);
+        if (!res.ok) throw new Error("Failed to fetch unit");
 
-      setForm({
-        ...data,
-        establishedDate: formattedEstablishedDate,
-        responsibilities: data.responsibilities || [],
-        capabilities: data.capabilities || [],
-        systems: data.systems || [],
-        history: data.history || [],
-        commanders: data.commanders || [],
-        customSections: data.customSections || [],
-        links: data.links || [],
-        contact: data.contact || {
-          address: "",
-          phone: "",
-          email: "",
-        },
-      });
-      setLoading(false);
+        const data = await res.json();
+
+        const formattedEstablishedDate = formatDateSafe(data.establishedDate);
+
+        setForm({
+          unit: data.unit || "",
+          slug: data.slug || "",
+          establishedDate: formattedEstablishedDate,
+          abbreviation: data.abbreviation || "",
+          location: data.location || "",
+          role: data.role || "",
+          description: data.description || "",
+          mission: data.mission || "",
+
+          capabilities: data.capabilities || [],
+          systems: data.systems || [],
+          responsibilities: data.responsibilities || [],
+
+          history: data.history || [],
+          commanders: data.commanders || [],
+          customSections: data.customSections || [],
+
+          links: data.links || [],
+          contact: data.contact || {
+            address: "",
+            phone: "",
+            email: "",
+          },
+
+          logo: data.logo || "",
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Failed to load unit data");
+      } finally {
+        setLoading(false);
+      }
     }
 
     if (unitId) loadUnit();
@@ -81,6 +119,9 @@ export default function EditUnitPage() {
     // 🔥 1. Update Unit Data
     const res = await fetch(`/api/units/${unitId}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(form),
     });
 
@@ -90,7 +131,7 @@ export default function EditUnitPage() {
     }
 
     // 🔥 2. Upload new logo if selected
-    if (file) {
+    if (file instanceof File && file.type.startsWith("image/")) {
       const fd = new FormData();
       const compressed = await imageCompression(file, {
         maxSizeMB: 0.5,
@@ -109,6 +150,27 @@ export default function EditUnitPage() {
     alert("Unit updated ✅");
     router.push("/admin/units");
   }
+
+  // function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const selected = e.target.files?.[0];
+
+  //   if (!selected) return;
+
+  //   // ✅ 1. Check file type
+  //   if (!selected.type.startsWith("image/")) {
+  //     alert("Only image files are allowed ❌");
+  //     return;
+  //   }
+
+  //   // ✅ 2. Check file size (before compression)
+  //   const maxSizeMB = 5;
+  //   if (selected.size > maxSizeMB * 1024 * 1024) {
+  //     alert(`Image must be less than ${maxSizeMB}MB ❌`);
+  //     return;
+  //   }
+
+  //   setFile(selected);
+  // }
 
   if (loading) return <div className="p-6">Loading...</div>;
 
@@ -158,9 +220,8 @@ export default function EditUnitPage() {
                 established Date
               </label>
               <input
-                id="establishedDate"
-                value={form.establishedDate}
-                className="w-full mt-1 p-3 border border-border rounded-lg"
+                type="date"
+                value={form.establishedDate?.split("T")[0] || ""}
                 onChange={(e) =>
                   setForm({ ...form, establishedDate: e.target.value })
                 }
@@ -313,12 +374,7 @@ export default function EditUnitPage() {
               <p className="text-sm text-muted-foreground">No logo uploaded</p>
             )}
 
-            <input
-              id="logo"
-              type="file"
-              className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-secondary file:text-secondary-foreground hover:file:bg-secondary/80"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-            />
+            <InputFile file={file} setFile={setFile} />
           </div>
 
           {/* BUTTONS */}
