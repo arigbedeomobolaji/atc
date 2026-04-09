@@ -37,9 +37,9 @@ export default function AdminLoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white p-8 rounded-xl shadow-xl"
       >
-        <h1 className="text-2xl font-bold text-[#1a365d] mb-2">
+        <h4 className="text-2xl font-bold text-[#1a365d] mb-2">
           NAF Admin Login
-        </h1>
+        </h4>
 
         <p className="text-sm text-slate-500 mb-6">
           Secure access to admin panel

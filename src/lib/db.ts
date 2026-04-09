@@ -21,8 +21,11 @@ export async function connectToDatabase() {
     return { client: cachedClient, db: cachedDb };
   }
 
-  const client = new MongoClient(uri);
+  const client = new MongoClient(uri, {
+    serverSelectionTimeoutMS: 5000, // 5 seconds timeout
+  });
   await client.connect();
+  console.log(client);
 
   const db = client.db(dbName);
 

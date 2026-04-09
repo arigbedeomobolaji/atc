@@ -22,9 +22,9 @@ export default function CommandersPage() {
     <div className="space-y-6">
       {/* HEADER */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-[#1a365d]">
+        <h4 className="text-2xl font-bold text-[#1a365d]">
           Commanders Management
-        </h1>
+        </h4>
       </div>
 
       {/* SEARCH */}

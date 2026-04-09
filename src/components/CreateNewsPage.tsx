@@ -30,7 +30,7 @@ export default function CreateNewsPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-xl font-semibold mb-4">Create News</h2>
+      <h4 className="text-xl font-semibold mb-4">Create News</h4>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           className="w-full p-3 border rounded"

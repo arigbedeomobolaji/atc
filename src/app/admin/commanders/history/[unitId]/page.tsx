@@ -16,7 +16,7 @@ export default function CommanderHistoryPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Commander History</h1>
+      <h4 className="text-2xl font-bold mb-6">Commander History</h4>
 
       <div className="space-y-4">
         {data.map((c) => (

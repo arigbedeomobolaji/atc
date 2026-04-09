@@ -25,7 +25,7 @@ export default function UnitGalleryPage() {
   return (
     <div className="p-6">
       <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">Unit Gallery</h1>
+        <h4 className="text-2xl font-bold">Unit Gallery</h4>
 
         <Link
           href={`/admin/gallery/${unitId}/create-event`}
@@ -42,7 +42,7 @@ export default function UnitGalleryPage() {
             className="p-4 bg-white rounded-xl shadow flex justify-between items-center"
           >
             <div>
-              <h2 className="font-semibold">{event.title}</h2>
+              <h4 className="font-semibold">{event.title}</h4>
               <p className="text-sm text-gray-500">{event.category}</p>
             </div>
 

@@ -44,7 +44,7 @@ export function AppCarousel() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[2000px] mx-auto h-[500px] xl:h-[750px] rounded-lg overflow-hidden shadow-lg">
+    <div className="relative w-full max-w-[2000px] mx-auto h-[75vh] overflow-hidden">
       <Swiper
         modules={[Autoplay, Navigation, Pagination, EffectFade]}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
@@ -79,7 +79,7 @@ export function AppCarousel() {
                       src={item.coverImage || FALLBACK_IMAGE}
                       alt={item.title}
                       fill
-                      className="rounded-lg object-contain "
+                      className="rounded-lg object-contain"
                     />
                   </div>
                 </motion.div>

@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       to: process.env.MAIL_TO, // Where you receive the message
       subject: `New Contact Message from ${name}`,
       html: `
-        <h2>New Contact Form Message</h2>
+        </h4>>New Contact Form Message</h4>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Subject:</strong> ${subject}</p>

@@ -84,7 +84,7 @@ export default function AdminNewsList() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Manage News</h2>
+      <h4 className="text-xl font-semibold mb-4">Manage News</h4>
       <div className="flex flex-col lg:flex-row gap-3 mb-6">
         {/* Search */}
         <input

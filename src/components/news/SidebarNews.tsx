@@ -72,9 +72,9 @@ export function SidebarNews({
                 </div>
 
                 {/* Title */}
-                <h1 className="text-sm lg:text-lg font-extrabold px-2 line-clamp-2 min-h-[3rem]">
+                <h4 className="text-sm lg:text-lg font-extrabold px-2 line-clamp-2 min-h-[3rem]">
                   {newsItem.title}
-                </h1>
+                </h4>
 
                 {/* Excerpt */}
                 <p className="font-light font-sans text-justify text-gray-400 px-2 line-clamp-3 min-h-[4.5rem]">

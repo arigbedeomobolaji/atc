@@ -24,7 +24,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen flex bg-slate-100">
       {/* SIDEBAR */}
-      <aside className="w-64 bg-[#1a365d] text-white flex flex-col shadow-xl">
+      <aside className="w-64 bg-primary text-white flex flex-col shadow-xl">
         <div className="px-6 py-5 text-lg font-bold border-b border-white/10">
           ✈️ ATC Admin
         </div>
@@ -39,7 +39,7 @@ export default function AdminLayout({
                 href={item.href}
                 className={`block px-4 py-2 rounded-lg transition ${
                   active
-                    ? "bg-[#c9a227] text-[#1a365d] font-semibold"
+                    ? "bg-secondary text-primary font-semibold"
                     : "hover:bg-white/10"
                 }`}
               >

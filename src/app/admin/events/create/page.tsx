@@ -47,7 +47,7 @@ export default function CreateEventPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-xl font-semibold mb-6">Create Event</h2>
+      <h4 className="text-xl font-semibold mb-6">Create Event</h4>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input

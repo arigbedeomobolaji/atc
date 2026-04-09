@@ -22,7 +22,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Admin</h1>
+      <h4 className="text-2xl font-bold mb-6">Admin</h4>
 
       <div className="h-[80vh] flex justify-center items-center font-bold">
         Welcome to the Admin Panel where you can create, manage, edit, delete

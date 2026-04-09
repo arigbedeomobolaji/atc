@@ -102,11 +102,11 @@ export default function EventGalleryPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-6">Event Gallery</h1>
+      <h4 className="text-xl font-bold mb-6">Event Gallery</h4>
       <div className="mb-6">
         {!editing ? (
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">{caption || "No caption"}</h2>
+            <h4 className="text-lg font-semibold">{caption || "No caption"}</h4>
             <button
               onClick={() => setEditing(true)}
               className="text-sm bg-gray-200 px-3 py-1 rounded"

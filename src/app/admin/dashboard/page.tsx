@@ -29,7 +29,7 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       {/* HEADER */}
       <div>
-        <h1 className="text-3xl font-bold text-[#1a365d]">Admin Dashboard</h1>
+        <h4 className="text-3xl font-bold text-[#1a365d]">Admin Dashboard</h4>
         <p className="text-slate-500 text-sm">Manage NAF system content</p>
       </div>
 

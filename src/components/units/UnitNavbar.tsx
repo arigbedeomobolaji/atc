@@ -9,7 +9,7 @@ export function UnitNavbar({ unit }: { unit: ATCUnit }) {
   const [open, setOpen] = useState(false);
 
   const navItems = [
-    { label: "Home", id: "home" },
+    { label: "Home", id: "home", href: "/" },
     { label: "About", id: "about" },
     { label: "Responsibilities", id: "responsibilities" },
     { label: "Leadership", id: "leadership" },
@@ -21,15 +21,15 @@ export function UnitNavbar({ unit }: { unit: ATCUnit }) {
   return (
     <nav className="fixed w-full bg-[#0B1C2D] text-white z-50 shadow-lg">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-        <div className="flex gap-1 font-semibold text-lg">
+        <div className="flex gap-1font-body text-sm lg:text-md items-center font-bold">
           <Image
             src={unit.logo || "/placeholder.png"}
-            alt={unit.abbreviation}
+            alt={unit.abbreviation.toLocaleUpperCase()}
             width={35}
             height={35}
             className="object-contain rounded-full"
           />
-          {unit ? unit.abbreviation : "Hello"}
+          {unit ? unit.abbreviation.toLocaleUpperCase() : "ATC"}
         </div>
 
         {/* Desktop */}
@@ -37,7 +37,7 @@ export function UnitNavbar({ unit }: { unit: ATCUnit }) {
           {navItems.map((item) => (
             <a
               key={item.id}
-              href={`#${item.id}`}
+              href={`${item.href ? item.href : "#" + item.id}`}
               className="hover:text-yellow-400 transition"
             >
               {item.label}

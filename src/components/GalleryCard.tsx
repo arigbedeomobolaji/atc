@@ -48,7 +48,7 @@ export function GalleryCard({
       {/* MODAL */}
       <CustomModal isOpen={open} onClose={() => setOpen(false)}>
         <div></div>
-        <h2 className="text-lg font-bold mb-2">{caption}</h2>
+        <h4 className="text-lg font-bold mb-2">{caption}</h4>
 
         <div className="flex justify-center mb-3">
           <Image

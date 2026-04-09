@@ -39,7 +39,7 @@ export default function EditEventPage() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Edit Event</h2>
+      <h4 className="text-xl font-bold mb-4">Edit Event</h4>
 
       <form onSubmit={handleSave} className="space-y-4">
         <input

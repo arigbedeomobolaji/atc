@@ -40,7 +40,7 @@ export default function UploadImages() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Upload Images</h2>
+      <h4 className="text-xl font-bold mb-4">Upload Images</h4>
 
       <form onSubmit={handleUpload} className="space-y-4">
         <div>

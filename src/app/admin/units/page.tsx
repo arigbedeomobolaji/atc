@@ -31,7 +31,7 @@ export default function UnitsAdminPage() {
   return (
     <div className="p-6 bg-background min-h-screen">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Units</h1>
+        <h4 className="text-2xl font-bold text-foreground">Units</h4>
 
         <Link
           href="/admin/units/create"
@@ -45,10 +45,10 @@ export default function UnitsAdminPage() {
         {units.map((u) => (
           <div
             key={u._id}
-            className="p-5 bg-card border border-border rounded-xl shadow-sm flex justify-between items-center"
+            className="p-5 border border-border rounded-xl shadow-sm flex justify-between items-center"
           >
             <div>
-              <h2 className="font-semibold text-foreground">{u.unit}</h2>
+              <h4 className="font-semibold text-foreground">{u.unit}</h4>
               <p className="text-sm text-muted-foreground">{u.location}</p>
             </div>
 
@@ -62,7 +62,7 @@ export default function UnitsAdminPage() {
 
               <Link
                 href={`/admin/units/${u._id}/edit`}
-                className="px-3 py-1 rounded-md bg-accent text-accent-foreground"
+                className="px-3 py-1 rounded-md bg-secondary text-primary font-semibold"
               >
                 Edit
               </Link>

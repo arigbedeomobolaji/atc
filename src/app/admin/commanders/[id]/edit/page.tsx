@@ -142,7 +142,7 @@ export default function EditCommander() {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <div className="bg-card text-card-foreground rounded-2xl shadow-lg p-8 border border-border">
-        <h1 className="text-2xl font-bold mb-6">Edit Commander</h1>
+        <h4 className="text-2xl font-bold mb-6">Edit Commander</h4>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

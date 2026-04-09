@@ -1,0 +1,1889 @@
+1. import type { Metadata } from "next";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  Poppins,
+  Manrope,
+  Oswald,
+  Roboto,
+  Open_Sans,
+} from "next/font/google";
+import "./globals.css";
+
+const oswald = Oswald({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-oswald",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  display: "swap",
+});
+
+const openSans = Open_Sans({
+  weight: ["300", "400", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-opensans",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Air Training Command Kaduna | Nigerian Air Force",
+  description:
+    "Official website of the Nigerian Air Force Air Training Command (ATC), Kaduna. Explore flying schools, training groups, engineering units, support services, and operational capabilities across ATC formations.",
+  keywords: [
+    "Air Training Command",
+    "ATC Kaduna",
+    "Nigerian Air Force",
+    "NAF Training",
+    "Flying Training School",
+    "NAF Kaduna",
+    "Nigerian Air Force Schools",
+    "NAF Units",
+    "Aviation Training Nigeria",
+    "Military Aviation Nigeria",
+  ],
+  openGraph: {
+    title: "Air Training Command Kaduna | Nigerian Air Force",
+    description:
+      "Learn about Air Training Command Kaduna, its flying schools, specialized training groups, engineering units, and operational support within the Nigerian Air Force.",
+    url: "https://atc.mil.ng  ", // <-- I'll Update with my real domain later
+    siteName: "Nigerian Air Force – Air Training Command",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Air Training Command Kaduna | Nigerian Air Force",
+    description:
+      "Discover the structure, roles, and units of Air Training Command (ATC) Kaduna, a key component of the Nigerian Air Force training framework.",
+  },
+  alternates: {
+    canonical: "https://atc.mil.ng  ", // <-- I'll Update with my real domain later
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} 
+      ${poppins.variable} ${manrope.variable} ${oswald.variable} 
+      ${roboto.variable} ${openSans.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+} 2.  import { WelcomeBanner } from "@/components/WelcomeBanner";
+import { Navbar } from "@/components/Navbar";
+import { HeroSection } from "@/components/HeroSection";
+import { AppCarousel } from "@/components/AppCarousel";
+import { VisionStatement } from "@/components/VisionStatement";
+import { FadeInSection } from "@/components/FadeInSection";
+import { Footer } from "@/components/Footer";
+import UnitsGrid from "@/components/UnitsGrid";
+import { SidebarNews } from "@/components/news/SidebarNews";
+import { getPaginatedNews } from "@/lib/services/news.services";
+
+export default async function Home() {
+  const { news } = await getPaginatedNews({ page: 1, limit: 15 });
+  return (
+    <div className="relative">
+      <WelcomeBanner />
+
+      {/* Fixed Header (Banner + Navbar) */}
+      <div className="sticky top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+        <Navbar />
+      </div>
+
+      {/* Push content down to avoid overlap */}
+      <div className="">
+        <FadeInSection delay={0.2}>
+          <HeroSection />
+        </FadeInSection>
+
+        <div className="mb-5" />
+
+        <FadeInSection delay={0.3}>
+          <AppCarousel />
+        </FadeInSection>
+
+        <FadeInSection delay={0.4}>
+          <VisionStatement />
+        </FadeInSection>
+        <br />
+        <FadeInSection delay={0.5}>
+          <SidebarNews news={news} layout="horizontal" slug="" />
+        </FadeInSection>
+        <br />
+
+        <FadeInSection delay={0.6}>
+          <UnitsGrid />
+        </FadeInSection>
+        <Footer />
+      </div>
+    </div>
+  );
+}
+ 3. import { Facebook, Instagram, Youtube } from "lucide-react";
+
+export function WelcomeBanner() {
+  return (
+    <div className="bg-blue-950/95 text-white p-3 lg:px-9   border-b-8 border-b-yellow-300 shadow-md hover:shadow-lg">
+      <div className="flex items-center justify-between  max-w-7xl mx-auto">
+        {/* Welcome Text */}
+        <h4 className="text-xs sm:text-sm lg:text-xl font-mono shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 break-words max-w-[200px] sm:max-w-none text-center">
+          WELCOME TO AIR TRAINING COMMAND
+        </h4>
+        {/* Social Media Icons */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 items-center">
+          <Facebook className="shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" />
+          <Instagram className="shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" />
+          <Youtube className="shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" />
+        </div>
+      </div>
+    </div>
+  );
+} 4. /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import ATCLogo from "../assets/ATC_logo_big_trans.png";
+import Link from "next/link";
+import {
+  Facebook,
+  Instagram,
+  Mail,
+  TextAlignEnd,
+  X,
+  Youtube,
+  ChevronDown,
+  LogIn,
+  LogOut,
+  Newspaper,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+// ----------------------
+// NAV ITEMS (updated)
+// ----------------------
+const navItems = [
+  {
+    label: "About",
+    href: "/about",
+    children: [
+      { label: "History", href: "/about#history" },
+      { label: "Achievements", href: "/about#achievements" },
+      { label: "Organization", href: "/about/organization" },
+    ],
+  },
+  {
+    label: "Our Gallery",
+    href: "/gallery",
+    children: [{ label: "Our Platforms", href: "/gallery/platforms" }],
+  },
+  { label: "News", href: "/news" },
+  { label: "Contact Us", href: "/contact" },
+];
+
+const adminNavItems = [
+  {
+    label: "Admin",
+    href: "#",
+    children: [
+      { label: "Dashboard", href: "/admin/dashboard" },
+      { label: "Create News", href: "/admin/news/create" },
+      { label: "Manage News", href: "/admin/news" },
+    ],
+  },
+];
+
+export function Navbar() {
+  const [showNavbar, setShowNavbar] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
+  const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
+
+  const pathname = usePathname();
+  const router = useRouter();
+  // Check if Admin is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isAdmin = isLoggedIn;
+  const mobileNav = [...navItems, ...(isLoggedIn ? adminNavItems : [])];
+
+  useEffect(() => {
+    async function check() {
+      const res = await fetch("/api/auth/me");
+      const json = await res.json();
+      if (json.authenticated) setIsLoggedIn(true);
+    }
+    check();
+  }, []);
+
+  async function logout() {
+    const res = await fetch("/api/auth/logout", { method: "POST" });
+    const json = await res.json();
+
+    if (json.success) {
+      setIsLoggedIn(false);
+      router.replace("/");
+    }
+  }
+
+  function isParentActive(parentHref: string, children?: any[]) {
+    if (pathname === parentHref) return true;
+    if (!children) return false;
+    return children.some((c) => pathname.startsWith(c.href));
+  }
+
+  function isActive(href: string) {
+    return pathname === href;
+  }
+
+  // Detect scroll to hide desktop links when fixed
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsFixed(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div
+      className={`px-5 py-1 transition-all duration-500 ${
+        isFixed
+          ? " bg-blue-950/95 text-white backdrop-blur-md shadow-md"
+          : "bg-transparent"
+      }  relative z-50 `}
+    >
+      <div
+        className={`w-full h-full max-w-7xl mx-auto flex justify-between items-center `}
+      >
+        {/* Logo */}
+        <div className="relative w-24 h-20">
+          <Link href="/">
+            <Image
+              src={ATCLogo}
+              alt="ATC Logo"
+              priority
+              className="w-full h-full object-contain hover:-translate-y-1 transition-all duration-300"
+            />
+          </Link>
+        </div>
+
+        {/* Moving text */}
+        <div
+          className={`overflow-hidden w-56 lg:w-72 xl:w-80 2xl:w-80 font-mono ${
+            isFixed ? "text-white" : "text-dark"
+          }`}
+        >
+          <motion.p
+            className="capitalize font-extrabold text-sm lg:text-md xl:text-xl 2xl:text-2xl whitespace-nowrap"
+            initial={{ x: "-100%" }}
+            animate={{ x: ["-100%", "0%", "100%"] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            WE TRAIN TO DEFEND
+          </motion.p>
+        </div>
+
+        {/* Desktop Links */}
+        <div className="flex gap-5 items-center">
+          <motion.div className="font-link text-[16px] font-medium hidden lg:flex gap-5 lg:gap-14">
+            {[...navItems, ...(isLoggedIn ? adminNavItems : [])].map(
+              (item, index) => {
+                const parentActive = isParentActive(item.href, item.children);
+
+                const desktopChildren = item.children || [];
+
+                return (
+                  <div key={index} className="relative group">
+                    <Link
+                      href={item.href}
+                      className={`flex items-center gap-1 hover:-translate-y-1 transition-all duration-300 ${
+                        parentActive
+                          ? "font-semibold underline underline-offset-20"
+                          : "hover:text-blue-300"
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                      {desktopChildren.length > 0 && <ChevronDown size={16} />}
+                    </Link>
+
+                    {desktopChildren.length > 0 && (
+                      <div className="absolute -left-10 top-3 p-3 hidden group-hover:block">
+                        <div className="bg-white text-black rounded-lg shadow-lg py-2 min-w-[200px]">
+                          {desktopChildren.map((child, cIndex) => (
+                            <Link
+                              key={cIndex}
+                              href={child.href}
+                              className={`block px-4 py-2 text-sm hover:-translate-y-0.5 transition-all duration-300 ${
+                                isActive(child.href)
+                                  ? "bg-blue-100 text-blue-700 font-medium"
+                                  : "hover:bg-gray-100"
+                              }`}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+            )}
+
+            {/* LOGIN / LOGOUT */}
+            {!isLoggedIn ? (
+              <Link
+                href="/admin/login"
+                className="flex items-center gap-2 hover:text-blue-300"
+              >
+                <LogIn size={18} />
+                Login
+              </Link>
+            ) : (
+              <button
+                onClick={logout}
+                className="flex items-center gap-2 hover:text-red-300"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            )}
+          </motion.div>
+
+          {/* Hamburger */}
+          <div
+            className="hover:-translate-y-1 transition-all duration-300 cursor-pointer lg:hidden"
+            onClick={() => setShowNavbar((prev) => !prev)}
+          >
+            {showNavbar ? <X size={40} /> : <TextAlignEnd size={40} />}
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {showNavbar && (
+            <motion.div
+              key="mobile-menu"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="fixed inset-0 min-h-screen bg-blue-950/95 flex flex-col items-center justify-center gap-6 text-white z-50"
+            >
+              {/* MOBILE NAV ITEMS */}
+              {mobileNav.map((item, index) => {
+                const mobileChildren = item.children || [];
+                const isOpen = mobileDropdown === item.label;
+                return (
+                  <div key={index} className="flex flex-col text-center">
+                    <button
+                      className="text-xl font-semibold flex items-center justify-center gap-2"
+                      onClick={() =>
+                        setMobileDropdown(isOpen ? null : item.label)
+                      }
+                    >
+                      {item.label}
+                      {mobileChildren.length > 0 && (
+                        <ChevronDown
+                          size={20}
+                          className={`transition-transform ${
+                            isOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      )}
+                    </button>
+
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="flex flex-col gap-3 mt-3"
+                        >
+                          {mobileChildren.map((child, cIndex) => (
+                            <Link
+                              key={cIndex}
+                              href={child.href}
+                              onClick={() => setShowNavbar(false)}
+                              className="text-gray-300 hover:text-white"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+              {/* MOBILE LOGIN / LOGOUT */}
+              {!isLoggedIn ? (
+                <Link
+                  href="/admin/login"
+                  className="flex items-center gap-2 text-white"
+                  onClick={() => setShowNavbar(false)}
+                >
+                  <LogIn size={22} /> Login
+                </Link>
+              ) : (
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-2 text-red-300"
+                >
+                  <LogOut size={22} /> Logout
+                </button>
+              )}
+
+              {/* Close Button */}
+              <X
+                size={50}
+                className="absolute top-5 right-5 cursor-pointer"
+                onClick={() => setShowNavbar(false)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+ 5. "use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+// import HeroVideo from "../assets/videos/hero_small.mp4";
+
+export function HeroSection() {
+  const ref = useRef(null);
+
+  const { scrollYProgress } = useScroll();
+
+  // Parallax transform (moves text slower than scroll)
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+
+  return (
+    <section ref={ref} className="relative h-screen w-full overflow-hidden">
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/videos/hero_small.mp4" type="video/mp4" />
+      </video>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/40 to-black/80"></div>
+
+      {/* Text Layer */}
+      <motion.div
+        style={{ y, opacity }}
+        initial={{ opacity: 0.9, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-5"
+      >
+        <div className="bg-white/5 rounded-lg p-8">
+          <h4 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-wide mb-4 drop-shadow-lg">
+            AIR TRAINING COMMAND, KADUNA
+          </h4>
+        </div>
+
+        <p className="text-sm sm:text-lg lg:text-xl max-w-2xl text-gray-200 mb-6">
+          Where precision meets excellence. Training tomorrow’s air warriors
+          today.
+        </p>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="px-6 py-3 bg-blue-950/95 hover:bg-blue-700 transition-all duration-300 rounded-lg shadow-md font-semibold"
+        >
+          Learn More
+        </motion.button>
+      </motion.div>
+
+      {/* Subtle parallax fade gradient at bottom */}
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-black/70 to-transparent"></div>
+    </section>
+  );
+} 6. "use client";
+
+import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination, EffectFade } from "swiper/modules";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+import { HeadquartersAndLeaderships } from "./GalleryTabs";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+import "./AppCarousel.css";
+import { useRouter } from "next/navigation";
+
+type CarouselNews = {
+  _id: string;
+  title: string;
+  slug: string;
+  coverImage?: string;
+};
+
+const FALLBACK_IMAGE = "/images/placeholder-rect.jpeg";
+
+export function AppCarousel() {
+  const [newsSlides, setNewsSlides] = useState<CarouselNews[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function loadCarouselNews() {
+      try {
+        const res = await fetch("/api/news/carousel");
+        const json = await res.json();
+        setNewsSlides(json.news || []);
+      } catch (err) {
+        console.error("Carousel fetch failed", err);
+      }
+    }
+
+    loadCarouselNews();
+  }, []);
+
+  return (
+    <div className="relative w-full max-w-[2000px] mx-auto h-[500px] xl:h-[750px] rounded-lg overflow-hidden shadow-lg">
+      <Swiper
+        modules={[Autoplay, Navigation, Pagination, EffectFade]}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        loop
+        navigation
+        pagination={{ clickable: true }}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
+        className="w-full h-full"
+      >
+        {/* 🔥 DB NEWS SLIDES */}
+        {newsSlides.map((item) => (
+          <SwiperSlide key={item._id}>
+            <Link href={`/news/${item.slug}`}>
+              <div className="relative w-full h-full overflow-hidden group cursor-pointer">
+                <motion.div
+                  // className="absolute inset-0"
+                  initial={{ scale: 1.05, y: 40 }}
+                  animate={{ scale: 1, y: 0 }}
+                  transition={{ duration: 1.8, ease: "easeOut" }}
+                >
+                  {/* Background Blur */}
+                  <Image
+                    src={item.coverImage || FALLBACK_IMAGE}
+                    alt={item.title}
+                    fill
+                    className="object-cover blur-md"
+                  />
+                  {/* Foreground Image */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Image
+                      src={item.coverImage || FALLBACK_IMAGE}
+                      alt={item.title}
+                      fill
+                      className="rounded-lg object-contain "
+                    />
+                  </div>
+                </motion.div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center max-w-3xl bg-white/20 backdrop-blur-md rounded-xl px-6 py-4 shadow-lg"
+                >
+                  <p className="font-heading font-semibold text-gray-100 text-md lg:text-xl">
+                    {item.title}
+                  </p>
+                  <button
+                    onClick={() => router.push(`/news/${item.slug}`)}
+                    className="font-link text-sm px-5 py-1 bg-dark text-white rounded-md"
+                  >
+                    Read More
+                  </button>
+                </motion.div>
+              </div>
+            </Link>
+          </SwiperSlide>
+        ))}
+
+        {/* 🧪 STATIC SLIDES (temporary) */}
+        {HeadquartersAndLeaderships.map(
+          ({ imageSrc, caption }, index) =>
+            index > 0 && (
+              <SwiperSlide key={`static-${index}`}>
+                <div className="relative w-full h-full overflow-hidden">
+                  <motion.div
+                    className="absolute inset-0"
+                    initial={{ scale: 1.05, y: 40 }}
+                    animate={{ scale: 1, y: 0 }}
+                    transition={{ duration: 1.8 }}
+                  >
+                    <Image
+                      src={imageSrc}
+                      alt={caption}
+                      fill
+                      className="object-cover"
+                    />
+                  </motion.div>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center max-w-3xl bg-white/20 backdrop-blur-md rounded-xl px-6 py-4 shadow-lg"
+                  >
+                    <p className="font-heading font-semibold text-gray-100 text-sm sm:text-lg lg:text-2xl">
+                      {caption}
+                    </p>
+                  </motion.div>
+                </div>
+              </SwiperSlide>
+            )
+        )}
+      </Swiper>
+
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-black/60 to-transparent pointer-events-none" />
+    </div>
+  );
+}
+ 7. "use client";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import AOC from "../assets/leadership.jpg";
+
+export function VisionStatement() {
+  return (
+    <div className="py-10 px-5 bg-radial-[at_25%_75%] from-white to-zinc-200 to-85%">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* AOC */}
+        <div className="w-1/3">
+          <Image src={AOC} alt="AVM XC Jaraf" priority />
+        </div>
+
+        {/* Vision Statement Container */}
+        <div className="text-center w-2/3">
+          <div className="flex flex-col items-center">
+            <p className="text-4xl lg:text-5xl text-blue-950/95 font-heading font-extrabold leading-none whitespace-pre-line">
+              {`AIR\nOFFICER\nCOMMANDING'S`}
+            </p>
+
+            <p className="text-4xl lg:text-9xl text-white font-heading leading-none -mt-2 lg:-mt-5">
+              VISION
+            </p>
+          </div>
+
+          <blockquote className="mt-6 text-gray-700 text-xs sm:text-sm lg:text-base font-sans max-w-md mx-auto leading-relaxed italic border-l-4 border-blue-300 pl-4">
+            &quot;To lead in aviation training and operational excellence,
+            fostering a generation of airmen and officers equipped with advanced
+            skills, strategic thinking, and unwavering discipline, committed to
+            safeguarding the nation and advancing airpower capabilities.&quot;
+          </blockquote>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="p-3 py-1 bg-blue-950/95 hover:bg-blue-700/70 text-white text-sm mt-4 transition-all duration-300 rounded-lg shadow-mdfont-ui"
+          >
+            Read More
+          </motion.button>
+        </div>
+      </div>
+    </div>
+  );
+} 8. import { Border } from "@/app/news/page";
+import { convertDate } from "@/utils/covertDate";
+import { NewsItemType } from "@/utils/types";
+import Image from "next/image";
+import Link from "next/link";
+import { useMemo } from "react";
+
+interface SidebarNewsProps {
+  slug: string;
+  news: NewsItemType[];
+  layout?: "responsive" | "horizontal";
+}
+
+export function SidebarNews({
+  slug,
+  news,
+  layout = "responsive",
+}: SidebarNewsProps) {
+  const filteredNews = useMemo(() => {
+    return news.filter((item) => item.slug !== slug);
+  }, [news, slug]);
+  const isHorizontal = layout === "horizontal";
+
+  const containerClasses = isHorizontal
+    ? "flex gap-5 overflow-x-auto scrollbar-hideauto scrollbar-hide pb-2"
+    : "flex gap-5 overflow-x-auto scrollbar-hideauto scrollbar-hide lg:flex-col lg:overflow-x-auto scrollbar-hidevisible pb-2";
+
+  const cardClasses = isHorizontal
+    ? "flex flex-col min-w-[320px]"
+    : "flex flex-col lg:flex-row min-w-[280px] lg:min-w-0";
+
+  return (
+    <div className="col-span-1 lg:col-span-2 max-h-400 overflow-y-auto scrollbar-hideauto">
+      <div className="font-heading text-lg">
+        {/* HEADER — never scrolls */}
+        <div className="flex items-center gap-5 mb-4">
+          <Border />
+          <span className="whitespace-nowrap">Latest news</span>
+          <Border />
+        </div>
+
+        {/* SCROLL CONTAINER */}
+        <div className={`${containerClasses} mx-10`}>
+          {filteredNews.map((newsItem) => (
+            <div
+              key={newsItem._id}
+              className={`${cardClasses}
+        gap-2 rounded-lg shadow-md
+        hover:-translate-y-1 transition-all
+        py-4 px-2`}
+            >
+              {/* Image */}
+              <div
+                className={`relative w-full lg:h-40 rounded-md shrink-0 ${
+                  isHorizontal ? "w-full" : "lg:w-48"
+                }`}
+              >
+                <Image
+                  src={newsItem.coverImage || "/images/default-image.svg"}
+                  alt={newsItem.slug}
+                  fill
+                  className="object-cover rounded-md w-full h-full"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-col h-full">
+                {/* Meta */}
+                <div className="flex justify-between text-sm italic px-2 py-1 shrink-0">
+                  <p>ATC Admin</p>
+                  <p>{convertDate(newsItem.createdAt)}</p>
+                </div>
+
+                {/* Title */}
+                <h4 className="text-sm lg:text-lg font-extrabold px-2 line-clamp-2 min-h-[3rem]">
+                  {newsItem.title}
+                </h4>
+
+                {/* Excerpt */}
+                <p className="font-light font-sans text-justify text-gray-400 px-2 line-clamp-3 min-h-[4.5rem]">
+                  {newsItem.excerpt.slice(0, 80)}...
+                </p>
+
+                {/* Button pinned to bottom */}
+                <div
+                  className={`flex mt-auto px-2 pt-2 ${
+                    isHorizontal ? "justify-start" : "justify-end"
+                  }`}
+                >
+                  <Link
+                    href={`/news/${newsItem.slug}`}
+                    className={`bg-dark text-white text-sm rounded-md px-2 py-1`}
+                  >
+                    Read More
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+ 9. /* eslint-disable @typescript-eslint/no-explicit-any */
+
+"use client";
+
+import Link from "next/link";
+import UnitCard from "./UnitCard";
+import { useEffect, useState } from "react";
+
+export default function UnitsGrid() {
+  const [units, setUnits] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/units")
+      .then((res) => res.json())
+      .then(setUnits);
+  }, []);
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto">
+      {units &&
+        !!units.length &&
+        units.map((item) => (
+          <Link key={item.slug} href={`/units/${item.slug}`}>
+            <UnitCard
+              unit={item.unit}
+              description={item.description}
+              abbreviation={item.abbreviation.toUpperCase()}
+              imageSrc={item.logo}
+            />
+          </Link>
+        ))}
+    </div>
+  );
+} 10. import { WelcomeBanner } from "@/components/WelcomeBanner";
+import { Navbar } from "@/components/Navbar";
+import { HeroSection } from "@/components/HeroSection";
+import { AppCarousel } from "@/components/AppCarousel";
+import { VisionStatement } from "@/components/VisionStatement";
+import { FadeInSection } from "@/components/FadeInSection";
+import { Footer } from "@/components/Footer";
+import UnitsGrid from "@/components/UnitsGrid";
+import { SidebarNews } from "@/components/news/SidebarNews";
+import { getPaginatedNews } from "@/lib/services/news.services";
+
+export default async function Home() {
+  const { news } = await getPaginatedNews({ page: 1, limit: 15 });
+  return (
+    <div className="relative">
+      <WelcomeBanner />
+
+      {/* Fixed Header (Banner + Navbar) */}
+      <div className="sticky top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+        <Navbar />
+      </div>
+
+      {/* Push content down to avoid overlap */}
+      <div className="">
+        <FadeInSection delay={0.2}>
+          <HeroSection />
+        </FadeInSection>
+
+        <div className="mb-5" />
+
+        <FadeInSection delay={0.3}>
+          <AppCarousel />
+        </FadeInSection>
+
+        <FadeInSection delay={0.4}>
+          <VisionStatement />
+        </FadeInSection>
+        <br />
+        <FadeInSection delay={0.5}>
+          <SidebarNews news={news} layout="horizontal" slug="" />
+        </FadeInSection>
+        <br />
+
+        <FadeInSection delay={0.6}>
+          <UnitsGrid />
+        </FadeInSection>
+        <Footer />
+      </div>
+    </div>
+  );
+}
+ 11. app/contact A. layout.tsx "import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact us - Air Training Command",
+  description: "Air Training Command Kaduna (ATC)",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return <section className="min-h-screen">{children}</section>;
+}" B. page.tsx "import ContactPage from "@/components/Contact";
+
+export default function Contact() {
+  return <ContactPage />;
+}
+" and ContactPage ""use client";
+
+import { WelcomeBanner } from "@/components/WelcomeBanner";
+import { Navbar } from "@/components/Navbar";
+import { FadeInSection } from "@/components/FadeInSection";
+import { Footer } from "@/components/Footer";
+import { PageHero } from "@/components/PageHero";
+import { HeaderText } from "@/components/HeaderText";
+import { FloatingActions } from "@/components/FloatingActions";
+import { GoogleMap } from "@/components/GoogleMap";
+import { ContactForm } from "@/components/ContactForm";
+import { motion } from "framer-motion";
+
+export default function ContactPage() {
+  return (
+    <div className="relative">
+      <WelcomeBanner />
+
+      {/* Sticky Navbar */}
+      <div className="sticky top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+        <Navbar />
+      </div>
+
+      <div className="bg-dark">
+        <div className="max-w-7xl mx-auto bg-white pb-20">
+          {/* Hero Section */}
+          <FadeInSection delay={0.2}>
+            <PageHero
+              title="Contact Us @ Air Training Command"
+              description="Reach out to us through any of the official communication channels below."
+              callToAction="Get in Touch"
+            />
+          </FadeInSection>
+
+          {/* Address Section */}
+          <div className="mt-10">
+            <HeaderText title="Headquarters Address" />
+            <FadeInSection>
+              <motion.p
+                className="text-gray-800 leading-9 px-10 lg:px-20 indent-8"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                PMB 4512, Mando, Kaduna, Nigeria.
+              </motion.p>
+            </FadeInSection>
+          </div>
+
+          {/* Contact Channels */}
+          <div className="mt-16">
+            <HeaderText title="Contact Information" />
+
+            <div className="px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10">
+              {/* Phone */}
+              <FadeInSection delay={0.1}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7 }}
+                  className="p-6 shadow rounded-xl border bg-gray-50"
+                >
+                  <h3 className="font-bold text-lg text-primary">Phone</h3>
+                  <p className="mt-2 text-gray-700 leading-7">
+                    +234 (0) 000 0000 000
+                    <br />
+                    +234 (0) 111 1111 111
+                  </p>
+                </motion.div>
+              </FadeInSection>
+
+              {/* Email */}
+              <FadeInSection delay={0.2}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7 }}
+                  className="p-6 shadow rounded-xl border bg-gray-50"
+                >
+                  <h3 className="font-bold text-lg text-primary">Email</h3>
+                  <p className="mt-2 text-gray-700 leading-7">
+                    info@airtrainingcommand.mil.ng
+                    <br />
+                    support@airtrainingcommand.mil.ng
+                  </p>
+                </motion.div>
+              </FadeInSection>
+
+              {/* Office Hours */}
+              <FadeInSection delay={0.3}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7 }}
+                  className="p-6 shadow rounded-xl border bg-gray-50"
+                >
+                  <h3 className="font-bold text-lg text-primary">
+                    Office Hours
+                  </h3>
+                  <p className="mt-2 text-gray-700 leading-7">
+                    Mon – Fri: 8:00am – 4:00pm
+                    <br />
+                    Sat – Sun: Closed
+                  </p>
+                </motion.div>
+              </FadeInSection>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="mt-20">
+            <HeaderText title="Send Us a Message" />
+
+            <ContactForm />
+          </div>
+
+          {/* Google Map */}
+          <div className="mt-20 px-10 lg:px-20">
+            <HeaderText title="Location on Map" />
+            <FadeInSection>
+              <GoogleMap />
+            </FadeInSection>
+          </div>
+        </div>
+        <FloatingActions />
+
+        <Footer />
+      </div>
+    </div>
+  );
+}
+" 12. app/about => A. layout.tsx "import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "ABOUT - Air Training Command",
+  description: "Air Training Command Kaduna (ATC)",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return <section className="min-h-screen">{children}</section>;
+}" B. page.tsx "import { WelcomeBanner } from "@/components/WelcomeBanner";
+import { Navbar } from "@/components/Navbar";
+import { FadeInSection } from "@/components/FadeInSection";
+import { Footer } from "@/components/Footer";
+import { PageHero } from "@/components/PageHero";
+import ATCAchievements from "@/components/ATCAchievement";
+import ATCHistory from "@/components/ATCHistory";
+
+export default function Home() {
+  return (
+    <div className="relative">
+      <WelcomeBanner />
+
+      {/* Fixed Header (Banner + Navbar) */}
+      <div className="sticky top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+        <Navbar />
+      </div>
+
+      <div className="bg-dark">
+        <div className="max-w-6xl mx-auto bg-white">
+          <div className="">
+            <FadeInSection delay={0.2}>
+              <PageHero
+                title="All About Air Training Command"
+                description="History, Organization, achievement"
+                callToAction="Explore about us"
+              />
+            </FadeInSection>
+
+            <FadeInSection delay={0.2}>
+              <ATCHistory />
+            </FadeInSection>
+
+            <FadeInSection delay={0.2}>
+              <ATCAchievements />
+            </FadeInSection>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    </div>
+  );
+}
+" c. "use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { useRef } from "react";
+import HQ_ATC from "../assets/NAF_ASSETS/ATC_HQ.jpeg";
+// import HeroVideo from "../assets/videos/hero_small.mp4";
+
+interface PageProps {
+  title: string;
+  description: string;
+  callToAction: string;
+}
+
+export function PageHero({ title, description, callToAction }: PageProps) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  // Parallax transform (moves text slower than scroll)
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+
+  return (
+    <section ref={ref} className="relative h-[85vh] w-full overflow-hidden">
+      {/* Background Image */}
+      <Image
+        src={HQ_ATC}
+        alt="HQ ATC"
+        priority
+        className="absolute inset-0 w-full h-full object-cover object-top"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-linear-to-b from-dark/50 via-dark/80 to-dark/95"></div>
+
+      {/* Text Layer */}
+      <motion.div
+        style={{ y, opacity }}
+        initial={{ opacity: 0.9, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-5"
+      >
+        <div className="bg-white/5 backdrop-blur-xs rounded-md p-4">
+          <h4 className="text-md sm:text-xl lg:text-2xl font-bold tracking-wide mb-4 drop-shadow-lg">
+            {title}
+          </h4>
+        </div>
+
+        <p className="text-sm sm:text-lg lg:text-xl max-w-2xl text-gray-200 mb-6 font-bold">
+          {description}
+        </p>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="px-6 py-3 bg-blue-950/95 hover:bg-blue-700 transition-all duration-300 rounded-lg shadow-md font-semibold"
+        >
+          {callToAction}
+        </motion.button>
+      </motion.div>
+
+      {/* Subtle parallax fade gradient at bottom */}
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-black/70 to-transparent"></div>
+    </section>
+  );
+} d. "use client";
+
+import { motion } from "framer-motion";
+import { HeaderText } from "./HeaderText";
+
+const historyParagraphs = [
+  {
+    content:
+      "The Air Training Command (ATC) is one of the 6 field commands of the Nigerian Air Force (NAF). It is an offshoot of the erstwhile Training Command (TC), which was among the foremost commands of the NAF. The TC was responsible for both air and ground training functions in the NAF, however, it was unbundled in 2017 into the Air and Ground Training Commands; headquartered in Kaduna and Enugu, respectively. The splitting of the TC into the Air and Ground Training Commands was borne out of the need for the NAF to expand its Order of Battle, and at the same time, to streamline the span of control of the field commands.",
+  },
+  {
+    content:
+      "As a key force sustainment component of the NAF, the ATC is mandated to execute NAF’s local training policies aimed at optimizing all locally available resources for the eventual fulfilment of manpower requirements of the Service. To accomplish this mandate, the ATC is organized into several units with platforms strategically spread across the Country to carry out different assigned roles and responsibilities for the ATC.",
+  },
+];
+
+export default function ATCHistory() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -30 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: false, amount: 0.25 }}
+      className="py-10 leading-10"
+      id="history"
+    >
+      <HeaderText title="History" />
+
+      <div className="text-gray-800 leading-9 space-y-10 px-10 lg:px-20">
+        {historyParagraphs.map((item, index) => (
+          <motion.p
+            key={index}
+            className="indent-8"
+            initial={{ opacity: 0, x: -30, scale: 0.96 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 30, scale: 0.94 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.7, delay: index * 0.15 }}
+          >
+            {item.content}
+          </motion.p>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+ e. "use client";
+
+import { motion } from "framer-motion";
+import { HeaderText } from "./HeaderText";
+
+// Achievements as objects
+const achievements = [
+  {
+    title: "Attainment of 10,000 Flying Hours on the A-29 Super Tucano:",
+    content:
+      "Within a remarkably short period of 3 years, the NAF’s A-29 Super Tucano fleet under ATC control achieved a landmark 10,000 flying hours. This milestone underscores the Command’s high operational tempo, improved pilot proficiency, and efficient maintenance culture.",
+  },
+  {
+    title: "Conduct of a 4,800-Hour Periodic Depot Maintenance Inspection:",
+    content:
+      "Another significant accomplishment was the successful in-country 4,800-hour Periodic Depot Maintenance Inspection on the DO-228 aircraft (NAF 031). This complex engineering procedure was executed entirely by indigenous engineers and technicians of the 431 Engineering Group, demonstrating enhanced local technical capacity and reduced reliance on foreign maintenance facilities.",
+  },
+  {
+    title: "Expansion of Operational Capabilities:",
+    content:
+      "The Command has made progressive strides in strengthening its operational readiness. Through intensified mission planning, improved training cycles, and continuous equipment optimization, ATC has supported the NAF’s operational commitments nationwide with increased efficiency.",
+  },
+  {
+    title: "Improved Training, Research, and Development (R&D):",
+    content:
+      "In line with its mandate, ATC has achieved significant growth in advanced aircrew training, capacity building programs, and technical development. The Command’s R&D efforts have resulted in innovations that support local maintenance, simulation, and operational enhancement initiatives.",
+  },
+  {
+    title: "Strengthening of Civil–Military Cooperation (CIMIC):",
+    content:
+      "The ATC continues to foster positive relationships with host communities through targeted outreach programs, educational support, humanitarian assistance, and public engagement activities. These initiatives enhance trust, cooperation, and societal support for the NAF’s activities.",
+  },
+];
+
+export default function ATCAchievements() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true, amount: 0.2, margin: "0px 0px -80px 0px" }}
+      className="py-10 leading-10"
+      id="achievements"
+    >
+      <HeaderText title="Achievements" />
+
+      <div className="text-gray-800 leading-9 space-y-10 px-10 lg:px-20">
+        <p className="indent-10">
+          Apart from the ATC’s active participation in the Nation’s
+          counter-terrorism and counter-insurgency operations, which have
+          yielded significant and measurable results, the Command has equally
+          recorded several notable achievements. Highlighted below is the
+          summary of these key accomplishments:
+        </p>
+
+        {/* Animated Achievements */}
+        <ol className="list-[upper-alpha] space-y-6 pl-6 marker:text-primary">
+          {achievements.map((item, index) => (
+            <motion.li
+              key={index}
+              className="pl-5 lg:pl-10"
+              initial={{ opacity: 0, x: -30, scale: 0.96 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: index * 0.15 }}
+            >
+              <strong>{item.title}</strong> {item.content}
+            </motion.li>
+          ))}
+        </ol>
+      </div>
+    </motion.div>
+  );
+} f. import { Facebook, Instagram, Youtube } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import NAFLogo from "../assets/NAF_logo.png";
+
+export function Footer() {
+  return (
+    <div className="bg-blue-950/95 text-white border-b-8 border-b-yellow-300 pb-4">
+      <div className=" flex items-center justify-around p-3 lg:px-5 shadow-md hover:shadow-lg">
+        {/* Social Media Icons */}
+        <div className="flex flex-col">
+          <h4 className="font-heading font-bold leading-8">Our Social links</h4>
+          <div className="flex flex-col gap-3 items-center">
+            <div className="flex items-center gap-1 cursor-pointer hover:-translate-y-1 transition-all duration-300">
+              <Facebook className="shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" />{" "}
+              Facebook
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer hover:-translate-y-1 transition-all duration-300">
+              <Instagram className="shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" />{" "}
+              Instagram
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer hover:-translate-y-1 transition-all duration-300">
+              <Youtube className="shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" />{" "}
+              Youtube
+            </div>
+          </div>
+        </div>
+
+        {/* Our Links */}
+        <div className="flex flex-col">
+          <h4 className="font-heading font-bold leading-8">Our links</h4>
+          <div className="leading-7 flex flex-col">
+            {["About", "History", "News & Event", "Contact Us"].map(
+              (item, index) => (
+                <Link
+                  key={index}
+                  href="/"
+                  className="hover:-translate-y-1 transition-all duration-300"
+                >
+                  {item}
+                </Link>
+              )
+            )}
+          </div>
+        </div>
+
+        {/* Relevant Links */}
+        {/* Social Media Icons */}
+        <div className="flex flex-col">
+          <h4 className="font-heading font-bold leading-8">Relevant Links</h4>
+          <div className="flex flex-col gap-3 items-center">
+            <div className="flex items-center gap-1 cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:translate-y-1 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <Image
+                src={NAFLogo}
+                alt="NAF"
+                width={25}
+                height={25}
+                priority
+                style={{ width: "auto", height: "auto" }}
+              />
+              <Link href="https://www.airforce.mil.ng/  " className="font-link">
+                NAF Website
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4 className="flex items-center justify-center">
+        Developed by 441 CIS Group, Kaduna &copy;2025
+      </h4>
+    </div>
+  );
+}
+ g. app/about/organization/page.tsx "import { WelcomeBanner } from "@/components/WelcomeBanner";
+import { Navbar } from "@/components/Navbar";
+import { FadeInSection } from "@/components/FadeInSection";
+import { Footer } from "@/components/Footer";
+import { PageHero } from "@/components/PageHero";
+import Organogram from "@/components/Organogram";
+import { HeaderText } from "@/components/HeaderText";
+
+export default function Home() {
+  return (
+    <div className="relative">
+      <WelcomeBanner />
+
+      {/* Fixed Header (Banner + Navbar) */}
+      <div className="sticky top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+        <Navbar />
+      </div>
+
+      <div className="bg-dark">
+        <div className="max-w-6xl mx-auto bg-white">
+          <div className="">
+            <FadeInSection delay={0.2}>
+              <PageHero
+                title="Air Training Command Organization"
+                description="Organization | Organogram"
+                callToAction="Explore about us"
+              />
+            </FadeInSection>
+          </div>
+          <HeaderText title="ORGANOGRAM" />
+          <Organogram />
+        </div>
+
+        <Footer />
+      </div>
+    </div>
+  );
+}" h. ""use client";
+
+import { useEffect } from "react";
+import ReactFlow, {
+  Controls,
+  Background,
+  Edge,
+  Node,
+  ReactFlowProvider,
+  useReactFlow,
+} from "reactflow";
+import "reactflow/dist/style.css";
+
+export default function Organogram() {
+  const nodes: Node[] = [
+    {
+      id: "1",
+      position: { x: 500, y: 0 },
+      data: { label: "AIR OFFICER COMMANDING (AOC)" },
+    },
+    {
+      id: "2",
+      position: { x: 750, y: 100 },
+      data: { label: "CHIEF OF STAFF (COS)" },
+    },
+    {
+      id: "3",
+      position: { x: 600, y: 150 },
+      data: { label: "PRINCIPAL STAFF OFFICERS (PSOs)" },
+    },
+
+    {
+      id: "4",
+      position: { x: 300, y: 100 },
+      data: { label: "AIR ASSISTANT (AA)" },
+    },
+    {
+      id: "5",
+      position: { x: 500, y: 250 },
+      data: { label: "UNITS" },
+    },
+    {
+      id: "6",
+      position: { x: 20, y: 400 },
+      data: { label: "401 Flying Training School, Kaduna" },
+    },
+    {
+      id: "7",
+      position: { x: 20, y: 500 },
+      data: { label: "Air Traffic Services Training Centre" },
+    },
+    {
+      id: "8",
+      position: { x: 20, y: 600 },
+      data: { label: "413 FPG, Kaduna" },
+    },
+    {
+      id: "9",
+      position: { x: 200, y: 400 },
+      data: { label: "431 Engineering Group" },
+    },
+    {
+      id: "10",
+      position: { x: 200, y: 500 },
+      data: { label: "441 Communications Group" },
+    },
+    {
+      id: "11",
+      position: { x: 200, y: 600 },
+      data: { label: "453 Base Services Group" },
+    },
+    {
+      id: "12",
+      position: { x: 400, y: 400 },
+      data: { label: "461 NAF Hospital" },
+    },
+    {
+      id: "13",
+      position: { x: 400, y: 500 },
+      data: { label: "Central Avionics Overhaul & Calibration Centre" },
+    },
+    {
+      id: "14",
+      position: { x: 400, y: 600 },
+      data: { label: "Air Force Comprehensive School, Kaduna" },
+    },
+    {
+      id: "15",
+      position: { x: 600, y: 400 },
+      data: { label: "403 Flying Training School, Kano" },
+    },
+    {
+      id: "16",
+      position: { x: 600, y: 500 },
+      data: { label: "455 Base Services Group, Kano" },
+    },
+    {
+      id: "17",
+      position: { x: 600, y: 600 },
+      data: { label: "465 NAF Hospital, Kano" },
+    },
+    {
+      id: "18",
+      position: { x: 200, y: 400 },
+      data: { label: "ATSTC, Kaduna" },
+    },
+    {
+      id: "19",
+      position: { x: 800, y: 400 },
+      data: { label: "Air Force Comprehensive School, Kano" },
+    },
+    {
+      id: "20",
+      position: { x: 800, y: 500 },
+      data: { label: "405 Helicopter Combat Training Group, Enugu" },
+    },
+    {
+      id: "21",
+      position: { x: 800, y: 600 },
+      data: { label: "409 International Helicopter Flying School, Enugu" },
+    },
+    {
+      id: "22",
+      position: { x: 1000, y: 400 },
+      data: { label: "410 Central Flying School, Katsina" },
+    },
+    {
+      id: "23",
+      position: { x: 1000, y: 500 },
+      data: { label: "407 Air Combat Training Group, Kainji" },
+    },
+    {
+      id: "24",
+      position: { x: 1000, y: 600 },
+      data: { label: "NAF School of Air Intelligence, Makurdi" },
+    },
+    {
+      id: "25",
+      position: { x: 1200, y: 400 },
+      data: { label: "Air Force Girls Comprehensive School, Abuja" },
+    },
+    {
+      id: "26",
+      position: { x: 1200, y: 500 },
+      data: { label: "NAF Institute of Safety, Ipetu-Ijesha" },
+    },
+  ];
+
+  const edges: Edge[] = [
+    { id: "e1-2", source: "1", target: "2" },
+    { id: "e1-3", source: "1", target: "3" },
+    { id: "e1-4", source: "1", target: "4" },
+    { id: "e1-5", source: "1", target: "5" },
+    { id: "e5-6", source: "5", target: "6" },
+    { id: "e5-7", source: "5", target: "7" },
+    { id: "e5-8", source: "5", target: "8" },
+    { id: "e5-9", source: "5", target: "9" },
+    { id: "e5-10", source: "5", target: "10" },
+    { id: "e5-11", source: "5", target: "11" },
+    { id: "e5-12", source: "5", target: "12" },
+    { id: "e5-13", source: "5", target: "9" },
+    { id: "e5-14", source: "5", target: "14" },
+    { id: "e5-15", source: "5", target: "15" },
+    { id: "e5-16", source: "5", target: "16" },
+    { id: "e5-17", source: "5", target: "17" },
+    { id: "e5-18", source: "5", target: "18" },
+    { id: "e5-19", source: "5", target: "19" },
+    { id: "e5-20", source: "5", target: "20" },
+    { id: "e5-21", source: "5", target: "21" },
+    { id: "e5-22", source: "5", target: "22" },
+    { id: "e5-23", source: "5", target: "23" },
+    { id: "e5-24", source: "5", target: "24" },
+    { id: "e5-25", source: "5", target: "25" },
+    { id: "e5-26", source: "5", target: "26" },
+  ];
+
+  return (
+    <div className="w-full h-[350px] lg:h-[600px]">
+      <ReactFlowProvider>
+        <FlowWrapper nodes={nodes} edges={edges} />
+      </ReactFlowProvider>
+    </div>
+  );
+}
+
+function FlowWrapper({ nodes, edges }: { nodes: Node[]; edges: Edge[] }) {
+  const { fitView } = useReactFlow();
+
+  useEffect(() => {
+    // Give ReactFlow a small delay to mount before fitting
+    setTimeout(() => {
+      fitView({ padding: 0.2, duration: 800 });
+    }, 100);
+  }, [fitView]);
+
+  return (
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      proOptions={{ hideAttribution: true }}
+      fitView
+    >
+      <Background />
+      <Controls />
+    </ReactFlow>
+  );
+}
+" i. export function HeaderText({ title }: { title: string }) {
+  return (
+    <div className="py-8">
+      <h4 className="text-center font-medium text-xl lg:text-2xl lg:text-3xl text-primary-900/95">
+        {title.toUpperCase()}
+      </h4>
+      <div className="w-72 shadow-xl shadow-dark border-b-2 border-b-primary-900/95 rounded-full mx-auto pt-3" />
+    </div>
+  );
+}  and I have ""use client";
+
+import { motion, useAnimation, useInView } from "framer-motion";
+import { useEffect, useRef } from "react";
+
+interface FadeInSectionProps {
+  children: React.ReactNode;
+  delay?: number;
+}
+
+export function FadeInSection({ children, delay = 0 }: FadeInSectionProps) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [isInView, controls]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.8, ease: "easeOut", delay }}
+      className="relative"
+    >
+      {children}
+    </motion.div>
+  );
+}
+" anf globals.css "@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+/* DARK MODE CONFIG */
+@custom-variant dark (&:is(.dark *));
+
+/* =========================================
+   🎯 DESIGN SYSTEM (HIS TAKES PRIORITY)
+========================================= */
+:root {
+  --radius: 0.625rem;
+
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  --primary: 217 91% 35%; /* deep airforce blue */
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 199 89% 48%; /* sky blue */
+  --secondary-foreground: 222 47% 11%;
+
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+
+  --accent: 45 93% 58%; /* gold */
+  --accent-foreground: 222 47% 11%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 217 91% 35%;
+
+  --sidebar-background: 222 47% 11%;
+  --sidebar-foreground: 210 40% 98%;
+  --sidebar-primary: 217 91% 35%;
+  --sidebar-primary-foreground: 210 40% 98%;
+  --sidebar-accent: 45 93% 58%;
+  --sidebar-accent-foreground: 222 47% 11%;
+  --sidebar-border: 214 32% 20%;
+  --sidebar-ring: 217 91% 35%;
+}
+
+/* 🌙 DARK MODE */
+.dark {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+
+  --card: 222 47% 14%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 222 47% 14%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 210 40% 98%;
+  --primary-foreground: 222 47% 11%;
+
+  --secondary: 217 32% 20%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217 32% 20%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 45 93% 58%;
+  --accent-foreground: 222 47% 11%;
+
+  --border: 217 32% 20%;
+  --input: 217 32% 20%;
+  --ring: 212 27% 84%;
+}
+
+/* =========================================
+   🎯 TAILWIND THEME BRIDGE (IMPORTANT)
+========================================= */
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* ✅ KEEP YOUR FONTS */
+  --font-body: var(--font-inter);
+  --font-text: var(--font-poppins);
+  --font-link: var(--font-manrope);
+  --font-heading: var(--font-oswald);
+  --font-roboto: var(--font-roboto);
+  --font-opensans: var(--font-opensans);
+}
+
+/* =========================================
+   🧠 BASE STYLES
+========================================= */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @applyfont-bodyo;
+  }
+
+  a {
+    @applyfont-body;
+  }
+}
+
+/* =========================================
+   ✨ YOUR UTILITIES (UNCHANGED)
+========================================= */
+
+/* fonts */
+.font-body {
+  font-family: var(--font-inter), sans-serif;
+}
+.font-text {
+  font-family: var(--font-poppins), sans-serif;
+}
+.font-link {
+  font-family: var(--font-manrope), sans-serif;
+}
+.font-opensans {
+  font-family: var(--font-opensans), sans-serif;
+}
+.font-heading {
+  font-family: var(--font-oswald), sans-serif;
+}
+.font-roboto {
+  font-family: var(--font-roboto), sans-serif;
+}
+
+/* animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}" help rebuild these pages with aesthetic modern design for a NAF MILITARY WEBSITE using the colours in globals.css

@@ -47,7 +47,7 @@ export default function EventsAdminPage() {
   return (
     <div className="p-6">
       <div className="flex justify-between mb-6">
-        <h1 className="text-xl font-bold">Events</h1>
+        <h4 className="text-xl font-bold">Events</h4>
 
         <Link
           href="/admin/events/create"
@@ -64,7 +64,7 @@ export default function EventsAdminPage() {
             className="p-4 bg-white rounded shadow flex justify-between items-center"
           >
             <div>
-              <h2 className="font-semibold">{event.title}</h2>
+              <h4 className="font-semibold">{event.title}</h4>
               <p className="text-sm text-gray-500">
                 {event.category} • {event.scope}
               </p>

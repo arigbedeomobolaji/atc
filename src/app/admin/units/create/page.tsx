@@ -62,7 +62,7 @@ export default function CreateUnit() {
         onSubmit={handleSubmit}
         className="max-w-3xl mx-auto bg-card border border-border rounded-2xl p-8 space-y-5 shadow"
       >
-        <h1 className="text-2xl font-bold text-foreground">Create Unit</h1>
+        <h4 className="text-2xl font-bold text-foreground">Create Unit</h4>
 
         {/* Unit */}
         <div>

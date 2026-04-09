@@ -33,9 +33,9 @@ export function CommanderModal({ commander }: any) {
               alt={commander.name}
             />
 
-            <h2 className="text-xl font-bold text-center mt-4">
+            <h4 className="text-xl font-bold text-center mt-4">
               {commander.rank} {commander.name}
-            </h2>
+            </h4>
 
             <p className="text-center text-gray-500">
               {commander.serviceNumber}

@@ -20,7 +20,7 @@ export default function GalleryDashboard() {
 
   return (
     <div className="p-6 space-y-10">
-      <h1 className="text-2xl font-bold">Gallery Management</h1>
+      <h4 className="text-2xl font-bold">Gallery Management</h4>
 
       {units.map((unit) => (
         <Link

@@ -8,6 +8,8 @@ import { Footer } from "@/components/Footer";
 import UnitsGrid from "@/components/UnitsGrid";
 import { SidebarNews } from "@/components/news/SidebarNews";
 import { getPaginatedNews } from "@/lib/services/news.services";
+import CommandStats from "@/components/CommandStats";
+import AOC from "../assets/leadership.jpg";
 
 export default async function Home() {
   const { news } = await getPaginatedNews({ page: 1, limit: 15 });
@@ -22,28 +24,41 @@ export default async function Home() {
 
       {/* Push content down to avoid overlap */}
       <div className="">
-        <FadeInSection delay={0.2}>
-          <HeroSection />
-        </FadeInSection>
-
-        <div className="mb-5" />
-
         <FadeInSection delay={0.3}>
           <AppCarousel />
         </FadeInSection>
 
-        <FadeInSection delay={0.4}>
-          <VisionStatement />
+        <FadeInSection delay={0.2}>
+          <HeroSection />
         </FadeInSection>
+
+        <CommandStats />
+
+        <FadeInSection delay={0.4}>
+          <VisionStatement
+            imageSrc={AOC}
+            name="AVM JA EFANGA"
+            rank="AVM"
+            appointment="Air Officer Commanding"
+            statementType="Vision"
+            statement="“To lead in aviation training and operational excellence,
+                fostering a generation of airmen and officers equipped with
+                advanced skills, strategic thinking, and unwavering discipline,
+                committed to safeguarding the nation and advancing airpower
+                capabilities."
+          />
+        </FadeInSection>
+
+        <FadeInSection delay={0.6}>
+          <UnitsGrid />
+        </FadeInSection>
+
         <br />
         <FadeInSection delay={0.5}>
           <SidebarNews news={news} layout="horizontal" slug="" />
         </FadeInSection>
         <br />
 
-        <FadeInSection delay={0.6}>
-          <UnitsGrid />
-        </FadeInSection>
         <Footer />
       </div>
     </div>

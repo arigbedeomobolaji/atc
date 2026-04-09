@@ -51,7 +51,7 @@ export default function EventPage() {
         />
       )}
 
-      <h1 className="text-2xl font-bold">{event.title}</h1>
+      <h4 className="text-2xl font-bold">{event.title}</h4>
       <p className="text-gray-600">{event.description}</p>
 
       {/* Gallery */}

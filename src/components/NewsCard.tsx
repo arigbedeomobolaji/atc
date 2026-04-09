@@ -44,9 +44,9 @@ export function NewsCard({
           <p className="text-xs text-right mt-2 font-bold font-mono pb-3">
             {monthString} {day}, {year}
           </p>
-          <h1 className="font-opensans text-sm lg:text-lg hover:text-dark/30">
+          <h4 className="font-opensans text-sm lg:text-lg hover:text-dark/30">
             {title}
-          </h1>
+          </h4>
           {showContent && (
             <p className="font-light font-sans text-justify text-gray-400">
               {excerpt?.slice(0, 50)}...

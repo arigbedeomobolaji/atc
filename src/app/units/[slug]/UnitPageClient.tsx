@@ -33,23 +33,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-// ============ CUSTOM SECTIONS COMPONENT (INLINE) ============
-// You can also import this from a separate file:
-// import CustomSections from "@/components/CustomSections";
-
-const customSectionFadeInUp: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-const customSectionStagger: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-  },
-};
+import { FadeInSection } from "@/components/FadeInSection";
+import { VisionStatement } from "@/components/VisionStatement";
 
 // Icon mapping for different section types
 const getSectionIcon = (title: string) => {
@@ -59,121 +44,6 @@ const getSectionIcon = (title: string) => {
   if (lowerTitle.includes("milestone")) return CheckCircle2;
   return CheckCircle2;
 };
-
-// Custom Sections Component
-// function CustomSections({
-//   sections,
-// }: {
-//   sections: { title: string; items: string[] }[];
-// }) {
-//   if (!sections || sections.length === 0) return null;
-
-//   const headerRef = useRef(null);
-//   const isHeaderInView = useInView(headerRef, {
-//     once: true,
-//     margin: "-100px",
-//   });
-
-//   return (
-//     <section className="py-16 px-6 bg-slate-100">
-//       <div className="max-w-6xl mx-auto">
-//         {/* Section Header */}
-//         <motion.div
-//           ref={headerRef}
-//           initial="hidden"
-//           animate={isHeaderInView ? "visible" : "hidden"}
-//           variants={customSectionFadeInUp}
-//           className="mb-10"
-//         >
-//           <div className="relative mb-10 flex items-center gap-4">
-//             <motion.div className="p-3 rounded-lg bg-gradient-to-br from-[#1a365d] to-[#2d5a9d] shadow-lg">
-//               <Star className="w-6 h-6 text-white" />
-//             </motion.div>
-//             <div className="flex-1">
-//               <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-[#1a365d]">
-//                 Highlights & Achievements
-//               </h2>
-//               <div className="mt-2 flex items-center gap-2">
-//                 <div className="w-16 h-1 bg-[#c9a227] rounded-full" />
-//                 <div className="w-8 h-0.5 bg-[#1a365d]/30 rounded-full" />
-//                 <div className="w-4 h-0.5 bg-[#1a365d]/20 rounded-full" />
-//               </div>
-//             </div>
-//           </div>
-//           <p className="text-slate-600 max-w-2xl">
-//             Key accomplishments and notable developments that define our
-//             commitment to excellence.
-//           </p>
-//         </motion.div>
-
-//         {/* Custom Sections Grid */}
-//         <motion.div
-//           initial="hidden"
-//           animate={isHeaderInView ? "visible" : "hidden"}
-//           variants={customSectionStagger}
-//           className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-//         >
-//           {sections.map((section, index) => {
-//             const Icon = getSectionIcon(section.title);
-//             const bgColors = [
-//               "from-[#1a365d] to-[#2d5a9d]",
-//               "from-[#c9a227] to-[#d4af37]",
-//               "from-[#16a34a] to-[#22c55e]",
-//               "from-[#dc2626] to-[#ef4444]",
-//             ];
-//             const iconBg = bgColors[index % bgColors.length];
-
-//             return (
-//               <motion.div
-//                 key={index}
-//                 variants={customSectionFadeInUp}
-//                 className="bg-white rounded-xl shadow-lg border border-slate-200/60 overflow-hidden"
-//               >
-//                 {/* Card Header */}
-//                 <div className="bg-gradient-to-r from-slate-50 to-slate-100 px-6 py-4 border-b border-slate-200">
-//                   <div className="flex items-center gap-3">
-//                     <div
-//                       className={`p-2 rounded-lg bg-gradient-to-br ${iconBg} shadow-md`}
-//                     >
-//                       <Icon className="w-5 h-5 text-white" />
-//                     </div>
-//                     <h3 className="text-xl font-bold text-[#1a365d]">
-//                       {section.title}
-//                     </h3>
-//                   </div>
-//                 </div>
-
-//                 {/* Card Content */}
-//                 <div className="p-6">
-//                   <ul className="space-y-3">
-//                     {section.items.map((item, itemIndex) => (
-//                       <li
-//                         key={itemIndex}
-//                         className="flex items-start gap-3 group"
-//                       >
-//                         <div className="flex-shrink-0 mt-1">
-//                           <div className="w-6 h-6 rounded-full bg-[#c9a227]/10 flex items-center justify-center group-hover:bg-[#c9a227]/20 transition-colors">
-//                             <CheckCircle2 className="w-4 h-4 text-[#c9a227]" />
-//                           </div>
-//                         </div>
-//                         <span className="text-slate-700 leading-relaxed group-hover:text-[#1a365d] transition-colors">
-//                           {item}
-//                         </span>
-//                       </li>
-//                     ))}
-//                   </ul>
-//                 </div>
-
-//                 {/* Decorative Bottom Border */}
-//                 <div className="h-1 bg-gradient-to-r from-[#1a365d] via-[#c9a227] to-[#1a365d]" />
-//               </motion.div>
-//             );
-//           })}
-//         </motion.div>
-//       </div>
-//     </section>
-//   );
-// }
 
 function CustomSections({
   sections,
@@ -313,9 +183,9 @@ function SectionHeader({
         </motion.div>
       )}
       <div className="flex-1">
-        <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-[#1a365d]">
+        <h4 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-[#1a365d]">
           {title}
-        </h2>
+        </h4>
         <div className="mt-2 flex items-center gap-2">
           <div className="w-16 h-1 bg-[#c9a227] rounded-full" />
           <div className="w-8 h-0.5 bg-[#1a365d]/30 rounded-full" />
@@ -505,7 +375,7 @@ function Gallery({ galleries }: { galleries: any[] }) {
 }
 
 // ============ MAIN EXPORT ============
-export default function UnitPageClientWithSection({ unit, gallery }: any) {
+export default function UnitPageClient({ unit, gallery }: any) {
   const [selectedCommander, setSelectedCommander] = useState<any>(null);
   const [scrollY, setScrollY] = useState(0);
 
@@ -639,7 +509,7 @@ export default function UnitPageClientWithSection({ unit, gallery }: any) {
       {/* About Section */}
       <section id="about" className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <SectionHeader title="About the Unit" icon={Target} />
+          <SectionHeader title="About the Unit" icon={Flag} />
 
           <motion.div
             initial="hidden"
@@ -653,27 +523,32 @@ export default function UnitPageClientWithSection({ unit, gallery }: any) {
 
             <div className="relative z-10">
               <div className="flex items-start gap-4 mb-6">
-                <div className="p-3 rounded-lg bg-[#c9a227]/10">
-                  <Flag className="w-6 h-6 text-[#c9a227]" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#1a365d] mb-2">
-                    Mission Statement
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed text-[14px]">
-                    {unit.mission ||
-                      "To train world-class military aviators who will defend Nigeria's airspace with professionalism, integrity, and unwavering commitment to national security."}
-                  </p>
-                </div>
+                <div className="p-3 rounded-lg bg-[#c9a227]/10"></div>
+                <p className="text-slate-700 leading-loose text-justify">
+                  {unit.description}
+                </p>
               </div>
-
-              <p className="text-slate-700 leading-loose text-justify">
-                {unit.description}
-              </p>
             </div>
           </motion.div>
         </div>
       </section>
+
+      {/* Commanders Mission Statement */}
+      {currentCommander && unit.mission && (
+        <FadeInSection delay={0.4}>
+          <VisionStatement
+            imageSrc={currentCommander.portrait}
+            name={currentCommander.name}
+            rank={currentCommander.rank}
+            appointment={currentCommander.appointment}
+            statementType="Mission"
+            statement={
+              unit.mission ||
+              "To train world-class military aviators who will defend Nigeria's airspace with professionalism, integrity, and unwavering commitment to national security."
+            }
+          />
+        </FadeInSection>
+      )}
 
       {/* Responsibilities Section */}
       {unit.responsibilities && !!unit.responsibilities.length && (
@@ -831,7 +706,7 @@ export default function UnitPageClientWithSection({ unit, gallery }: any) {
       )}
 
       {/* Current Commander Section */}
-      {currentCommander?.commander && (
+      {currentCommander && (
         <section
           id="leadership"
           className="py-16 px-6 bg-gradient-to-br from-[#1a365d] to-[#0f2744] relative overflow-hidden"
@@ -855,9 +730,9 @@ export default function UnitPageClientWithSection({ unit, gallery }: any) {
                 <User className="w-6 h-6 text-[#1a365d]" />
               </div>
               <div>
-                <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
+                <h4 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
                   Current {currentCommander.appointment}
-                </h2>
+                </h4>
                 <div className="mt-2 flex items-center gap-2">
                   <div className="w-16 h-1 bg-[#c9a227] rounded-full" />
                   <div className="w-8 h-0.5 bg-white/30 rounded-full" />

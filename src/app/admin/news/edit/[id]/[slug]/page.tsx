@@ -71,7 +71,7 @@ export default function EditNewsPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-xl font-semibold mb-4">Edit News</h2>
+      <h4 className="text-xl font-semibold mb-4">Edit News</h4>
 
       <form onSubmit={handleSave} className="space-y-4">
         <input

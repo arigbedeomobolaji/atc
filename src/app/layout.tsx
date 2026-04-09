@@ -1,14 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Geist,
-  Geist_Mono,
-  Inter,
-  Poppins,
-  Manrope,
-  Oswald,
-  Roboto,
-  Open_Sans,
-} from "next/font/google";
+import { Inter, Manrope, Oswald, Open_Sans } from "next/font/google";
 import "./globals.css";
 
 const oswald = Oswald({
@@ -24,24 +15,10 @@ const inter = Inter({
   display: "swap",
 });
 
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-  variable: "--font-roboto",
-  display: "swap",
-});
-
 const openSans = Open_Sans({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
   variable: "--font-opensans",
-  display: "swap",
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -50,16 +27,6 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700"],
   variable: "--font-manrope",
   display: "swap",
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -111,9 +78,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} 
-      ${poppins.variable} ${manrope.variable} ${oswald.variable} 
-      ${roboto.variable} ${openSans.variable} antialiased`}
+        className={` ${inter.variable}  ${manrope.variable} ${oswald.variable} ${openSans.variable} antialiased`}
       >
         {children}
       </body>

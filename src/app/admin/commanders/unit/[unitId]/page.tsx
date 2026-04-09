@@ -65,9 +65,9 @@ export default function UnitCommandersPage() {
     <div className="space-y-8">
       {/* HEADER */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-[#1a365d]">
+        <h4 className="text-2xl font-bold text-[#1a365d]">
           {unit?.unit} Commanders
-        </h1>
+        </h4>
 
         <div className="flex gap-2">
           <Link
@@ -88,7 +88,7 @@ export default function UnitCommandersPage() {
 
       {/* CURRENT */}
       <section>
-        <h2 className="font-semibold mb-3">Current Commander</h2>
+        <h4 className="font-semibold mb-3">Current Commander</h4>
 
         {current ? (
           <div className="bg-blue-50 border-l-4 border-[#1a365d] p-4 rounded-lg flex justify-between">
@@ -121,7 +121,7 @@ export default function UnitCommandersPage() {
 
       {/* PAST */}
       <section>
-        <h2 className="font-semibold mb-3">Past Commanders</h2>
+        <h4 className="font-semibold mb-3">Past Commanders</h4>
 
         <div className="space-y-3">
           {past.map((c) => (
@@ -220,7 +220,7 @@ export default function UnitCommandersPage() {
 //     <div className="p-6 space-y-8">
 //       {/* HEADER */}
 //       <div>
-//         <h1 className="text-2xl font-bold">{unit?.unit} Commanders</h1>
+//         <h4 className="text-2xl font-bold">{unit?.unit} Commanders</h4>
 //       </div>
 
 //       {/* ACTIONS */}
@@ -242,7 +242,7 @@ export default function UnitCommandersPage() {
 
 //       {/* CURRENT COMMANDER */}
 //       <div>
-//         <h2 className="font-semibold text-lg mb-2">Current Commander</h2>
+//         <h4 className="font-semibold text-lg mb-2">Current Commander</h4>
 
 //         {current ? (
 //           <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg flex justify-between">
@@ -283,7 +283,7 @@ export default function UnitCommandersPage() {
 
 //       {/* PAST COMMANDERS */}
 //       <div>
-//         <h2 className="font-semibold text-lg mb-2">Past Commanders</h2>
+//         <h4 className="font-semibold text-lg mb-2">Past Commanders</h4>
 
 //         {past.length === 0 && <p className="text-gray-400">No history yet</p>}
 

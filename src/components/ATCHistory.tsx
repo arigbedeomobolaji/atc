@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { HeaderText } from "./HeaderText";
+import { Flag } from "lucide-react";
+import { fadeInUp } from "./widget/Motion";
+import SectionHeader from "./widget/SectionHeader";
 
 const historyParagraphs = [
   {
@@ -16,32 +18,47 @@ const historyParagraphs = [
 
 export default function ATCHistory() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: false, amount: 0.25 }}
-      className="py-10 leading-10"
-      id="history"
-    >
-      <HeaderText title="History" />
+    <section id="history" className="py-16 px-6">
+      <div className="max-w-6xl mx-auto">
+        {/* 🔰 Section Header */}
+        <SectionHeader title="History" icon={Flag} />
 
-      <div className="text-gray-800 leading-9 space-y-10 px-10 lg:px-20">
-        {historyParagraphs.map((item, index) => (
-          <motion.p
-            key={index}
-            className="indent-8"
-            initial={{ opacity: 0, x: -30, scale: 0.96 }}
-            whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 30, scale: 0.94 }}
-            viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: index * 0.15 }}
-          >
-            {item.content}
-          </motion.p>
-        ))}
+        {/* 📦 Card Container */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInUp}
+          className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-8 md:p-10 relative overflow-hidden"
+        >
+          {/* 🎨 Decorative Corner */}
+          <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-primary/10 to-transparent" />
+
+          {/* 🧠 Subtle Grid Overlay (your new system) */}
+          <div className="absolute inset-0 grid-overlay-primary-soft opacity-40" />
+
+          <div className="relative z-10 space-y-8">
+            {historyParagraphs.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                className="flex items-start gap-4"
+              >
+                {/* 🟡 Bullet Accent */}
+                <div className="mt-2 w-2.5 h-2.5 rounded-full bg-secondary flex-shrink-0" />
+
+                {/* 📜 Text */}
+                <p className="text-slate-700 leading-loose text-justify">
+                  {item.content}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </section>
   );
 }

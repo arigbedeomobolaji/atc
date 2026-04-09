@@ -9,7 +9,7 @@ export function Footer() {
       <div className=" flex items-center justify-around p-3 lg:px-5 shadow-md hover:shadow-lg">
         {/* Social Media Icons */}
         <div className="flex flex-col">
-          <h1 className="font-heading font-bold leading-8">Our Social links</h1>
+          <h4 className="font-heading font-bold leading-8">Our Social links</h4>
           <div className="flex flex-col gap-3 items-center">
             <div className="flex items-center gap-1 cursor-pointer hover:-translate-y-1 transition-all duration-300">
               <Facebook className="shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" />{" "}
@@ -28,7 +28,7 @@ export function Footer() {
 
         {/* Our Links */}
         <div className="flex flex-col">
-          <h1 className="font-heading font-bold leading-8">Our links</h1>
+          <h4 className="font-heading font-bold leading-8">Our links</h4>
           <div className="leading-7 flex flex-col">
             {["About", "History", "News & Event", "Contact Us"].map(
               (item, index) => (
@@ -47,7 +47,7 @@ export function Footer() {
         {/* Relevant Links */}
         {/* Social Media Icons */}
         <div className="flex flex-col">
-          <h1 className="font-heading font-bold leading-8">Relevant Links</h1>
+          <h4 className="font-heading font-bold leading-8">Relevant Links</h4>
           <div className="flex flex-col gap-3 items-center">
             <div className="flex items-center gap-1 cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:translate-y-1 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
               <Image
@@ -65,9 +65,9 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <h1 className="flex items-center justify-center">
+      <h4 className="flex items-center justify-center">
         Developed by 441 CIS Group, Kaduna &copy;2025
-      </h1>
+      </h4>
     </div>
   );
 }

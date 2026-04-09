@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* =========================================
-   🎯 DESIGN SYSTEM (HIS TAKES PRIORITY)
+   🎯 DESIGN SYSTEM (UPDATED COLORS)
 ========================================= */
 :root {
   --radius: 0.625rem;
@@ -20,65 +20,72 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
 
-  --primary: 217 91% 35%; /* deep airforce blue */
+  /* ✅ PRIMARY (#1a365d) hsl(210 40% 98%)*/
+  --primary: 214 56% 23%;
   --primary-foreground: 210 40% 98%;
 
-  --secondary: 199 89% 48%; /* sky blue */
+  /* ✅ SECONDARY (#c9a227) hsl(46,68%,47%) hsl(222 47% 11%) */
+  --secondary: 45 68% 47%;
   --secondary-foreground: 222 47% 11%;
 
   --muted: 210 40% 96%;
   --muted-foreground: 215 16% 47%;
 
-  --accent: 45 93% 58%; /* gold */
-  --accent-foreground: 222 47% 11%;
+  /* ✅ ACCENT (same as primary) */
+  --accent: 214 56% 23%;
+  --accent-foreground: 210 40% 98%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
 
   --border: 214 32% 91%;
   --input: 214 32% 91%;
-  --ring: 217 91% 35%;
 
-  --sidebar-background: 222 47% 11%;
+  /* match primary */
+  --ring: 214 56% 23%;
+
+  /* sidebar */
+  --sidebar-background: 214 56% 23%;
   --sidebar-foreground: 210 40% 98%;
-  --sidebar-primary: 217 91% 35%;
+  --sidebar-primary: 214 56% 23%;
   --sidebar-primary-foreground: 210 40% 98%;
-  --sidebar-accent: 45 93% 58%;
+  --sidebar-accent: 45 69% 47%;
   --sidebar-accent-foreground: 222 47% 11%;
   --sidebar-border: 214 32% 20%;
-  --sidebar-ring: 217 91% 35%;
+  --sidebar-ring: 214 56% 23%;
 }
 
-/* 🌙 DARK MODE */
+/* 🌙 DARK MODE (adjusted to match your palette) */
 .dark {
-  --background: 222 47% 11%;
+  --background: 214 56% 10%;
   --foreground: 210 40% 98%;
 
-  --card: 222 47% 14%;
+  --card: 214 56% 14%;
   --card-foreground: 210 40% 98%;
 
-  --popover: 222 47% 14%;
+  --popover: 214 56% 14%;
   --popover-foreground: 210 40% 98%;
 
+  /* invert nicely */
   --primary: 210 40% 98%;
-  --primary-foreground: 222 47% 11%;
+  --primary-foreground: 214 56% 23%;
 
-  --secondary: 217 32% 20%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 45 69% 47%;
+  --secondary-foreground: 214 56% 10%;
 
-  --muted: 217 32% 20%;
+  --muted: 214 32% 20%;
   --muted-foreground: 215 20% 65%;
 
-  --accent: 45 93% 58%;
-  --accent-foreground: 222 47% 11%;
+  --accent: 45 69% 47%;
+  --accent-foreground: 214 56% 10%;
 
-  --border: 217 32% 20%;
-  --input: 217 32% 20%;
-  --ring: 212 27% 84%;
+  --border: 214 32% 20%;
+  --input: 214 32% 20%;
+  --ring: 210 40% 98%;
 }
 
 /* =========================================
-   🎯 TAILWIND THEME BRIDGE (IMPORTANT)
+   🎯 TAILWIND THEME BRIDGE
 ========================================= */
 @theme inline {
   --color-background: hsl(var(--background));
@@ -104,12 +111,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  /* ✅ KEEP YOUR FONTS */
+  /* fonts */
   --font-body: var(--font-inter);
-  --font-text: var(--font-poppins);
-  --font-link: var(--font-manrope);
+  --font-ui: var(--font-manrope);
   --font-heading: var(--font-oswald);
-  --font-roboto: var(--font-roboto);
   --font-opensans: var(--font-opensans);
 }
 
@@ -122,20 +127,64 @@
   }
 
   body {
-    @apply bg-background text-foreground font-opensans;
+    @apply bg-background text-foreground font-body;
+  }
+  h1 {
+    @apply font-heading text-3xl md:text-4xl font-bold uppercase tracking-wide;
   }
 
-  h1,
-  h2,
+  h2 {
+    @apply font-heading text-2xl md:text-3xl font-semibold uppercase tracking-wide;
+  }
+
   h3 {
-    @apply font-roboto;
+    @apply font-heading text-xl md:text-2xl font-semibold;
+  }
+
+  p {
+    @apply font-body text-base leading-relaxed;
+  }
+
+  small {
+    @apply text-sm text-muted-foreground;
   }
 
   a {
-    @apply font-opensans;
+    @apply font-body;
   }
 }
 
+@layer utilities {
+  .grid-overlay-primary {
+    background-image: linear-gradient(
+        to right,
+        hsl(var(--primary) / 0.15) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        hsl(var(--primary) / 0.15) 1px,
+        transparent 1px
+      );
+
+    background-size: 40px 40px;
+  }
+
+  .grid-overlay-primary-soft {
+    background-image: linear-gradient(
+        to right,
+        hsl(var(--primary) / 0.08) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        hsl(var(--primary) / 0.08) 1px,
+        transparent 1px
+      );
+
+    background-size: 40px 40px;
+  }
+}
 /* =========================================
    ✨ YOUR UTILITIES (UNCHANGED)
 ========================================= */
@@ -144,20 +193,38 @@
 .font-body {
   font-family: var(--font-inter), sans-serif;
 }
-.font-text {
-  font-family: var(--font-poppins), sans-serif;
-}
-.font-link {
-  font-family: var(--font-manrope), sans-serif;
-}
-.font-opensans {
-  font-family: var(--font-opensans), sans-serif;
-}
+
 .font-heading {
   font-family: var(--font-oswald), sans-serif;
 }
-.font-roboto {
-  font-family: var(--font-roboto), sans-serif;
+
+.font-ui {
+  font-family: var(--font-manrope), sans-serif;
+}
+
+/* body text */
+.text-body {
+  @apply font-body text-base leading-relaxed;
+}
+
+/* UI elements (buttons, nav, labels) */
+.text-ui {
+  @apply font-ui text-sm font-medium tracking-wide;
+}
+
+/* captions / metadata */
+.text-muted {
+  @apply text-sm text-muted-foreground;
+}
+
+/* section titles */
+.text-section {
+  @apply font-heading text-xl uppercase tracking-wide;
+}
+
+/* hero/title emphasis */
+.text-hero {
+  @apply font-heading text-4xl md:text-5xl font-bold uppercase tracking-wider;
 }
 
 /* animations */

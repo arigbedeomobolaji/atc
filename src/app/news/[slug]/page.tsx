@@ -41,9 +41,9 @@ export default async function NewsDetail({
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
         {/* Main News */}
         <div className="max-w-4xl space-y-3 p-3 col-span-1 lg:col-span-3">
-          <h1 className="text-4xl text-dark font-heading font-extrabold">
+          <h4 className="text-4xl text-dark font-heading font-extrabold">
             {data.title}
-          </h1>
+          </h4>
           <div className="flex justify-between items-center">
             <p className="text-gray-600 font-mono italic text-xs hover:underline">
               Posted by ATC Admin
