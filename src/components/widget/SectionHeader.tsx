@@ -19,7 +19,7 @@ export default function SectionHeader({
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={fadeInUp}
-      className="relative mb-10 flex items-center gap-4"
+      className="relative mb-10 flex items-center gap-4 mx-5 xl:mx-10"
     >
       {Icon && (
         <motion.div

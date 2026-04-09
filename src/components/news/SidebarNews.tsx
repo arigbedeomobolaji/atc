@@ -1,9 +1,13 @@
+"use client";
+
 import { Border } from "@/app/news/page";
 import { convertDate } from "@/utils/covertDate";
 import { NewsItemType } from "@/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
+import SectionHeader from "../widget/SectionHeader";
+import { Newspaper } from "lucide-react";
 
 interface SidebarNewsProps {
   slug: string;
@@ -33,11 +37,7 @@ export function SidebarNews({
     <div className="col-span-1 lg:col-span-2 max-h-400 overflow-y-auto scrollbar-hideauto">
       <div className="font-heading text-lg">
         {/* HEADER — never scrolls */}
-        <div className="flex items-center gap-5 mb-4">
-          <Border />
-          <span className="whitespace-nowrap">Latest news</span>
-          <Border />
-        </div>
+        <SectionHeader title="Latest News" icon={Newspaper} />
 
         {/* SCROLL CONTAINER */}
         <div className={`${containerClasses} mx-10`}>
