@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     }
 
     /* -----------------------------
-       🔥 SERVER-SIDE IMAGE RESIZING
+        SERVER-SIDE IMAGE RESIZING
     ------------------------------ */
     const resizedBuffer = await sharp(buffer)
       .resize({

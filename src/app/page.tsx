@@ -10,30 +10,42 @@ import { SidebarNews } from "@/components/news/SidebarNews";
 import { getPaginatedNews } from "@/lib/services/news.services";
 import CommandStats from "@/components/CommandStats";
 import AOC from "../assets/leadership.jpg";
+import LeadershipSection from "@/components/LeadershipSection";
+
+import Container from "@/components/Container";
 
 export default async function Home() {
   const { news } = await getPaginatedNews({ page: 1, limit: 15 });
+
   return (
     <div className="relative">
       <WelcomeBanner />
 
-      {/* Fixed Header (Banner + Navbar) */}
-      <div className="sticky top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+      {/* HEADER */}
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <Navbar />
       </div>
 
-      {/* Push content down to avoid overlap */}
-      <div className="">
-        <FadeInSection delay={0.3}>
-          <AppCarousel />
-        </FadeInSection>
+      {/* ================= CONTENT ================= */}
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-transparent to-primary/20" />
+      {/* FULL WIDTH */}
+      <FadeInSection delay={0.3}>
+        <AppCarousel />
+      </FadeInSection>
 
+      {/* CONSTRAINED */}
+      <Container>
         <FadeInSection delay={0.2}>
           <HeroSection />
         </FadeInSection>
+      </Container>
 
-        <CommandStats />
+      {/* FULL WIDTH (stats usually look better wide) */}
+      <CommandStats />
 
+      {/* CONSTRAINED */}
+      <Container>
         <FadeInSection delay={0.4}>
           <VisionStatement
             imageSrc={AOC}
@@ -41,26 +53,30 @@ export default async function Home() {
             rank="AVM"
             appointment="Air Officer Commanding"
             statementType="Vision"
-            statement="“To lead in aviation training and operational excellence,
-                fostering a generation of airmen and officers equipped with
-                advanced skills, strategic thinking, and unwavering discipline,
-                committed to safeguarding the nation and advancing airpower
-                capabilities."
+            statement="To lead in aviation training..."
           />
         </FadeInSection>
+      </Container>
 
+      {/* CONSTRAINED */}
+      <Container>
         <FadeInSection delay={0.6}>
           <UnitsGrid />
         </FadeInSection>
+      </Container>
 
-        <br />
+      {/* 🔥 LEADERSHIP → KEEP FULL WIDTH (important for horizontal scroll) */}
+      <LeadershipSection />
+
+      {/* CONSTRAINED */}
+      <Container>
         <FadeInSection delay={0.5}>
           <SidebarNews news={news} layout="horizontal" slug="" />
         </FadeInSection>
-        <br />
+      </Container>
 
-        <Footer />
-      </div>
+      {/* FOOTER */}
+      <Footer />
     </div>
   );
 }

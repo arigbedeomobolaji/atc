@@ -25,12 +25,12 @@ export async function POST(req: NextRequest) {
     }
 
     // =========================
-    // 🔥 1. DELETE FROM CLOUDINARY
+    //  1. DELETE FROM CLOUDINARY
     // =========================
     await cloudinary.uploader.destroy(publicId);
 
     // =========================
-    // 🔥 2. REMOVE FROM ARRAY
+    //  2. REMOVE FROM ARRAY
     // =========================
     await db.collection<GalleryDoc>("galleries").updateOne(
       { _id: new ObjectId(galleryId) },
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     );
 
     // =========================
-    // 🔥 3. CHECK IF EMPTY
+    //  3. CHECK IF EMPTY
     // =========================
     const updatedGallery = await db.collection("galleries").findOne({
       _id: new ObjectId(galleryId),
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     }
 
     // =========================
-    // 🔥 4. HANDLE EVENT COVER IMAGE
+    //  4. HANDLE EVENT COVER IMAGE
     // =========================
     if (gallery.eventId) {
       const event = await db.collection("events").findOne({

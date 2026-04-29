@@ -2,15 +2,18 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // 1. Import useRouter
 import imageCompression from "browser-image-compression";
 import ArrayInput from "@/components/ArrayInput";
-import CommandersEditor from "@/components/CommandsEditor";
+// import CommandersEditor from "@/components/CommandsEditor"; // Unused in this snippet but keep if needed
 import CustomSectionsEditor from "@/components/CustomSectionsEditor";
 import HistoryEditor from "@/components/HistoryEditor";
 import InputFile from "@/components/widget/InputFile";
 
 export default function CreateUnit() {
+  const router = useRouter(); // 2. Initialize router
   const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false); // 3. Add loading state
 
   const [form, setForm] = useState<any>({
     unit: "",
@@ -31,51 +34,51 @@ export default function CreateUnit() {
 
   async function handleSubmit(e: any) {
     e.preventDefault();
+    setLoading(true); // Start loading
 
-    const res = await fetch("/api/units", {
-      method: "POST",
-      body: JSON.stringify(form),
-    });
-
-    const json = await res.json();
-    if (!res.ok) return alert(json.error);
-
-    const unitId = json.id;
-
-    if (file instanceof File && file.type.startsWith("image/")) {
-      const fd = new FormData();
-      const compressed = await imageCompression(file, { maxSizeMB: 0.5 });
-
-      fd.append("file", compressed);
-
-      await fetch(`/api/units/${unitId}/upload-logo`, {
+    try {
+      // 1. Create the Unit
+      const res = await fetch("/api/units", {
         method: "POST",
-        body: fd,
+        body: JSON.stringify(form),
       });
+
+      const json = await res.json();
+      if (!res.ok) {
+        setLoading(false);
+        return alert(json.error);
+      }
+
+      const unitId = json.id;
+
+      // 2. Handle Logo Upload if file exists
+      if (file instanceof File && file.type.startsWith("image/")) {
+        const fd = new FormData();
+        const compressed = await imageCompression(file, { maxSizeMB: 0.5 });
+
+        fd.append("file", compressed);
+
+        const uploadRes = await fetch(`/api/units/${unitId}/upload-logo`, {
+          method: "POST",
+          body: fd,
+        });
+
+        if (!uploadRes.ok) {
+          console.error("Logo upload failed, but unit was created.");
+        }
+      }
+
+      // 3. Final Alert and Redirect
+      alert("Unit created successfully ✅");
+      router.push("/admin/units"); // 4. Redirect to admin/units
+      router.refresh(); // Optional: clears segment cache to show new data
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while creating the unit ❌");
+    } finally {
+      setLoading(false);
     }
-
-    alert("Unit created ✅");
   }
-  // function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const selected = e.target.files?.[0];
-
-  //   if (!selected) return;
-
-  //   // ✅ 1. Check file type
-  //   if (!selected.type.startsWith("image/")) {
-  //     alert("Only image files are allowed ❌");
-  //     return;
-  //   }
-
-  //   // ✅ 2. Check file size (before compression)
-  //   const maxSizeMB = 5;
-  //   if (selected.size > maxSizeMB * 1024 * 1024) {
-  //     alert(`Image must be less than ${maxSizeMB}MB ❌`);
-  //     return;
-  //   }
-
-  //   setFile(selected);
-  // }
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -85,13 +88,16 @@ export default function CreateUnit() {
       >
         <h4 className="text-2xl font-bold text-foreground">Create Unit</h4>
 
-        {/* Unit */}
+        {/* ... (Existing input fields stay the same) ... */}
+
+        {/* Unit Name */}
         <div>
           <label htmlFor="unit" className="text-sm text-muted-foreground">
             Unit Name
           </label>
           <input
             id="unit"
+            required
             className="w-full mt-1 p-3 border border-border rounded-lg bg-background"
             onChange={(e) => setForm({ ...form, unit: e.target.value })}
           />
@@ -104,20 +110,24 @@ export default function CreateUnit() {
           </label>
           <input
             id="slug"
-            className="w-full mt-1 p-3 border border-border rounded-lg"
+            required
+            className="w-full mt-1 p-3 border border-border rounded-lg bg-background"
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
         </div>
 
-        {/* established Date */}
+        {/* Established Date */}
         <div>
-          <label htmlFor="slug" className="text-sm text-muted-foreground">
+          <label
+            htmlFor="establishedDate"
+            className="text-sm text-muted-foreground"
+          >
             Established Date
           </label>
           <input
             id="establishedDate"
             type="date"
-            className="w-full mt-1 p-3 border border-border rounded-lg"
+            className="w-full mt-1 p-3 border border-border rounded-lg bg-background"
             onChange={(e) =>
               setForm({ ...form, establishedDate: e.target.value })
             }
@@ -134,7 +144,7 @@ export default function CreateUnit() {
           </label>
           <input
             id="abbreviation"
-            className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+            className="w-full mt-1 p-3 rounded-lg border border-border bg-background"
             value={form.abbreviation}
             onChange={(e) => setForm({ ...form, abbreviation: e.target.value })}
           />
@@ -150,7 +160,7 @@ export default function CreateUnit() {
           </label>
           <input
             id="role"
-            className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:outline-none"
+            className="w-full mt-1 p-3 rounded-lg border border-border bg-background"
             value={form.role}
             onChange={(e) => setForm({ ...form, role: e.target.value })}
           />
@@ -163,7 +173,7 @@ export default function CreateUnit() {
           </label>
           <input
             id="location"
-            className="w-full mt-1 p-3 border border-border rounded-lg"
+            className="w-full mt-1 p-3 border border-border rounded-lg bg-background"
             onChange={(e) => setForm({ ...form, location: e.target.value })}
           />
         </div>
@@ -175,7 +185,7 @@ export default function CreateUnit() {
           </label>
           <input
             id="mission"
-            className="w-full mt-1 p-3 border border-border rounded-lg"
+            className="w-full mt-1 p-3 border border-border rounded-lg bg-background"
             onChange={(e) => setForm({ ...form, mission: e.target.value })}
           />
         </div>
@@ -190,12 +200,11 @@ export default function CreateUnit() {
           </label>
           <textarea
             id="description"
-            className="w-full mt-1 p-3 border border-border rounded-lg"
+            className="w-full mt-1 p-3 border border-border rounded-lg bg-background h-32"
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
         </div>
 
-        {/* Arrays */}
         <ArrayInput
           label="Capabilities"
           value={form.capabilities}
@@ -216,23 +225,22 @@ export default function CreateUnit() {
           value={form.history}
           onChange={(val: any) => setForm({ ...form, history: val })}
         />
-        <CommandersEditor
-          value={form.commanders || []}
-          onChange={(val: any) => setForm({ ...form, commanders: val })}
-        />
         <CustomSectionsEditor
           value={form.customSections || []}
           onChange={(val: any) => setForm({ ...form, customSections: val })}
         />
 
-        {/* Logo */}
         <div>
           <label className="text-sm text-muted-foreground">Unit Logo</label>
-          <InputFile file={file} setFile={setFile} />
+          <InputFile file={file} setFile={setFile} label="Unit Logo" />
         </div>
 
-        <button className="w-full bg-primary text-primary-foreground p-3 rounded-lg font-semibold hover:opacity-90">
-          Create Unit
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-[#1a365d] text-white p-3 rounded-lg font-semibold hover:bg-[#c9a227] hover:text-[#1a365d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? "Creating Unit..." : "Create Unit"}
         </button>
       </form>
     </div>

@@ -44,7 +44,7 @@ export default function CreateCommanderContent() {
       .then(setUnits);
   }, []);
 
-  // 🔥 Image preview
+  //  Image preview
   useEffect(() => {
     if (!file) return;
     const url = URL.createObjectURL(file);
@@ -218,22 +218,6 @@ export default function CreateCommanderContent() {
                 onChange={(e) =>
                   setForm({ ...form, startDate: e.target.value })
                 }
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="endDate"
-                className="text-sm text-muted-foreground"
-              >
-                End Date
-              </label>
-              <input
-                id="endDate"
-                type="date"
-                className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
-                value={form.endDate}
-                onChange={(e) => setForm({ ...form, endDate: e.target.value })}
               />
             </div>
           </div>

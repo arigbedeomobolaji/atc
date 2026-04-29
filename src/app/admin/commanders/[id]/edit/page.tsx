@@ -32,7 +32,7 @@ export default function EditCommander() {
     portraitPublicId: "",
   });
 
-  // 🔥 Load commander + units
+  //  Load commander + units
   useEffect(() => {
     async function load() {
       try {
@@ -71,7 +71,7 @@ export default function EditCommander() {
     if (id) load();
   }, [id]);
 
-  // 🔥 Preview new image
+  //  Preview new image
   useEffect(() => {
     if (!file) return;
     const url = URL.createObjectURL(file);
@@ -88,7 +88,7 @@ export default function EditCommander() {
     let publicId = form.portraitPublicId;
 
     try {
-      // 🔥 If new image selected → upload
+      //  If new image selected → upload
       if (file) {
         const fd = new FormData();
         const compressed = await imageCompression(file, {
@@ -113,7 +113,7 @@ export default function EditCommander() {
         publicId = upJson.data.publicId;
       }
 
-      // 🔥 Update commander
+      //  Update commander
       const res = await fetch(`/api/commanders/${id}`, {
         method: "PUT",
         body: JSON.stringify({

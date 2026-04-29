@@ -62,7 +62,7 @@ export async function PUT(
     description: body.description,
     fullDescription: body.fullDescription,
 
-    // 🔥 NEW FIELDS
+    //  NEW FIELDS
     capabilities: body.capabilities || [],
     systems: body.systems || [],
     responsibilities: body.responsibilities || [],

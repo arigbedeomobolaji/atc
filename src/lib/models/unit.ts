@@ -17,23 +17,23 @@ export type Unit = {
   description: string;
   fullDescription: string;
 
-  // 🔥 NEW: Operational Capabilities
+  //  NEW: Operational Capabilities
   capabilities?: string[];
 
-  // 🔥 NEW: Systems / Equipment (generalized)
+  //  NEW: Systems / Equipment (generalized)
   systems?: string[];
 
   // 🔹 Operational Data
   responsibilities: string[];
 
-  // 🔥 NEW: Establishment & Evolution
+  //  NEW: Establishment & Evolution
   history?: {
     date?: string;
     title?: string;
     event: string;
   }[];
 
-  // 🔥 NEW: Command History (CRITICAL)
+  //  NEW: Command History (CRITICAL)
   commanders?: {
     name: string;
     rank: string;
@@ -62,7 +62,7 @@ export type Unit = {
     url: string;
   }[];
 
-  // 🔥 FLEXIBLE EXTENSION (VERY IMPORTANT)
+  //  FLEXIBLE EXTENSION (VERY IMPORTANT)
   customSections?: {
     title: string;
     items: string[];

@@ -17,7 +17,9 @@ export default function AdminLayout({
     { name: "Manage News", href: "/admin/news" },
     { name: "Units", href: "/admin/units" },
     { name: "Commanders", href: "/admin/commanders" },
-    { name: "Events", href: "/admin/events" },
+    // { name: "Events", href: "/admin/events" },
+
+    { name: "Command Leadership", href: "/admin/command-leadership" },
     { name: "Gallery", href: "/admin/gallery" },
   ];
 

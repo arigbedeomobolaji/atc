@@ -17,6 +17,7 @@ export function HeroSection() {
       ref={ref}
       className="relative h-[80vh] min-h-[500px] overflow-hidden"
     >
+      <div></div>
       {/* 🎥 VIDEO BACKGROUND */}
       <motion.video
         style={{ y }}
@@ -42,6 +43,7 @@ export function HeroSection() {
         }}
       />
 
+      <div></div>
       {/* 🎯 Tactical Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/80 to-black/90" />
 
@@ -49,7 +51,7 @@ export function HeroSection() {
       <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:40px_40px]" />
 
       {/* 🪖 CONTENT */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 lg:px-16">
+      <div className="relative z-10 max-w-6xl mx-auto h-full flex flex-col justify-center px-6 lg:px-16">
         <div className="max-w-5xl">
           {/* 🔰 Badge */}
           <motion.div
@@ -63,7 +65,7 @@ export function HeroSection() {
             <Plane className="w-5 h-5 scale-x-[-1]" />
           </motion.div>
 
-          {/* 🔥 Title */}
+          {/*  Title */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}

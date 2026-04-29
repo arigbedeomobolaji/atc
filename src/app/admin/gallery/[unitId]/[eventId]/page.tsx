@@ -16,7 +16,7 @@ export default function EventGalleryPage() {
   const [newCaption, setNewCaption] = useState("");
 
   // =========================
-  // 🔥 LOAD IMAGES
+  //  LOAD IMAGES
   // =========================
   async function loadImages() {
     try {
@@ -60,7 +60,7 @@ export default function EventGalleryPage() {
   }, [eventId]);
 
   // =========================
-  // 🔥 DELETE IMAGE
+  //  DELETE IMAGE
   // =========================
   async function handleDelete(publicId: string) {
     const confirmDelete = confirm("Delete this image?");
@@ -75,7 +75,7 @@ export default function EventGalleryPage() {
     });
 
     if (res.ok) {
-      loadImages(); // 🔥 refresh UI
+      loadImages(); //  refresh UI
     } else {
       alert("Delete failed");
     }
@@ -140,7 +140,7 @@ export default function EventGalleryPage() {
         )}
       </div>
       {/* ========================= */}
-      {/* 🔥 IMAGE GRID */}
+      {/*  IMAGE GRID */}
       {/* ========================= */}
       {images.length === 0 ? (
         <p>No images yet</p>
@@ -150,7 +150,7 @@ export default function EventGalleryPage() {
             <div key={img.publicId} className="relative">
               <img src={img.url} className="w-full h-40 object-cover rounded" />
 
-              {/* 🔥 DELETE BUTTON */}
+              {/*  DELETE BUTTON */}
               <button
                 onClick={() => handleDelete(img.publicId)}
                 className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs rounded"

@@ -51,7 +51,7 @@ export async function PUT(
 
     const unitId = existing.unitId;
 
-    // 🔥 If editing dates → prevent overlap issues
+    //  If editing dates → prevent overlap issues
     if (body.startDate || body.endDate) {
       const overlapping = await db.collection("commanders").findOne({
         _id: { $ne: commanderId },
@@ -77,7 +77,7 @@ export async function PUT(
       }
     }
 
-    // 🔥 Build update object safely
+    //  Build update object safely
     const updateData: any = {
       ...(body.name && { name: body.name }),
       ...(body.rank && { rank: body.rank }),

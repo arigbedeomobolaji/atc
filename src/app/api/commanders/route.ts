@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unit not found" }, { status: 404 });
     }
 
-    // 🔥 Enforce ATC only
+    //  Enforce ATC only
     if (unit.parentCommand !== "Air Training Command") {
       return NextResponse.json(
         { error: "Only ATC units can have commanders here" },
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🔥 Close previous active commander
+    //  Close previous active commander
 
     const isPast = !!body.endDate;
 
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
       portraitPublicId: body.portraitPublicId || "",
       bio: body.bio || "",
 
-      // 🔥 NEW FIELD
+      //  NEW FIELD
       awards: body.awards || "",
 
       startDate: new Date(body.startDate || Date.now()),
@@ -104,7 +104,7 @@ export async function POST(req: Request) {
 
     const result = await db.collection("commanders").insertOne(newCommander);
 
-    // 🔥 Update unit pointer
+    //  Update unit pointer
     if (!body.endDate) {
       await db.collection("units").updateOne(
         { _id: unitId },

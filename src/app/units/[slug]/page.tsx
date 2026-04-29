@@ -33,8 +33,7 @@ export default async function UnitPage({ params }: any) {
 
   return (
     <div className="bg-gray-50">
-      <UnitNavbar unit={unit} />
-      {/* 🔥 CLIENT SIDE UI */}
+      {/*  CLIENT SIDE UI */}
       <UnitPageClient unit={unit} gallery={gallery} />
     </div>
   );

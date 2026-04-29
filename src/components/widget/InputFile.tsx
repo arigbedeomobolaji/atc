@@ -4,9 +4,11 @@ import React, { useState } from "react";
 export default function InputFile({
   file,
   setFile,
+  label,
 }: {
   file: File | null;
   setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  label: string;
 }) {
   //   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -35,9 +37,7 @@ export default function InputFile({
   }
   return (
     <div>
-      <label className="text-sm text-muted-foreground">
-        Commander Portrait
-      </label>
+      <label className="text-sm text-muted-foreground">{label || "Logo"}</label>
 
       <div className="flex items-center gap-4 mt-2">
         <input

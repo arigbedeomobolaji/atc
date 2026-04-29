@@ -25,10 +25,10 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Gallery not found" }, { status: 404 });
     }
 
-    // 🔥 delete from cloudinary
+    //  delete from cloudinary
     await cloudinary.uploader.destroy(publicId);
 
-    // 🔥 remove from images array
+    //  remove from images array
     await db.collection<GalleryDoc>("galleries").updateOne(
       { _id: new ObjectId(galleryId) },
       {
@@ -38,7 +38,7 @@ export async function DELETE(req: Request) {
       }
     );
 
-    // 🔥 OPTIONAL: fix event cover
+    //  OPTIONAL: fix event cover
     const isCover = await db.collection("events").findOne({
       coverImage: { $in: gallery.images.map((img: any) => img.url) },
     });

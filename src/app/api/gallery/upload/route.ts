@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     const { db } = await connectToDatabase();
     const formData = await req.formData();
 
-    const type = formData.get("type"); // 🔥 KEY
+    const type = formData.get("type"); //  KEY
     const caption = formData.get("caption") as string;
     const category = formData.get("category") as string;
     const scope = formData.get("scope") as string;
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const eventId = formData.get("eventId") as string | null;
 
     // ============================
-    // 🔥 1. PORTRAIT (SINGLE FILE)
+    //  1. PORTRAIT (SINGLE FILE)
     // ============================
     if (type === "PORTRAIT") {
       const file = formData.get("file") as File;
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ============================
-    // 🔥 2. GALLERY (MULTIPLE)
+    //  2. GALLERY (MULTIPLE)
     // ============================
     const files = formData.getAll("files") as File[];
 
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
         publicId: uploadRes.public_id,
       });
 
-      // 🔥 set cover image once
+      //  set cover image once
       if (eventId) {
         const existingEvent = await db.collection("events").findOne({
           _id: new ObjectId(eventId),
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ============================
-    // 🔥 UPSERT GALLERY
+    //  UPSERT GALLERY
     // ============================
     await db.collection<GalleryDoc>("galleries").updateOne(
       {
@@ -196,7 +196,7 @@ export async function POST(req: NextRequest) {
 //       stream.end(buffer);
 //     });
 
-//     // 🔥 ADD THIS BLOCK HERE
+//     //  ADD THIS BLOCK HERE
 //     if (eventId) {
 //       const existing = await db.collection("events").findOne({
 //         _id: new ObjectId(eventId),

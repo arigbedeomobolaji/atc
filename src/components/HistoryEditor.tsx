@@ -46,10 +46,14 @@ export default function HistoryEditor({
       {safeValue.map((h: any, i: number) => (
         <div key={i} className="flex gap-2 mt-2">
           <input
-            placeholder="Date"
-            type="date"
+            placeholder="YYYY"
+            type="text"
+            maxLength={4}
             value={h.date || ""}
-            onChange={(e) => updateItem(i, "date", e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, ""); // Only allow numbers
+              updateItem(i, "date", val);
+            }}
             className="border p-2 rounded w-1/3"
           />
 

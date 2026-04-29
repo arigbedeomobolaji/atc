@@ -99,7 +99,7 @@ export async function DELETE(
       _id: new ObjectId(eventId),
     });
 
-    // 🔥 ALSO delete related images
+    //  ALSO delete related images
     await db.collection("galleries").deleteMany({
       eventId: new ObjectId(eventId),
     });

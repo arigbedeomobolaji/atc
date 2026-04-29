@@ -63,7 +63,7 @@ export default function EditUnitPage() {
     customSections: [],
   });
 
-  // 🔥 Load unit data
+  //  Load unit data
   useEffect(() => {
     async function loadUnit() {
       try {
@@ -116,7 +116,7 @@ export default function EditUnitPage() {
   async function handleSubmit(e: any) {
     e.preventDefault();
 
-    // 🔥 1. Update Unit Data
+    //  1. Update Unit Data
     const res = await fetch(`/api/units/${unitId}`, {
       method: "PUT",
       headers: {
@@ -130,7 +130,7 @@ export default function EditUnitPage() {
       return;
     }
 
-    // 🔥 2. Upload new logo if selected
+    //  2. Upload new logo if selected
     if (file instanceof File && file.type.startsWith("image/")) {
       const fd = new FormData();
       const compressed = await imageCompression(file, {
@@ -374,7 +374,7 @@ export default function EditUnitPage() {
               <p className="text-sm text-muted-foreground">No logo uploaded</p>
             )}
 
-            <InputFile file={file} setFile={setFile} />
+            <InputFile file={file} setFile={setFile} label="Unit Logo" />
           </div>
 
           {/* BUTTONS */}

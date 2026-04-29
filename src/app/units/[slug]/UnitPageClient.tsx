@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/carousel";
 import { FadeInSection } from "@/components/FadeInSection";
 import { VisionStatement } from "@/components/VisionStatement";
+import Link from "next/link";
 
 // Icon mapping for different section types
 const getSectionIcon = (title: string) => {
@@ -817,8 +818,13 @@ export default function UnitPageClient({ unit, gallery }: any) {
                       Biography
                     </h4>
                     <p className="text-white/80 leading-relaxed">
-                      {currentCommander.bio}
+                      {currentCommander.bio.substring(0, 300)}...
                     </p>
+                    <Link href={`/units/${unit.slug}/commander`}>
+                      <button className="mt-6 px-8 py-3 bg-[#c9a227] text-[#1a365d] font-bold rounded-lg hover:bg-white transition-colors duration-300">
+                        View Full Profile
+                      </button>
+                    </Link>
                   </div>
                 )}
               </motion.div>

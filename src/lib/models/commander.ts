@@ -16,7 +16,7 @@ export type Commander = {
 
   bio?: string;
 
-  // 🔥 Awards & Decorations
+  //  Awards & Decorations
   awards?: string;
 
   appointment: "COMMANDER" | "COMMANDANT" | "AOC";

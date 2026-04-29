@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       role: body.role,
       description: body.description,
 
-      // 🔥 NEW FIELDS
+      //  NEW FIELDS
       capabilities: body.capabilities || [],
       systems: body.systems || [],
       responsibilities: body.responsibilities || [],

@@ -55,7 +55,7 @@ export function AppCarousel() {
         fadeEffect={{ crossFade: true }}
         className="w-full h-full"
       >
-        {/* 🔥 DB NEWS SLIDES */}
+        {/*  DB NEWS SLIDES */}
         {newsSlides.map((item) => (
           <SwiperSlide key={item._id}>
             <Link href={`/news/${item.slug}`}>

@@ -20,7 +20,7 @@ export default function UploadImages() {
     const formData = new FormData();
 
     files.forEach((file) => {
-      formData.append("files", file); // 🔥 plural
+      formData.append("files", file); //  plural
     });
 
     formData.append("caption", caption);

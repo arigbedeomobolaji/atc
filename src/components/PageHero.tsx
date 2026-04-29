@@ -67,7 +67,7 @@ export function PageHero({ title, description, callToAction }: PageProps) {
             <Plane className="w-5 h-5 scale-x-[-1]" />
           </motion.div>
 
-          {/* 🔥 Title */}
+          {/*  Title */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
