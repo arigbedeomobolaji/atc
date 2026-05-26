@@ -1,25 +1,45 @@
 .swiper-button-next,
 .swiper-button-prev {
-  color: var(--color-primary) !important;
-  background-color: white !important;
-  padding: 10px;
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 100%;
+  color: hsl(45, 68%, 47%) !important;
+  background-color: hsla(220, 64%, 8%, 0.72) !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(10px) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
-/* Center the arrow icon */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: hsla(220, 64%, 16%, 0.9) !important;
+  border-color: hsla(45, 68%, 47%, 0.5) !important;
+}
+
 .swiper-button-next::after,
 .swiper-button-prev::after {
-  font-size: 16px !important;
-  font-weight: bold !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
 }
 
-/* Position tweaks (optional) */
 .swiper-button-next {
   right: 20px !important;
 }
 
 .swiper-button-prev {
   left: 20px !important;
+}
+
+.swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.4) !important;
+  opacity: 1 !important;
+  width: 6px !important;
+  height: 6px !important;
+  transition: all 0.25s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: hsl(45, 68%, 47%) !important;
+  width: 22px !important;
+  border-radius: 3px !important;
 }

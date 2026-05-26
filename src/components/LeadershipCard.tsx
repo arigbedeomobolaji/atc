@@ -1,120 +1,157 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
+import { motion } from "framer-motion";
+import { X, Star, Medal } from "lucide-react";
 
-export default function LeadershipCard({ leader }: any) {
+interface Leader {
+  _id: string;
+  name: string;
+  rank: string;
+  appointment: string;
+  appointmentAbbreviation: string;
+  image?: string;
+  bio?: string;
+  awards?: string;
+}
+
+export default function LeadershipCard({ leader }: { leader: Leader }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div className="flex gap-5 cursor-pointer group">
-          {/* ================= LEFT IMAGE CARD ================= */}
-          <div className="relative w-[240px] h-[340px] rounded-2xl overflow-hidden shadow-lg">
-            <img
-              src={leader.image?.trim()}
-              alt={leader.name}
-              className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-            />
+        <motion.div
+          whileHover="hover"
+          className="relative w-[220px] shrink-0 cursor-pointer group select-none"
+        >
+          {/* ── Portrait ─── */}
+          <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
+            {/* Image */}
+            {leader.image ? (
+              <img
+                src={leader.image}
+                alt={leader.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+            ) : (
+              <div className="w-full h-full bg-[hsl(220,64%,22%)] flex items-center justify-center">
+                <Star size={48} className="text-[hsl(45,68%,47%)]/40" />
+              </div>
+            )}
 
-            {/* 🔥 MULTI GRADIENT OVERLAY (premium look) */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-transparent to-indigo-900/30" />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,10%)]/95 via-[hsl(220,64%,16%)]/30 to-transparent" />
 
-            {/* TEXT */}
-            <div className="absolute bottom-4 left-4 right-4 text-white">
-              <h5 className="font-bold">{leader.name}</h5>
-              <p className="text-xl font-bold tracking-wide">
+            {/* Appointment badge */}
+            <div className="absolute top-3 right-3">
+              <div className="px-2 py-0.5 rounded-full bg-[hsl(45,68%,47%)] text-[hsl(220,64%,16%)] text-[10px] font-black uppercase tracking-wider shadow">
                 {leader.appointmentAbbreviation}
+              </div>
+            </div>
+
+            {/* Name / rank block */}
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <p className="text-[11px] text-[hsl(45,68%,47%)] font-bold uppercase tracking-[0.2em] mb-0.5">
+                {leader.rank}
               </p>
-              <p className="text-xs text-gray-400 truncate">
+              <h5 className="text-white font-bold text-sm leading-tight line-clamp-2">
+                {leader.name}
+              </h5>
+              <p className="text-white/50 text-[11px] mt-1 truncate">
                 {leader.appointment}
               </p>
             </div>
+
+            {/* Hover gold border */}
+            <motion.div
+              variants={{ hover: { opacity: 1 } }}
+              initial={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 rounded-2xl ring-2 ring-[hsl(45,68%,47%)] pointer-events-none"
+            />
           </div>
 
-          {/* ================= RIGHT STACK ================= */}
-          <div className="flex flex-col gap-4 w-[220px] h-[340px]">
-            {/* ===== TOP CARD (GLASS GRADIENT) ===== */}
-            <div className="flex-[0.9] rounded-2xl p-4 text-white flex flex-col justify-center text-center relative overflow-hidden shadow-lg">
-              {/* gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary via-indigo-600 to-primary" />
-              <div className="absolute inset-0 bg-black/20" />
-
-              {/* content */}
-              <div className="relative z-10">
-                <h3 className="text-lg font-bold leading-tight">
-                  {leader.name}
-                </h3>
-
-                <p className="text-2xl font-extrabold mt-2 tracking-wider">
-                  {leader.appointmentAbbreviation}
-                </p>
-              </div>
-            </div>
-
-            {/* ===== BOTTOM CARD (RICH CONTENT) ===== */}
-            <div className="flex-[1.1] rounded-2xl p-4 shadow-lg relative overflow-hidden">
-              {/* soft gradient bg */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-100" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent" />
-
-              <div className="relative z-10 flex flex-col justify-between h-full text-center">
-                {/* top */}
-                <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide">
-                    {leader.name}
-                  </p>
-
-                  <p className="font-semibold text-sm mt-1 leading-tight">
-                    {leader.appointment}
-                    {leader.appointmentAbbreviation && (
-                      <span className="text-primary">
-                        {" ("}
-                        {leader.appointmentAbbreviation} {")"}
-                      </span>
-                    )}
-                  </p>
-                </div>
-
-                {/* middle */}
-                <p className="text-xs text-gray-600 mt-2 line-clamp-3">
-                  {leader.bio?.slice(0, 120)}...
-                </p>
-
-                {/* bottom */}
-                <p className="text-[10px] text-gray-400 mt-2 line-clamp-1">
-                  {leader.awards}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+          {/* Bottom gold line */}
+          <motion.div
+            variants={{ hover: { scaleX: 1 } }}
+            initial={{ scaleX: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mt-2 h-0.5 bg-gradient-to-r from-[hsl(45,68%,47%)] to-transparent origin-left rounded-full"
+          />
+        </motion.div>
       </Dialog.Trigger>
 
-      {/* ================= MODAL ================= */}
+      {/* ── Bio modal ─── */}
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/70 z-[999]" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/75 backdrop-blur-sm z-[999] data-[state=open]:animate-fadeIn" />
 
-        <Dialog.Content className="fixed inset-0 z-[1000] flex items-center justify-center p-6">
-          <div className="bg-white rounded-xl max-w-3xl w-full p-6 overflow-y-auto max-h-[90vh] relative animate-fadeIn">
-            <Dialog.Close className="absolute top-4 right-4 text-xl">
-              ✕
-            </Dialog.Close>
+        <Dialog.Content className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+            className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden"
+          >
+            {/* Modal header stripe */}
+            <div className="h-1.5 bg-gradient-to-r from-[hsl(220,64%,16%)] via-[hsl(350,66%,33%)] to-[hsl(45,68%,47%)]" />
 
-            <h2 className="text-xl font-bold mb-2">{leader.name}</h2>
+            <div className="p-6 sm:p-8">
+              <div className="flex gap-5 mb-6">
+                {/* Thumbnail */}
+                {leader.image && (
+                  <div className="relative w-24 h-28 rounded-xl overflow-hidden shrink-0 shadow-md">
+                    <img
+                      src={leader.image}
+                      alt={leader.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[hsl(45,68%,47%)] text-[hsl(220,64%,16%)] text-[10px] font-black uppercase tracking-wider mb-2">
+                    <Star size={9} />
+                    {leader.appointmentAbbreviation}
+                  </div>
+                  <h2 className="text-xl font-black text-[hsl(220,64%,16%)] font-heading uppercase tracking-wide leading-tight">
+                    {leader.name}
+                  </h2>
+                  <p className="text-sm text-slate-500 mt-0.5">
+                    {leader.rank} &bull; {leader.appointment}
+                  </p>
+                </div>
+                <Dialog.Close className="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors self-start shrink-0">
+                  <X size={18} />
+                </Dialog.Close>
+              </div>
 
-            <p className="text-sm text-gray-500 mb-4">
-              {leader.rank} • {leader.appointment}
-            </p>
+              {/* Divider */}
+              <div className="flex items-center gap-2 mb-5">
+                <div className="w-12 h-0.5 bg-[hsl(45,68%,47%)] rounded-full" />
+                <div className="w-6 h-px bg-slate-200 rounded-full" />
+              </div>
 
-            <p className="text-sm whitespace-pre-line leading-relaxed">
-              {leader.bio}
-            </p>
+              {/* Bio */}
+              {leader.bio && (
+                <div className="mb-5">
+                  <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-line">
+                    {leader.bio}
+                  </p>
+                </div>
+              )}
 
-            <div className="mt-4 text-sm">
-              <strong>Awards:</strong> {leader.awards}
+              {/* Awards */}
+              {leader.awards && (
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-[hsl(220,64%,16%)]/4 border border-[hsl(220,64%,16%)]/8">
+                  <Medal size={16} className="text-[hsl(45,68%,47%)] mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-[hsl(220,64%,16%)] mb-1">
+                      Awards & Decorations
+                    </p>
+                    <p className="text-sm text-slate-600">{leader.awards}</p>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          </motion.div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

@@ -23,7 +23,7 @@ export async function GET(
     });
 
     if (!commander) {
-      return NextResponse.json({ commander: null });
+      return new NextResponse(null, { status: 404 });
     }
 
     return NextResponse.json({

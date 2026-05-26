@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Manrope, Oswald, Open_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const oswald = Oswald({
@@ -81,6 +82,7 @@ export default function RootLayout({
         className={` ${inter.variable}  ${manrope.variable} ${oswald.variable} ${openSans.variable} antialiased`}
       >
         {children}
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

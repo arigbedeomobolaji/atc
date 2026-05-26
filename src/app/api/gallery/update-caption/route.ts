@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 
 export async function PATCH(req: Request) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { galleryId, caption } = await req.json();
 

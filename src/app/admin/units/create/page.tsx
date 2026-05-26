@@ -2,10 +2,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // 1. Import useRouter
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
 import ArrayInput from "@/components/ArrayInput";
-// import CommandersEditor from "@/components/CommandsEditor"; // Unused in this snippet but keep if needed
 import CustomSectionsEditor from "@/components/CustomSectionsEditor";
 import HistoryEditor from "@/components/HistoryEditor";
 import InputFile from "@/components/widget/InputFile";
@@ -46,7 +46,8 @@ export default function CreateUnit() {
       const json = await res.json();
       if (!res.ok) {
         setLoading(false);
-        return alert(json.error);
+        toast.error(json.error || "Failed to create unit");
+        return;
       }
 
       const unitId = json.id;
@@ -64,17 +65,16 @@ export default function CreateUnit() {
         });
 
         if (!uploadRes.ok) {
-          console.error("Logo upload failed, but unit was created.");
+          toast.warning("Unit created but logo upload failed");
         }
       }
 
-      // 3. Final Alert and Redirect
-      alert("Unit created successfully ✅");
-      router.push("/admin/units"); // 4. Redirect to admin/units
-      router.refresh(); // Optional: clears segment cache to show new data
+      toast.success("Unit created successfully");
+      router.push("/admin/units");
+      router.refresh();
     } catch (error) {
       console.error(error);
-      alert("An error occurred while creating the unit ❌");
+      toast.error("An error occurred while creating the unit");
     } finally {
       setLoading(false);
     }
@@ -181,11 +181,11 @@ export default function CreateUnit() {
         {/* Mission */}
         <div>
           <label htmlFor="mission" className="text-sm text-muted-foreground">
-            Mission
+            Mission Statement <span className="text-muted-foreground/50">(optional)</span>
           </label>
-          <input
+          <textarea
             id="mission"
-            className="w-full mt-1 p-3 border border-border rounded-lg bg-background"
+            className="w-full mt-1 p-3 border border-border rounded-lg bg-background h-24"
             onChange={(e) => setForm({ ...form, mission: e.target.value })}
           />
         </div>

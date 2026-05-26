@@ -6,7 +6,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /* =========================================
-   🎯 DESIGN SYSTEM (UPDATED COLORS)
+   DESIGN SYSTEM — Deep Navy · Crimson · Gold
+   Navy:    #0f2044  hsl(220 64% 16%)
+   Crimson: #8c1c28  hsl(350 66% 33%)
+   Gold:    #c9a227  hsl(45  68% 47%)
 ========================================= */
 :root {
   --radius: 0.625rem;
@@ -20,68 +23,69 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
 
-  /* ✅ PRIMARY (#1a365d) hsl(210 40% 98%)*/
-  --primary: 214 56% 23%;
+  /* PRIMARY: Deep Navy #0f2044 */
+  --primary: 220 64% 16%;
   --primary-foreground: 210 40% 98%;
 
-  /* ✅ SECONDARY (#c9a227) hsl(46,68%,47%) hsl(222 47% 11%) */
+  /* SECONDARY: Gold #c9a227 */
   --secondary: 45 68% 47%;
   --secondary-foreground: 222 47% 11%;
 
   --muted: 210 40% 96%;
   --muted-foreground: 215 16% 47%;
 
-  /* ✅ ACCENT (same as primary) */
-  --accent: 214 56% 23%;
+  /* ACCENT: Crimson #8c1c28 */
+  --accent: 350 66% 33%;
   --accent-foreground: 210 40% 98%;
 
-  --destructive: 0 84% 60%;
+  /* Standalone crimson token for utilities */
+  --crimson: 350 66% 33%;
+  --crimson-foreground: 210 40% 98%;
+
+  --destructive: 0 72% 51%;
   --destructive-foreground: 210 40% 98%;
 
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-
-  /* match primary */
-  --ring: 214 56% 23%;
+  --border: 220 25% 88%;
+  --input: 220 25% 88%;
+  --ring: 220 64% 16%;
 
   /* sidebar */
-  --sidebar-background: 214 56% 23%;
+  --sidebar-background: 220 64% 16%;
   --sidebar-foreground: 210 40% 98%;
-  --sidebar-primary: 214 56% 23%;
+  --sidebar-primary: 220 64% 16%;
   --sidebar-primary-foreground: 210 40% 98%;
-  --sidebar-accent: 45 69% 47%;
+  --sidebar-accent: 45 68% 47%;
   --sidebar-accent-foreground: 222 47% 11%;
-  --sidebar-border: 214 32% 20%;
-  --sidebar-ring: 214 56% 23%;
+  --sidebar-border: 220 50% 12%;
+  --sidebar-ring: 45 68% 47%;
 }
 
-/* 🌙 DARK MODE (adjusted to match your palette) */
+/* Dark mode */
 .dark {
-  --background: 214 56% 10%;
-  --foreground: 210 40% 98%;
+  --background: 220 50% 8%;
+  --foreground: 210 40% 96%;
 
-  --card: 214 56% 14%;
-  --card-foreground: 210 40% 98%;
+  --card: 220 50% 12%;
+  --card-foreground: 210 40% 96%;
 
-  --popover: 214 56% 14%;
-  --popover-foreground: 210 40% 98%;
+  --popover: 220 50% 12%;
+  --popover-foreground: 210 40% 96%;
 
-  /* invert nicely */
-  --primary: 210 40% 98%;
-  --primary-foreground: 214 56% 23%;
+  --primary: 210 40% 96%;
+  --primary-foreground: 220 64% 16%;
 
-  --secondary: 45 69% 47%;
-  --secondary-foreground: 214 56% 10%;
+  --secondary: 45 68% 47%;
+  --secondary-foreground: 220 50% 8%;
 
-  --muted: 214 32% 20%;
+  --muted: 220 40% 18%;
   --muted-foreground: 215 20% 65%;
 
-  --accent: 45 69% 47%;
-  --accent-foreground: 214 56% 10%;
+  --accent: 350 66% 40%;
+  --accent-foreground: 210 40% 96%;
 
-  --border: 214 32% 20%;
-  --input: 214 32% 20%;
-  --ring: 210 40% 98%;
+  --border: 220 40% 20%;
+  --input: 220 40% 20%;
+  --ring: 210 40% 96%;
 }
 
 /* =========================================
@@ -102,6 +106,12 @@
 
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-crimson: hsl(var(--crimson));
+  --color-crimson-foreground: hsl(var(--crimson-foreground));
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));

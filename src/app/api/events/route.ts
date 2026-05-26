@@ -3,9 +3,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const body = await req.json();
     const { db } = await connectToDatabase();
@@ -67,8 +71,6 @@ export async function GET(req: NextRequest) {
     if (unitId && ObjectId.isValid(unitId)) {
       query.unitId = new ObjectId(unitId);
     }
-
-    console.log(query);
 
     const events = await db
       .collection("events")

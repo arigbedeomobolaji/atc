@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 
 export async function GET(
@@ -34,6 +35,9 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   const body = await req.json();
   const { db } = await connectToDatabase();
   const { id } = await params;
@@ -52,6 +56,9 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   const { db } = await connectToDatabase();
   const { id } = await params;
 

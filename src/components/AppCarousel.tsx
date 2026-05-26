@@ -6,7 +6,7 @@ import { Autoplay, Navigation, Pagination, EffectFade } from "swiper/modules";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-
+import { ArrowRight, Radio } from "lucide-react";
 import { HeadquartersAndLeaderships } from "./GalleryTabs";
 
 import "swiper/css";
@@ -14,40 +14,32 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import "./AppCarousel.css";
-import { useRouter } from "next/navigation";
 
 type CarouselNews = {
   _id: string;
   title: string;
   slug: string;
   coverImage?: string;
+  excerpt?: string;
 };
 
-const FALLBACK_IMAGE = "/images/placeholder-rect.jpeg";
+const FALLBACK = "/images/placeholder-rect.jpeg";
 
 export function AppCarousel() {
-  const [newsSlides, setNewsSlides] = useState<CarouselNews[]>([]);
-  const router = useRouter();
+  const [slides, setSlides] = useState<CarouselNews[]>([]);
 
   useEffect(() => {
-    async function loadCarouselNews() {
-      try {
-        const res = await fetch("/api/news/carousel");
-        const json = await res.json();
-        setNewsSlides(json.news || []);
-      } catch (err) {
-        console.error("Carousel fetch failed", err);
-      }
-    }
-
-    loadCarouselNews();
+    fetch("/api/news/carousel")
+      .then((r) => r.json())
+      .then((j) => setSlides(j.news || []))
+      .catch(() => {});
   }, []);
 
   return (
-    <div className="relative w-full max-w-[2000px] mx-auto h-[75vh] overflow-hidden">
+    <div className="relative w-full h-[82vh] min-h-[520px] overflow-hidden bg-[hsl(220,64%,8%)]">
       <Swiper
         modules={[Autoplay, Navigation, Pagination, EffectFade]}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={{ delay: 6000, disableOnInteraction: false }}
         loop
         navigation
         pagination={{ clickable: true }}
@@ -55,97 +47,115 @@ export function AppCarousel() {
         fadeEffect={{ crossFade: true }}
         className="w-full h-full"
       >
-        {/*  DB NEWS SLIDES */}
-        {newsSlides.map((item) => (
+        {slides.map((item) => (
           <SwiperSlide key={item._id}>
-            <Link href={`/news/${item.slug}`}>
-              <div className="relative w-full h-full overflow-hidden group cursor-pointer">
-                <motion.div
-                  // className="absolute inset-0"
-                  initial={{ scale: 1.05, y: 40 }}
-                  animate={{ scale: 1, y: 0 }}
-                  transition={{ duration: 1.8, ease: "easeOut" }}
-                >
-                  {/* Background Blur */}
-                  <Image
-                    src={item.coverImage || FALLBACK_IMAGE}
-                    alt={item.title}
-                    fill
-                    className="object-cover blur-md"
-                  />
-                  {/* Foreground Image */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Image
-                      src={item.coverImage || FALLBACK_IMAGE}
-                      alt={item.title}
-                      fill
-                      className="rounded-lg object-contain"
-                    />
-                  </div>
-                </motion.div>
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                  className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center max-w-3xl bg-white/20 backdrop-blur-md rounded-xl px-6 py-4 shadow-lg"
-                >
-                  <p className="font-heading font-semibold text-gray-100 text-md lg:text-xl">
-                    {item.title}
-                  </p>
-                  <button
-                    onClick={() => router.push(`/news/${item.slug}`)}
-                    className="font-link text-sm px-5 py-1 bg-dark text-white rounded-md"
-                  >
-                    Read More
-                  </button>
-                </motion.div>
-              </div>
-            </Link>
+            <div className="relative w-full h-full overflow-hidden">
+              <Image
+                src={item.coverImage || FALLBACK}
+                alt={item.title}
+                fill
+                className="object-cover scale-[1.04]"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/95 via-[hsl(220,64%,16%)]/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[hsl(220,64%,8%)]/60 via-transparent to-transparent" />
+              <SlideContent
+                badge="Latest News"
+                title={item.title}
+                excerpt={item.excerpt}
+                href={`/news/${item.slug}`}
+                cta="Read Full Article"
+              />
+            </div>
           </SwiperSlide>
         ))}
 
-        {/* 🧪 STATIC SLIDES (temporary) */}
         {HeadquartersAndLeaderships.map(
-          ({ imageSrc, caption }, index) =>
-            index > 0 && (
-              <SwiperSlide key={`static-${index}`}>
+          ({ imageSrc, caption }, i) =>
+            i > 0 && (
+              <SwiperSlide key={`static-${i}`}>
                 <div className="relative w-full h-full overflow-hidden">
-                  <motion.div
-                    className="absolute inset-0"
-                    initial={{ scale: 1.05, y: 40 }}
-                    animate={{ scale: 1, y: 0 }}
-                    transition={{ duration: 1.8 }}
-                  >
-                    <Image
-                      src={imageSrc}
-                      alt={caption}
-                      fill
-                      className="object-cover"
-                    />
-                  </motion.div>
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center max-w-3xl bg-white/20 backdrop-blur-md rounded-xl px-6 py-4 shadow-lg"
-                  >
-                    <p className="font-heading font-semibold text-gray-100 text-sm sm:text-lg lg:text-2xl">
-                      {caption}
-                    </p>
-                  </motion.div>
+                  <Image
+                    src={imageSrc}
+                    alt={caption}
+                    fill
+                    className="object-cover scale-[1.04]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/90 via-[hsl(220,64%,16%)]/45 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[hsl(220,64%,8%)]/55 via-transparent to-transparent" />
+                  <SlideContent
+                    badge="HQ ATC"
+                    title={caption}
+                    href="/gallery"
+                    cta="View Gallery"
+                  />
                 </div>
               </SwiperSlide>
             )
         )}
       </Swiper>
 
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-black/60 to-transparent pointer-events-none" />
+      {/* Fade into page background below */}
+      <div className="absolute bottom-0 left-0 w-full h-28 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
+    </div>
+  );
+}
+
+function SlideContent({
+  badge,
+  title,
+  excerpt,
+  href,
+  cta,
+}: {
+  badge: string;
+  title: string;
+  excerpt?: string;
+  href: string;
+  cta: string;
+}) {
+  return (
+    <div className="absolute inset-0 flex items-end z-10">
+      <div className="max-w-7xl mx-auto w-full px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 36 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease: "easeOut" }}
+          className="max-w-2xl"
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <Radio size={11} className="text-[hsl(350,66%,55%)] animate-pulse" />
+            <span className="text-[hsl(45,68%,47%)] text-[11px] font-black uppercase tracking-[0.3em]">
+              {badge}
+            </span>
+          </div>
+
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase leading-tight tracking-wide">
+            {title}
+          </h2>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.55, delay: 0.45 }}
+            className="my-5 w-20 h-[3px] bg-[hsl(45,68%,47%)] origin-left rounded-full"
+          />
+
+          {excerpt && (
+            <p className="text-white/55 text-sm leading-relaxed line-clamp-2 mb-5 max-w-lg">
+              {excerpt}
+            </p>
+          )}
+
+          <Link
+            href={href}
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-[hsl(45,68%,47%)] text-[hsl(220,64%,16%)] text-sm font-black uppercase tracking-wide hover:bg-[hsl(45,68%,55%)] transition-colors duration-200 shadow-xl"
+          >
+            {cta}
+            <ArrowRight size={14} />
+          </Link>
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -2,9 +2,13 @@
 
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const body = await req.json();
     const { db } = await connectToDatabase();
@@ -51,13 +55,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unit not found" }, { status: 404 });
     }
 
-    //  Enforce ATC only
-    if (unit.parentCommand !== "Air Training Command") {
-      return NextResponse.json(
-        { error: "Only ATC units can have commanders here" },
-        { status: 400 }
-      );
-    }
+    // //  Enforce ATC only
+    // if (unit.parentCommand !== "Air Training Command") {
+    //   return NextResponse.json(
+    //     { error: "Only ATC units can have commanders here" },
+    //     { status: 400 }
+    //   );
+    // }
 
     const allowed = ["COMMANDER", "COMMANDANT", "AOC"];
 

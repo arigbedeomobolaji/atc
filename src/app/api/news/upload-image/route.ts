@@ -1,92 +1,61 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
-import { getGridFSBucket } from "@/lib/db";
-import sharp from "sharp";
+import cloudinary from "@/lib/cloudinary";
+import { requireAuth } from "@/lib/auth";
 
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MAX_SIZE = 8 * 1024 * 1024; // 8 MB
+const ALLOWED_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+];
 
 export async function POST(req: Request) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
-    const { filename, data } = await req.json();
+    const formData = await req.formData();
+    const file = formData.get("file") as File | null;
 
-    if (!filename || !data) {
-      return NextResponse.json(
-        { error: "Filename and image data are required." },
-        { status: 400 }
-      );
+    if (!file) {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Extract base64 + mime
-    const match = data.match(/^data:(image\/.+);base64,(.+)$/);
-    if (!match) {
+    if (!ALLOWED_TYPES.includes(file.type)) {
       return NextResponse.json(
-        { error: "Invalid image format." },
-        { status: 400 }
-      );
-    }
-
-    const contentType = match[1];
-    const base64 = match[2];
-
-    if (!ALLOWED_TYPES.includes(contentType)) {
-      return NextResponse.json(
-        { error: "Unsupported image type." },
+        { error: "Unsupported image type. Use JPEG, PNG, WebP or GIF." },
         { status: 415 }
       );
     }
 
-    const buffer = Buffer.from(base64, "base64");
-
-    if (buffer.length > MAX_SIZE) {
+    if (file.size > MAX_SIZE) {
       return NextResponse.json(
-        { error: "Image exceeds 5MB limit." },
+        { error: "Image exceeds 8 MB limit." },
         { status: 413 }
       );
     }
 
-    /* -----------------------------
-        SERVER-SIDE IMAGE RESIZING
-    ------------------------------ */
-    const resizedBuffer = await sharp(buffer)
-      .resize({
-        width: 800,
-        height: 800,
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .toFormat("webp", { quality: 80 })
-      .toBuffer();
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const dataUri = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-    const safeName = filename.replace(/[^a-zA-Z0-9_.-]/g, "_");
-
-    const bucket = await getGridFSBucket();
-    const uploadStream = bucket.openUploadStream(safeName, {
-      contentType,
-      metadata: {
-        originalName: filename,
-        uploadedAt: new Date(),
-      },
-    } as any);
-
-    uploadStream.end(resizedBuffer);
-
-    await new Promise<void>((resolve, reject) => {
-      uploadStream.on("finish", resolve);
-      uploadStream.on("error", reject);
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: "atc/news",
+      transformation: [
+        { width: 1200, crop: "limit", quality: "auto:good", fetch_format: "auto" },
+      ],
+      resource_type: "image",
     });
 
     return NextResponse.json({
-      success: true,
-      fileId: uploadStream.id.toString(),
+      url: result.secure_url,
+      publicId: result.public_id,
+      width: result.width,
+      height: result.height,
     });
-  } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json(
-      { error: "Image upload failed." },
-      { status: 500 }
-    );
+  } catch (err) {
+    console.error("News image upload error:", err);
+    return NextResponse.json({ error: "Image upload failed." }, { status: 500 });
   }
 }

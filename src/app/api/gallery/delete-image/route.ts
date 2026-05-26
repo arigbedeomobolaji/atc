@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import cloudinary from "@/lib/cloudinary";
 import { ObjectId } from "mongodb";
 import { GalleryDoc } from "../upload/route";
 
 export async function POST(req: NextRequest) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const { db } = await connectToDatabase();
     const body = await req.json();

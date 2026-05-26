@@ -2,6 +2,7 @@
 // app/api/news/[id]/route.ts
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 
 export async function GET(
@@ -29,10 +30,13 @@ export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const { id } = await params;
     const body = await req.json();
-    const { title, content } = body;
+    const { title, content, coverImage } = body;
 
     if (!title || !content) {
       return NextResponse.json(
@@ -40,7 +44,6 @@ export async function PUT(
         { status: 400 }
       );
     }
-    // ✅ regenerate excerpt from updated content
     const excerpt = content.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 160);
 
     const { db } = await connectToDatabase();
@@ -52,6 +55,7 @@ export async function PUT(
           title,
           content,
           excerpt,
+          coverImage: coverImage ?? null,
           updatedAt: new Date(),
         },
       }

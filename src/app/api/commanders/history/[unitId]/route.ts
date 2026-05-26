@@ -17,6 +17,7 @@ export async function GET(
       .collection("commanders")
       .find({
         unitId: new ObjectId(unitId),
+        endDate: { $ne: null },
       })
       .sort({ startDate: -1 })
       .toArray();

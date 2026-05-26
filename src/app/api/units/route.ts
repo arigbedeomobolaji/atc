@@ -2,8 +2,11 @@
 
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 
 export async function POST(req: Request) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await req.json();
     const { db } = await connectToDatabase();
@@ -15,8 +18,7 @@ export async function POST(req: Request) {
       !body.abbreviation ||
       !body.location ||
       !body.role ||
-      !body.description ||
-      !body.mission
+      !body.description
     ) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -45,8 +47,8 @@ export async function POST(req: Request) {
 
       // Structure
       location: body.location,
-      parentCommand: body.parentCommand || "",
-      mission: body.mission,
+      parentCommand: body.parentCommand || "Air Training Command",
+      mission: body.mission || "",
 
       // Description
       role: body.role,

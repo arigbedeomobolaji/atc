@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 
 export type GalleryDoc = {
@@ -18,6 +19,9 @@ export type GalleryDoc = {
 };
 
 export async function POST(req: NextRequest) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const { db } = await connectToDatabase();
     const formData = await req.formData();

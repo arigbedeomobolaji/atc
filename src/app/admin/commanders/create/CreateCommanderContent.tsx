@@ -4,11 +4,12 @@ import { useSearchParams } from "next/navigation";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// /Users/mac/omobolaji/atc/src/app/admin/commanders/create/page.tsx
-
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
+
+const APPOINTMENTS = ["COMMANDER", "COMMANDANT", "AOC"] as const;
 
 export default function CreateCommanderContent() {
   const params = useSearchParams();
@@ -100,7 +101,7 @@ export default function CreateCommanderContent() {
       const json = await res.json();
 
       if (res.ok) {
-        alert("Commander created ✅");
+        toast.success("Commander created successfully");
         setForm({
           name: "",
           rank: "",
@@ -114,11 +115,11 @@ export default function CreateCommanderContent() {
         setFile(null);
         setPreview(null);
       } else {
-        alert(json.error);
+        toast.error(json.error || "Failed to create commander");
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -181,14 +182,19 @@ export default function CreateCommanderContent() {
               >
                 Appointment
               </label>
-              <input
+              <select
                 id="appointment"
                 className="w-full mt-1 p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary outline-none"
                 value={form.appointment}
                 onChange={(e) =>
                   setForm({ ...form, appointment: e.target.value })
                 }
-              />
+              >
+                <option value="">Select Appointment</option>
+                {APPOINTMENTS.map((a) => (
+                  <option key={a} value={a}>{a}</option>
+                ))}
+              </select>
             </div>
 
             <div>

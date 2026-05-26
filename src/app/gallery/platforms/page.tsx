@@ -1,10 +1,7 @@
-import { WelcomeBanner } from "@/components/WelcomeBanner";
 import { Navbar } from "@/components/Navbar";
-import { FadeInSection } from "@/components/FadeInSection";
 import { Footer } from "@/components/Footer";
-import { PageHero } from "@/components/PageHero";
-import { HeaderText } from "@/components/HeaderText";
 import { GalleryCard } from "@/components/GalleryCard";
+import { Radio, Plane } from "lucide-react";
 import ABT18 from "../../../assets/ATC_PLATFORMS/ABT18.jpeg";
 import L39ZA from "../../../assets/ATC_PLATFORMS/L39ZA.jpeg";
 import DA40 from "../../../assets/ATC_PLATFORMS/DA40.jpg";
@@ -16,102 +13,134 @@ import AGUSTA109 from "../../../assets/ATC_PLATFORMS/AGUSTA109.jpg";
 import AW109S from "../../../assets/ATC_PLATFORMS/AW109S.jpg";
 import SUPER_MUSHSHACK from "../../../assets/ATC_PLATFORMS/SUPER_MUSHSHACK.jpeg";
 
-const ourPlatforms = [
+const PLATFORMS = [
   {
     imageSrc: ABT18,
     caption: "ABT-18: NAF ab-initio training aircraft",
     description:
-      "The ABT-18 is one of the earliest aircraft inducted into the Nigerian Air Force inventory. It is primarily used for ab-initio flying training of student pilots, providing them with foundational skills for all subsequent aircraft. Known for its reliability and simplicity, it remains an essential platform for introducing new cadets to controlled flight operations.",
+      "The ABT-18 is one of the earliest aircraft inducted into the Nigerian Air Force inventory. It is primarily used for ab-initio flying training of student pilots, providing them with foundational skills for all subsequent aircraft.",
   },
   {
     imageSrc: DA40,
     caption: "DA-40: NAF basic transport trainer",
     description:
-      "The DA-40 serves as a primary training aircraft for the Nigerian Air Force, helping new transport pilot cadets learn flight operations. Its design also allows for light surveillance and reconnaissance roles, giving pilots early exposure to operational tasks beyond basic flying.",
+      "The DA-40 serves as a primary training aircraft for the Nigerian Air Force, helping new transport pilot cadets learn flight operations. Its design also allows for light surveillance and reconnaissance roles.",
   },
   {
     imageSrc: DA42,
     caption: "DA-42: NAF ISR and training aircraft",
     description:
-      "The DA-42 is a twin-engine aircraft in NAF service, used for ab-initio transport pilot training as well as intelligence, surveillance, and reconnaissance (ISR) missions. Its multi-role capability ensures cadets are trained in both flight skills and practical operational tasks.",
+      "The DA-42 is a twin-engine aircraft used for ab-initio transport pilot training as well as intelligence, surveillance, and reconnaissance (ISR) missions.",
   },
   {
     imageSrc: SUPER_MUSHSHACK,
     caption: "Super Mushshak: NAF fighter trainer",
     description:
-      "The Super Mushshak is a dedicated trainer aircraft used for developing the skills of future NAF fighter pilots. It provides cadets with a stable platform to learn basic and intermediate flying maneuvers before progressing to jet aircraft like the L-39ZA and Alpha Jet.",
+      "The Super Mushshak is a dedicated trainer aircraft used for developing the skills of future NAF fighter pilots before they progress to jet aircraft.",
   },
   {
     imageSrc: L39ZA,
     caption: "L-39ZA: NAF advanced jet trainer",
     description:
-      "The L-39ZA is an attack/fighter trainer aircraft used by the Nigerian Air Force for advanced fighter pilot training after cadets graduate from ab-initio training. With recent R&D upgrades, the aircraft can now also perform limited combat operations, enhancing its role in modern air defence training.",
+      "The L-39ZA is an attack/fighter trainer aircraft used for advanced fighter pilot training. With recent R&D upgrades, it can also perform limited combat operations.",
   },
   {
     imageSrc: ALPHA_JET,
     caption: "Alpha Jet: NAF flagship fighter trainer",
     description:
-      "The Alpha Jet is regarded as the flagship fighter aircraft of the Nigerian Air Force. It is used for advanced pilot training and light combat operations, providing cadets with hands-on experience in fighter tactics, weapon deployment, and high-speed maneuvering.",
+      "The Alpha Jet is regarded as the flagship fighter aircraft of the Nigerian Air Force, used for advanced pilot training and light combat operations.",
   },
   {
     imageSrc: SUPER_TUCANO,
     caption: "A-29 Super Tucano: NAF precision strike",
     description:
-      "The NAF’s A-29 Super Tucano was inducted into the NAF for combat roles due to its precise combat capabilities. It can acquire targets with accurate precision, and within three years of induction, the fleet attained 10,000 flight hours—a record celebrated nationally and rare globally.",
+      "The A-29 Super Tucano was inducted for combat roles due to its precise combat capabilities. Within three years, the fleet attained 10,000 flight hours — a milestone rarely achieved globally.",
   },
   {
     imageSrc: DO228,
     caption: "DO-228: NAF transport and VIP aircraft",
     description:
-      "The DO-228 is a versatile transport aircraft in NAF service, used for moving troops, cargo, and VIP personnel. Its adaptability allows it to support both routine logistical missions and operational deployments, making it an integral component of NAF mobility operations.",
+      "The DO-228 is a versatile transport aircraft used for moving troops, cargo, and VIP personnel — supporting both routine logistics and operational deployments.",
   },
   {
     imageSrc: AGUSTA109,
     caption: "Agusta-109 LUH: NAF attack helicopter",
     description:
-      "The Agusta-109 LUH (A and E variants) is an agile attack helicopter used in theatre operations. It supports troop movements and VIP transport while being equipped for close combat missions. Its wheel landing gear allows for versatility on different terrains.",
+      "The Agusta-109 LUH is an agile attack helicopter that supports troop movements and VIP transport while being equipped for close combat missions.",
   },
   {
     imageSrc: AW109S,
     caption: "AW109S Trekker: NAF light attack helicopter",
     description:
-      "The AW109S Trekker is a light attack helicopter used by the Nigerian Air Force for in-theatre operations, troop transport, and VIP movement. Unlike the LUH, it has skids instead of wheels, allowing for efficient landings in confined or rough areas.",
+      "The AW109S Trekker is a light attack helicopter for in-theatre operations and troop transport, with skids allowing efficient landings in confined or rough areas.",
   },
 ];
 
-export default function Home() {
+export default function PlatformsPage() {
   return (
-    <div className="relative">
-      <WelcomeBanner />
+    <div className="bg-[hsl(220,64%,8%)]">
+      <Navbar />
 
-      {/* Fixed Header (Banner + Navbar) */}
-      <div className="sticky top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
-        <Navbar />
-      </div>
+      {/* ── Hero ── */}
+      <section className="relative bg-[hsl(220,64%,8%)] pt-20 pb-16 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(-45deg, white 0, white 1px, transparent 0, transparent 50%)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div className="absolute inset-x-0 top-0 h-64 bg-[hsl(45,68%,47%)]/5 blur-3xl pointer-events-none" />
 
-      <div className="bg-dark">
-        <div className="max-w-7xl mx-auto bg-white">
-          <div className="">
-            <FadeInSection delay={0.2}>
-              <PageHero
-                title="Air Training Command Platforms"
-                description="Aircraft | Unmanned Aerial Vehicles"
-                callToAction="Explore our Gallery"
-              />
-            </FadeInSection>
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="flex items-center gap-2 mb-5">
+            <Radio size={11} className="text-[hsl(350,66%,55%)] animate-pulse" />
+            <span className="text-[hsl(45,68%,47%)] text-[11px] font-black uppercase tracking-[0.3em]">
+              Air Training Command
+            </span>
           </div>
-          <HeaderText title="OUR PLATFORMS" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
-            {ourPlatforms.map((imageData, index) => (
-              <div key={index} className="rounded-md overflow-hidden">
-                <GalleryCard {...imageData} />
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase leading-tight tracking-wide mb-4">
+            Our Platforms
+          </h1>
+          <div className="flex items-center gap-2 mb-5">
+            <div className="w-20 h-1 rounded-full bg-[hsl(45,68%,47%)]" />
+            <div className="w-10 h-0.5 rounded-full bg-white/20" />
+          </div>
+          <p className="text-white/55 text-base max-w-xl leading-relaxed">
+            A comprehensive look at the aircraft and rotary-wing platforms
+            operated by units under the Air Training Command.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Grid ── */}
+      <section className="bg-[hsl(220,64%,10%)] py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-9 h-9 rounded-xl bg-[hsl(45,68%,47%)] flex items-center justify-center shadow-lg">
+              <Plane size={16} className="text-[hsl(220,64%,16%)]" />
+            </div>
+            <div>
+              <span className="text-[hsl(45,68%,47%)] text-xs font-bold uppercase tracking-[0.3em]">
+                Aircraft &amp; Equipment
+              </span>
+              <div className="mt-1 flex items-center gap-1.5">
+                <div className="w-10 h-0.5 rounded-full bg-[hsl(45,68%,47%)]" />
+                <div className="w-5 h-px rounded-full bg-white/20" />
               </div>
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {PLATFORMS.map((platform, i) => (
+              <GalleryCard key={i} {...platform} index={i} />
             ))}
           </div>
         </div>
-        <div className="mb-5" />
-        <Footer />
-      </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }

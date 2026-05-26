@@ -24,19 +24,19 @@ export default function SectionHeader({
       {Icon && (
         <motion.div
           variants={scaleIn}
-          className="p-3 rounded-lg bg-gradient-to-br from-[#1a365d] to-[#2d5a9d] shadow-lg"
+          className="p-3 rounded-lg bg-primary shadow-lg"
         >
-          <Icon className="w-6 h-6 text-white" />
+          <Icon className="w-6 h-6 text-primary-foreground" />
         </motion.div>
       )}
       <div className="flex-1">
-        <h4 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-[#1a365d]">
+        <h4 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-primary">
           {title}
         </h4>
         <div className="mt-2 flex items-center gap-2">
-          <div className="w-16 h-1 bg-[#c9a227] rounded-full" />
-          <div className="w-8 h-0.5 bg-[#1a365d]/30 rounded-full" />
-          <div className="w-4 h-0.5 bg-[#1a365d]/20 rounded-full" />
+          <div className="w-16 h-1 bg-secondary rounded-full" />
+          <div className="w-8 h-0.5 bg-primary/20 rounded-full" />
+          <div className="w-4 h-0.5 bg-primary/10 rounded-full" />
         </div>
       </div>
     </motion.div>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 
 /**
@@ -13,8 +14,6 @@ export async function GET(
     const { eventId } = await context.params; // ✅ FIX
 
     const id = eventId?.toString().trim();
-
-    console.log("EVENT ID:", id);
 
     if (!id || !ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
@@ -62,6 +61,9 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ eventId: string }> }
 ) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const body = await req.json();
     const { db } = await connectToDatabase();
@@ -90,6 +92,9 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ eventId: string }> }
 ) {
+  const auth = requireAuth(req);
+  if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const { db } = await connectToDatabase();
 
