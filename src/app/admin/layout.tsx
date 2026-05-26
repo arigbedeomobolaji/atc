@@ -18,15 +18,11 @@ import {
   X,
   ChevronRight,
   Shield,
-  HouseIcon,
+  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 
 const NAV = [
-  {
-    group: "Relevant Link",
-    items: [{ name: "Homepage", href: "/", icon: HouseIcon }],
-  },
   {
     group: "Overview",
     items: [
@@ -147,7 +143,16 @@ export default function AdminLayout({
       </nav>
 
       {/* Footer */}
-      <div className="px-3 py-4 border-t border-white/10">
+      <div className="px-3 py-4 border-t border-white/10 space-y-1">
+        <Link
+          href="/"
+          target="_blank"
+          onClick={() => setSidebarOpen(false)}
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-white/60 hover:bg-white/10 hover:text-white transition-all duration-150"
+        >
+          <ExternalLink size={16} />
+          <span>View Site</span>
+        </Link>
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-white/60 hover:bg-[hsl(350,66%,33%)] hover:text-white transition-all duration-150"
@@ -155,7 +160,7 @@ export default function AdminLayout({
           <LogOut size={16} />
           <span>Logout</span>
         </button>
-        <p className="mt-3 px-3 text-[10px] text-white/30">
+        <p className="mt-2 px-3 text-[10px] text-white/30">
           © {new Date().getFullYear()} Nigerian Air Force
         </p>
       </div>
@@ -200,6 +205,14 @@ export default function AdminLayout({
             <Breadcrumb pathname={pathname} />
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <Link
+              href="/"
+              target="_blank"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-xs font-medium hover:bg-slate-50 hover:text-slate-700 transition-colors"
+            >
+              <ExternalLink size={12} />
+              View Site
+            </Link>
             <span className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[hsl(220,64%,16%)]/8 text-[hsl(220,64%,16%)] text-xs font-semibold">
               <div className="w-1.5 h-1.5 rounded-full bg-[hsl(45,68%,47%)]" />
               Admin
