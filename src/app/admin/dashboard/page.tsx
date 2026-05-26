@@ -149,7 +149,7 @@ export default function AdminDashboard() {
             Dashboard
           </h1>
           <p className="text-slate-500 text-sm mt-0.5">
-            Welcome back — here's your content at a glance.
+            Welcome back — here&apos;s your content at a glance.
           </p>
         </div>
         <Link

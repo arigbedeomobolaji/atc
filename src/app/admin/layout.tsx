@@ -224,17 +224,21 @@ function Breadcrumb({ pathname }: { pathname: string }) {
     .split("/")
     .filter(Boolean);
 
-  if (segments.length === 0)
-    return <span className="font-semibold text-slate-700">Admin</span>;
+  // Add Home first
+  const crumbs = [{ label: "Home", href: "/" }];
 
-  const crumbs = [{ label: "Admin", href: "/admin/dashboard" }];
+  // Then Admin
+  crumbs.push({ label: "Admin", href: "/admin/dashboard" });
+
   let path = "/admin";
 
   for (const seg of segments) {
     path += `/${seg}`;
+
     const label = seg
       .replace(/-/g, " ")
       .replace(/\b\w/g, (c) => c.toUpperCase());
+
     crumbs.push({ label, href: path });
   }
 
@@ -245,6 +249,7 @@ function Breadcrumb({ pathname }: { pathname: string }) {
           {i > 0 && (
             <ChevronRight size={13} className="text-slate-300 shrink-0" />
           )}
+
           {i === crumbs.length - 1 ? (
             <span className="font-semibold text-slate-700 truncate max-w-[160px]">
               {c.label}
