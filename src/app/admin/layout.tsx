@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/static-components */
 "use client";
 
 import Link from "next/link";
@@ -17,10 +18,15 @@ import {
   X,
   ChevronRight,
   Shield,
+  HouseIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
 const NAV = [
+  {
+    group: "Relevant Link",
+    items: [{ name: "Homepage", href: "/", icon: HouseIcon }],
+  },
   {
     group: "Overview",
     items: [
@@ -94,8 +100,8 @@ export default function AdminLayout({
 
       {/* Nav Groups */}
       <nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
-        {NAV.map((group) => (
-          <div key={group.group}>
+        {NAV.map((group, index) => (
+          <div key={group.group + index}>
             <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-white/40">
               {group.group}
             </p>
@@ -235,7 +241,7 @@ function Breadcrumb({ pathname }: { pathname: string }) {
   return (
     <div className="flex items-center gap-1.5 flex-wrap">
       {crumbs.map((c, i) => (
-        <span key={c.href} className="flex items-center gap-1.5">
+        <span key={c.href + i} className="flex items-center gap-1.5">
           {i > 0 && (
             <ChevronRight size={13} className="text-slate-300 shrink-0" />
           )}

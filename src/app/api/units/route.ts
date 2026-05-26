@@ -38,6 +38,9 @@ export async function POST(req: Request) {
       );
     }
 
+    // Assign order = count of existing units so new unit appears at the end
+    const unitCount = await db.collection("units").countDocuments();
+
     // ✅ CLEAN + FLEXIBLE STRUCTURE
     const newUnit = {
       // Identity
@@ -80,6 +83,9 @@ export async function POST(req: Request) {
       // Links
       links: body.links || [],
 
+      // Display order (drag-sortable in admin)
+      order: unitCount,
+
       // Meta
       isActive: true,
       establishedDate: body.establishedDate
@@ -109,7 +115,11 @@ export async function GET() {
   try {
     const { db } = await connectToDatabase();
 
-    const units = await db.collection("units").find({}).toArray();
+    const units = await db
+      .collection("units")
+      .find({})
+      .sort({ order: 1, createdAt: 1 })
+      .toArray();
 
     return NextResponse.json(
       units.map((u) => ({
