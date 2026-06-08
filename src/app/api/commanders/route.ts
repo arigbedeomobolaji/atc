@@ -89,6 +89,7 @@ export async function POST(req: Request) {
     const newCommander = {
       name: body.name,
       rank: body.rank,
+      svcNo: body.svcNo || "",
       appointment: body.appointment || "COMMANDER",
 
       unitId,

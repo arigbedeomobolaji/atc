@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Medal, Award, Calendar, ChevronLeft, Star, User } from "lucide-react";
+import { abbrevRank } from "@/lib/rankAbbr";
 
 async function getCommanderData(unitId: string) {
   const res = await fetch(
@@ -52,7 +53,7 @@ export default async function CommanderFullPage({ params }: any) {
             </span>
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-black text-white uppercase leading-tight tracking-wide">
-            {commander.rank} {commander.name}
+            {abbrevRank(commander.rank)} {commander.name}
           </h1>
           <div className="mt-3 flex items-center gap-2">
             <div className="w-16 h-1 rounded-full bg-[hsl(45,68%,47%)]" />
@@ -82,7 +83,7 @@ export default async function CommanderFullPage({ params }: any) {
               <div className="p-5 rounded-2xl bg-white/[0.05] border border-white/10 space-y-3">
                 <div className="flex items-center gap-2">
                   <Medal size={14} className="text-[hsl(45,68%,47%)] shrink-0" />
-                  <span className="text-white font-bold text-sm">{commander.rank} {commander.name}</span>
+                  <span className="text-white font-bold text-sm">{abbrevRank(commander.rank)} {commander.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <User size={14} className="text-white/40 shrink-0" />

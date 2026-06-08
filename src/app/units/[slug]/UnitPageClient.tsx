@@ -12,6 +12,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Image from "next/image";
 import Link from "next/link";
 import ATCLogo from "@/assets/ATC_logo_big_trans.png";
+import { abbrevRank } from "@/lib/rankAbbr";
 import {
   Carousel, CarouselContent, CarouselItem,
   CarouselNext, CarouselPrevious,
@@ -515,7 +516,7 @@ export default function UnitPageClient({ unit }: any) {
                 <div>
                   <span className="text-[hsl(45,68%,47%)] text-xs font-bold uppercase tracking-[0.3em]">{currentCommander.appointment}</span>
                   <h3 className="font-heading text-2xl md:text-3xl font-black text-white uppercase leading-tight mt-1">
-                    {currentCommander.rank} {currentCommander.name}
+                    {abbrevRank(currentCommander.rank)} {currentCommander.name}
                   </h3>
                   <p className="text-white/40 text-xs mt-1">
                     Since {new Date(currentCommander.startDate).toLocaleDateString("en-NG", { year: "numeric", month: "long", day: "numeric" })}
@@ -567,7 +568,7 @@ export default function UnitPageClient({ unit }: any) {
                         {cmd.name.charAt(0)}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-white font-bold text-sm line-clamp-1">{cmd.rank} {cmd.name}</p>
+                        <p className="text-white font-bold text-sm line-clamp-1">{abbrevRank(cmd.rank)} {cmd.name}</p>
                         <p className="text-white/40 text-[10px] truncate">{cmd.appointment}</p>
                       </div>
                     </div>
@@ -597,7 +598,7 @@ export default function UnitPageClient({ unit }: any) {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-5">
                   <h3 className="font-heading font-black text-white uppercase tracking-wide text-base">
-                    {selectedCommander?.rank} {selectedCommander?.name}
+                    {selectedCommander ? abbrevRank(selectedCommander.rank) : ""} {selectedCommander?.name}
                   </h3>
                   <Dialog.Close className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors">
                     <X size={16} />

@@ -4,6 +4,7 @@
 import { Dialog } from "@headlessui/react";
 import Image from "next/image";
 import { useState } from "react";
+import { abbrevRank } from "@/lib/rankAbbr";
 
 export function CommanderModal({ commander }: any) {
   const [open, setOpen] = useState(false);
@@ -15,7 +16,7 @@ export function CommanderModal({ commander }: any) {
         className="cursor-pointer p-4 bg-gray-50 rounded-xl hover:shadow"
       >
         <p className="font-semibold">
-          {commander.rank} {commander.name}
+          {abbrevRank(commander.rank)} {commander.name}
         </p>
         <p className="text-sm text-gray-500">{commander.serviceNumber}</p>
       </div>
@@ -34,7 +35,7 @@ export function CommanderModal({ commander }: any) {
             />
 
             <h4 className="text-xl font-bold text-center mt-4">
-              {commander.rank} {commander.name}
+              {abbrevRank(commander.rank)} {commander.name}
             </h4>
 
             <p className="text-center text-gray-500">

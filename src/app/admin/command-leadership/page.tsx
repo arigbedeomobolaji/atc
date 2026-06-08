@@ -23,6 +23,7 @@ import {
   Shield,
 } from "lucide-react";
 import { useSortableList } from "@/hooks/useSortableList";
+import { abbrevRank } from "@/lib/rankAbbr";
 
 /* ── Single sortable row ── */
 function LeaderRow({
@@ -87,7 +88,7 @@ function LeaderRow({
       {/* Leader info */}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-slate-800 truncate">
-          {item.rank} {item.name}
+          {abbrevRank(item.rank)} {item.name}
         </p>
         <div className="flex items-center gap-2 mt-0.5">
           <span className="text-[10px] font-black text-[hsl(220,64%,16%)] uppercase tracking-wider bg-[hsl(220,64%,16%)]/8 px-2 py-0.5 rounded">
@@ -141,7 +142,7 @@ function DragCard({ item }: { item: any }) {
       )}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-slate-800 truncate">
-          {item.rank} {item.name}
+          {abbrevRank(item.rank)} {item.name}
         </p>
         <span className="text-[10px] font-black text-[hsl(220,64%,16%)] uppercase tracking-wider bg-[hsl(220,64%,16%)]/8 px-2 py-0.5 rounded">
           {item.appointmentAbbreviation || item.appointment}

@@ -10,6 +10,7 @@ export async function GET(
 ) {
   try {
     const { unitId } = await params;
+    console.log("Fetching commander history for unit", unitId);
 
     const { db } = await connectToDatabase();
 

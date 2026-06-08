@@ -8,6 +8,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
 import { ArrowLeft, Loader2, Save, Upload, User } from "lucide-react";
+import { abbrevRank } from "@/lib/rankAbbr";
 
 const APPOINTMENTS = ["COMMANDER", "COMMANDANT", "AOC"] as const;
 const INPUT = "w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(220,64%,16%)]/20 focus:border-[hsl(220,64%,16%)]/40 transition-colors placeholder:text-slate-300";
@@ -25,7 +26,7 @@ export default function EditCommanderPage() {
   const [unitId, setUnitId] = useState("");
 
   const [form, setForm] = useState({
-    name: "", rank: "", unitId: "", appointment: "",
+    name: "", rank: "", svcNo: "", unitId: "", appointment: "",
     startDate: "", endDate: "", bio: "", portrait: "", awards: "", portraitPublicId: "",
   });
 
@@ -41,7 +42,7 @@ export default function EditCommanderPage() {
         setUnits(unitsData);
         setUnitId(cmd.unitId || "");
         setForm({
-          name: cmd.name || "", rank: cmd.rank || "", unitId: cmd.unitId || "",
+          name: cmd.name || "", rank: cmd.rank || "", svcNo: cmd.svcNo || "", unitId: cmd.unitId || "",
           appointment: cmd.appointment || "",
           startDate: cmd.startDate?.split("T")[0] || "",
           endDate: cmd.endDate?.split("T")[0] || "",
@@ -124,7 +125,7 @@ export default function EditCommanderPage() {
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-[hsl(220,64%,16%)] font-heading tracking-wide">Edit Commander</h1>
-            <p className="text-slate-400 text-sm mt-0.5">{form.rank} {form.name}</p>
+            <p className="text-slate-400 text-sm mt-0.5">{abbrevRank(form.rank)} {form.name}</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -150,6 +151,10 @@ export default function EditCommanderPage() {
                 <div>
                   <label className={LABEL}>Rank</label>
                   <input className={INPUT} value={form.rank} onChange={e => setForm({ ...form, rank: e.target.value })} />
+                </div>
+                <div>
+                  <label className={LABEL}>Service Number</label>
+                  <input className={INPUT} placeholder="e.g. NAF/12345" value={form.svcNo} onChange={e => setForm({ ...form, svcNo: e.target.value })} />
                 </div>
                 <div>
                   <label className={LABEL}>Unit</label>

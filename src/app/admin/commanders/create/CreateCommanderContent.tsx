@@ -26,7 +26,7 @@ export default function CreateCommanderContent() {
   const [saving, setSaving] = useState(false);
 
   const [form, setForm] = useState({
-    name: "", rank: "", unitId: presetUnitId,
+    name: "", rank: "", svcNo: "", unitId: presetUnitId,
     appointment: "", startDate: "", endDate: "", bio: "", awards: "",
   });
 
@@ -127,6 +127,10 @@ export default function CreateCommanderContent() {
                 <div>
                   <label className={LABEL}>Rank <span className="text-[hsl(350,66%,33%)]">*</span></label>
                   <input className={INPUT} placeholder="e.g. Air Commodore" value={form.rank} onChange={e => setForm({ ...form, rank: e.target.value })} />
+                </div>
+                <div>
+                  <label className={LABEL}>Service Number</label>
+                  <input className={INPUT} placeholder="e.g. NAF/12345" value={form.svcNo} onChange={e => setForm({ ...form, svcNo: e.target.value })} />
                 </div>
                 <div>
                   <label className={LABEL}>Unit <span className="text-[hsl(350,66%,33%)]">*</span></label>

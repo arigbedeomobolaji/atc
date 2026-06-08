@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Clock, User } from "lucide-react";
+import { abbrevRank } from "@/lib/rankAbbr";
 
 function formatDate(d: any) {
   if (!d) return "Present";
@@ -51,7 +52,7 @@ export default function CommanderHistoryPage() {
                 <User size={16} className="text-slate-300 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className="text-sm font-bold text-slate-800">{c.rank} {c.name}</p>
+                    <p className="text-sm font-bold text-slate-800">{abbrevRank(c.rank)} {c.name}</p>
                     {isCurrent && <span className="px-2 py-0.5 rounded-full bg-[hsl(45,68%,47%)] text-[hsl(220,64%,16%)] text-[10px] font-black uppercase tracking-wider">Current</span>}
                   </div>
                   <div className="flex items-center gap-3 mt-0.5 text-xs text-slate-400">

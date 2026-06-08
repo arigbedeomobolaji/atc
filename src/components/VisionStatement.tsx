@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import { Goal, Medal } from "lucide-react";
+import { abbrevRank } from "@/lib/rankAbbr";
 
 interface VisionStatementProps {
   imageSrc: string | StaticImageData;
@@ -130,7 +131,7 @@ export function VisionStatement({
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[hsl(45,68%,47%)]/10 border border-[hsl(45,68%,47%)]/20">
                 <div className="w-2 h-2 rounded-full bg-[hsl(45,68%,47%)]" />
                 <span className="text-[hsl(45,68%,47%)] text-xs font-bold uppercase tracking-wider">
-                  {name} &mdash; {rank}
+                  {name} &mdash; {abbrevRank(rank)}
                 </span>
               </div>
             </div>

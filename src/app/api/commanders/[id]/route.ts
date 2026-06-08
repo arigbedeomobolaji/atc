@@ -85,6 +85,7 @@ export async function PUT(
     const updateData: any = {
       ...(body.name && { name: body.name }),
       ...(body.rank && { rank: body.rank }),
+      ...(body.svcNo !== undefined && { svcNo: body.svcNo }),
       ...(body.appointment && { appointment: body.appointment }),
 
       ...(body.portrait !== undefined && { portrait: body.portrait }),

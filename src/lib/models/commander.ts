@@ -5,6 +5,7 @@ export type Commander = {
 
   name: string;
   rank: string;
+  svcNo?: string;
 
   unitId: ObjectId;
 
