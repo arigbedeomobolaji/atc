@@ -1,4 +1,12 @@
-import { Facebook, Instagram, Youtube, Plane, Mail, Phone } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Youtube,
+  Plane,
+  Mail,
+  Phone,
+  MessageCircle,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import NAFLogo from "../assets/NAF_logo.png";
@@ -12,6 +20,7 @@ const LINKS = [
   { label: "Gallery", href: "/gallery" },
   { label: "Our Platforms", href: "/gallery/platforms" },
   { label: "Contact Us", href: "/contact" },
+  { label: "Admin", href: "/admin/login" },
 ];
 
 const SOCIAL = [
@@ -31,7 +40,12 @@ export function Footer() {
         <div className="lg:col-span-1">
           <div className="flex items-center gap-3 mb-4">
             <div className="relative w-12 h-12 shrink-0">
-              <Image src={ATCLogo} alt="ATC Logo" fill className="object-contain" />
+              <Image
+                src={ATCLogo}
+                alt="ATC Logo"
+                fill
+                className="object-contain"
+              />
             </div>
             <div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white leading-tight">
@@ -68,7 +82,14 @@ export function Footer() {
           </h4>
           <ul className="space-y-2.5">
             {LINKS.map(({ label, href }) => (
-              <li key={label}>
+              <li
+                key={label}
+                className={
+                  label === "Admin"
+                    ? "opacity-0 hover:opacity-100 transition-opacity duration-300"
+                    : ""
+                }
+              >
                 <Link
                   href={href}
                   className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-2 group"
@@ -118,16 +139,28 @@ export function Footer() {
           </h4>
           <ul className="space-y-3 text-sm text-white/60">
             <li className="flex items-start gap-3">
-              <Plane size={15} className="text-[hsl(45,68%,47%)] mt-0.5 shrink-0" />
-              <span>Air Training Command, NAF Base Kaduna, Kaduna State, Nigeria</span>
+              <Plane
+                size={15}
+                className="text-[hsl(45,68%,47%)] mt-0.5 shrink-0"
+              />
+              <span>
+                Air Training Command, Kaduna Military Airport, Kaduna, Nigeria.
+              </span>
+            </li>{" "}
+            <li className="flex items-start gap-3">
+              <MessageCircle
+                size={15}
+                className="text-[hsl(45,68%,47%)] mt-0.5 shrink-0"
+              />
+              <span>PMB 2247</span>
             </li>
-            <li className="flex items-center gap-3">
+            {/* <li className="flex items-center gap-3">
               <Phone size={15} className="text-[hsl(45,68%,47%)] shrink-0" />
               <span>+234 — — — — —</span>
-            </li>
+            </li> */}
             <li className="flex items-center gap-3">
               <Mail size={15} className="text-[hsl(45,68%,47%)] shrink-0" />
-              <span>info@atc.mil.ng</span>
+              <span>hqtc@airforce.mil.ng</span>
             </li>
           </ul>
         </div>
@@ -136,7 +169,10 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/8">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-white/30">
-          <span>© {new Date().getFullYear()} Air Training Command, Nigerian Air Force. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} Air Training Command, Nigerian Air
+            Force. All rights reserved.
+          </span>
           <span>Developed by 441 CIS Group, Kaduna</span>
         </div>
       </div>

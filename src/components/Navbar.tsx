@@ -10,8 +10,6 @@ import {
   Facebook,
   Instagram,
   Youtube,
-  LogIn,
-  LogOut,
   Menu,
   X,
   Plane,
@@ -36,62 +34,35 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
 
-const ADMIN_NAV: typeof NAV_ITEMS = [
-  {
-    label: "Admin",
-    href: "/admin/dashboard",
-    children: [
-      { label: "Dashboard", href: "/admin/dashboard" },
-      { label: "Manage News", href: "/admin/news" },
-      { label: "Create News", href: "/admin/news/create" },
-      { label: "Manage Units", href: "/admin/units" },
-      { label: "Create Unit", href: "/admin/units/create" },
-      { label: "Manage Gallery", href: "/admin/gallery" },
-      { label: "Manage Events", href: "/admin/events" },
-      { label: "Create Event", href: "/admin/events/create" },
-      { label: "Commanders", href: "/admin/commanders" },
-      { label: "Add Commander", href: "/admin/commanders/create" },
-      { label: "HQ Leadership", href: "/admin/command-leadership" },
-      { label: "Add Leader", href: "/admin/command-leadership/create" },
-    ],
-  },
-];
-
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch("/api/auth/me")
-      .then((r) => r.json())
-      .then((j) => setIsLoggedIn(j.authenticated));
-  }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
-
-  async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    setIsLoggedIn(false);
-    router.replace("/");
-  }
-
-  const allNav = [...NAV_ITEMS, ...(isLoggedIn ? ADMIN_NAV : [])];
 
   function isActive(href: string) {
     if (href === "/") return pathname === "/";
-    return pathname === href || pathname.startsWith(href + "/") || pathname.startsWith(href + "#");
+    return (
+      pathname === href ||
+      pathname.startsWith(href + "/") ||
+      pathname.startsWith(href + "#")
+    );
   }
 
   function isParentActive(item: (typeof NAV_ITEMS)[0]) {
-    return isActive(item.href) || (item.children?.some((c) => isActive(c.href)) ?? false);
+    return (
+      isActive(item.href) ||
+      (item.children?.some((c) => isActive(c.href)) ?? false)
+    );
   }
 
   return (
@@ -101,17 +72,31 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-9 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-white/70 text-[11px] font-mono tracking-widest uppercase">
             <Plane size={11} className="text-[hsl(45,68%,47%)]" />
-            <span className="hidden sm:inline">Welcome to Air Training Command Kaduna</span>
+            <span className="hidden sm:inline">
+              Welcome to Air Training Command Kaduna
+            </span>
             <span className="sm:hidden">ATC Kaduna</span>
           </div>
           <div className="flex items-center gap-3 text-white/50">
-            <a href="#" aria-label="Facebook" className="hover:text-[hsl(45,68%,47%)] transition-colors">
+            <a
+              href="#"
+              aria-label="Facebook"
+              className="hover:text-[hsl(45,68%,47%)] transition-colors"
+            >
               <Facebook size={13} />
             </a>
-            <a href="#" aria-label="Instagram" className="hover:text-[hsl(45,68%,47%)] transition-colors">
+            <a
+              href="#"
+              aria-label="Instagram"
+              className="hover:text-[hsl(45,68%,47%)] transition-colors"
+            >
               <Instagram size={13} />
             </a>
-            <a href="#" aria-label="YouTube" className="hover:text-[hsl(45,68%,47%)] transition-colors">
+            <a
+              href="#"
+              aria-label="YouTube"
+              className="hover:text-[hsl(45,68%,47%)] transition-colors"
+            >
               <Youtube size={13} />
             </a>
           </div>
@@ -144,7 +129,7 @@ export function Navbar() {
 
           {/* ─── Desktop links ─── */}
           <nav className="hidden lg:flex items-center gap-0.5 ml-auto">
-            {allNav.map((item) => (
+            {NAV_ITEMS.map((item) => (
               <DesktopNavItem
                 key={item.href}
                 item={item}
@@ -154,28 +139,8 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* ─── Right cluster ─── */}
-          <div className="ml-auto lg:ml-0 flex items-center gap-2 shrink-0">
-            {/* Auth button */}
-            {!isLoggedIn ? (
-              <Link
-                href="/admin/login"
-                className="hidden lg:flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold text-[hsl(220,64%,16%)] border border-[hsl(220,64%,16%)]/20 hover:bg-[hsl(220,64%,16%)] hover:text-white transition-all duration-200"
-              >
-                <LogIn size={14} />
-                Admin
-              </Link>
-            ) : (
-              <button
-                onClick={logout}
-                className="hidden lg:flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold text-[hsl(350,66%,33%)] border border-[hsl(350,66%,33%)]/20 hover:bg-[hsl(350,66%,33%)] hover:text-white transition-all duration-200"
-              >
-                <LogOut size={14} />
-                Logout
-              </button>
-            )}
-
-            {/* Hamburger */}
+          {/* ─── Hamburger ─── */}
+          <div className="ml-auto lg:ml-0 flex items-center shrink-0">
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
@@ -215,7 +180,12 @@ export function Navbar() {
               <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-[hsl(220,64%,16%)]">
                 <div className="flex items-center gap-2">
                   <div className="relative w-8 h-8 shrink-0">
-                    <Image src={ATCLogo} alt="ATC" fill className="object-contain" />
+                    <Image
+                      src={ATCLogo}
+                      alt="ATC"
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                   <p className="text-xs font-bold text-white uppercase tracking-wider">
                     ATC Kaduna
@@ -231,7 +201,7 @@ export function Navbar() {
 
               {/* Drawer links */}
               <nav className="flex-1 overflow-y-auto py-4 px-3">
-                {allNav.map((item) => {
+                {NAV_ITEMS.map((item) => {
                   const children = item.children ?? [];
                   const expanded = mobileExpanded === item.label;
                   const active = isParentActive(item);
@@ -257,7 +227,9 @@ export function Navbar() {
                         {children.length > 0 && (
                           <ChevronDown
                             size={16}
-                            className={`transition-transform ${expanded ? "rotate-180" : ""}`}
+                            className={`transition-transform ${
+                              expanded ? "rotate-180" : ""
+                            }`}
                           />
                         )}
                       </button>
@@ -294,28 +266,6 @@ export function Navbar() {
                   );
                 })}
               </nav>
-
-              {/* Drawer footer */}
-              <div className="p-4 border-t border-slate-100">
-                {!isLoggedIn ? (
-                  <Link
-                    href="/admin/login"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[hsl(220,64%,16%)] text-white font-semibold text-sm hover:bg-[hsl(220,64%,20%)] transition-colors"
-                  >
-                    <LogIn size={16} />
-                    Admin Login
-                  </Link>
-                ) : (
-                  <button
-                    onClick={() => { logout(); setMobileOpen(false); }}
-                    className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[hsl(350,66%,33%)] text-white font-semibold text-sm hover:bg-[hsl(350,66%,28%)] transition-colors"
-                  >
-                    <LogOut size={16} />
-                    Logout
-                  </button>
-                )}
-              </div>
             </motion.div>
           </>
         )}
@@ -341,7 +291,8 @@ function DesktopNavItem({
   // Close on outside click
   useEffect(() => {
     function handler(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
     }
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -366,7 +317,9 @@ function DesktopNavItem({
         {children.length > 0 && (
           <ChevronDown
             size={13}
-            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+            className={`transition-transform duration-200 ${
+              open ? "rotate-180" : ""
+            }`}
           />
         )}
         {/* Active indicator */}
