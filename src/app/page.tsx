@@ -23,7 +23,8 @@ export default async function Home() {
         imageSrc={AOC}
         name="AVM JA EFANGA"
         rank="AVM"
-        appointment="Air Officer Commanding"
+        awards="psc(+), mni, fdc"
+        appointment="Air Officer Commanding, Air Training Command"
         statementType="Vision"
         statement="To lead in aviation training..."
       />

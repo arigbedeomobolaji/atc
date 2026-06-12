@@ -8,6 +8,7 @@ interface VisionStatementProps {
   imageSrc: string | StaticImageData;
   name: string;
   rank: string;
+  awards?: string;
   appointment: string;
   statementType: "Vision" | "Mission";
   statement: string;
@@ -17,6 +18,7 @@ export function VisionStatement({
   imageSrc,
   name,
   rank,
+  awards,
   appointment,
   statementType,
   statement,
@@ -72,27 +74,39 @@ export function VisionStatement({
             transition={{ duration: 0.65 }}
             className="relative"
           >
-            <div className="relative w-full max-w-sm mx-auto aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border-2 border-[hsl(45,68%,47%)]/50">
-              <Image
-                src={imageSrc}
-                alt={name}
-                fill
-                className="object-cover"
-              />
-              {/* Bottom overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/80 via-transparent to-transparent" />
+            {/* Image — top */}
+            <div className="relative w-full max-w-sm mx-auto rounded-t-2xl overflow-hidden shadow-2xl border-x-2 border-t-2 border-[hsl(45,68%,47%)]/50">
+              <Image src={imageSrc} alt={name} width={0} height={0} sizes="100vw" className="w-full h-auto object-contain" />
+            </div>
 
-              {/* Rank badge */}
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <div className="flex items-center gap-2 mb-1">
-                  <Medal size={14} className="text-[hsl(45,68%,47%)]" />
-                  <span className="text-[hsl(45,68%,47%)] text-xs font-bold uppercase tracking-[0.2em]">
-                    {rank}
-                  </span>
-                </div>
-                <p className="text-white font-bold text-sm">{name}</p>
-                <p className="text-white/55 text-xs mt-0.5">{appointment}</p>
+            {/* Caption panel — below the image */}
+            <div className="w-full max-w-sm mx-auto bg-[hsl(220,64%,7%)] border border-t-0 border-[hsl(45,68%,47%)]/30 rounded-b-2xl px-5 py-4">
+              {/* Rank */}
+              <div className="flex items-center gap-1.5 mb-2">
+                <Medal size={11} className="text-[hsl(45,68%,47%)] shrink-0" />
+                <span className="text-[hsl(45,68%,47%)] text-[10px] font-bold uppercase tracking-[0.25em]">
+                  {rank}
+                </span>
               </div>
+              {/* Bold name + awards */}
+              <div className="flex items-baseline gap-2 mb-1">
+                <p className="text-white font-black text-sm uppercase leading-none">
+                  {name}
+                </p>
+                {awards && (
+                  <span className="text-white/45 text-[9px] font-medium tracking-wide leading-none">
+                    {awards}
+                  </span>
+                )}
+              </div>
+              {/* Appointment */}
+              <p className="text-white/65 text-[11px] uppercase tracking-wide leading-snug mt-1">
+                {appointment}
+              </p>
+              {/* Service */}
+              <p className="text-[hsl(45,68%,47%)] text-[10px] font-bold uppercase tracking-[0.2em] mt-1">
+                Nigerian Air Force
+              </p>
             </div>
 
             {/* Corner brackets */}

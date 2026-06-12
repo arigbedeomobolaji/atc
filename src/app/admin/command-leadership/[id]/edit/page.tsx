@@ -9,7 +9,27 @@ import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
 import { ArrowLeft, Loader2, Save, Upload, Trash2, User } from "lucide-react";
 
-const APPOINTMENTS = ["COMMANDER", "COMMANDANT", "AOC", "COS", "DCOS"] as const;
+const APPOINTMENTS = [
+  "Air Officer Commanding",
+  "Chief of Staff",
+  "Deputy Chief of Staff",
+  "Command Training Officer",
+  "Command Administrative Officer",
+  "Command Evaluation Officer",
+  "Command Aircraft Engineering Officer",
+  "Command Communications & IS Officer",
+  "Command Logistics Officer",
+  "Command Medical Officer",
+  "Command Finance Officer",
+  "Command Air Provost Officer",
+  "Command Education Officer",
+  "Command Legal Officer",
+  "Command Intelligence Officer",
+  "Command Public Relations Officer",
+  "Command Sports Officer",
+  "Commander",
+  "Commandant",
+];
 const INPUT = "w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(220,64%,16%)]/20 focus:border-[hsl(220,64%,16%)]/40 transition-colors placeholder:text-slate-300";
 const LABEL = "block text-sm font-semibold text-slate-700 mb-1.5";
 
@@ -21,6 +41,7 @@ export default function EditLeaderPage() {
   const [saving, setSaving] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [customAppointment, setCustomAppointment] = useState(false);
 
   const [form, setForm] = useState({
     name: "", rank: "", appointment: "", appointmentAbbreviation: "", bio: "", awards: "", image: "",
@@ -31,11 +52,13 @@ export default function EditLeaderPage() {
     fetch(`/api/command-leadership/${id}`)
       .then(r => r.json())
       .then(data => {
+        const appt = data.appointment || "";
         setForm({
           name: data.name || "", rank: data.rank || "",
-          appointment: data.appointment || "", appointmentAbbreviation: data.appointmentAbbreviation || "",
+          appointment: appt, appointmentAbbreviation: data.appointmentAbbreviation || "",
           bio: data.bio || "", awards: data.awards || "", image: data.image || "",
         });
+        if (appt && !APPOINTMENTS.includes(appt)) setCustomAppointment(true);
         setPreview(data.image || null);
       })
       .catch(() => toast.error("Failed to load officer data"))
@@ -140,10 +163,31 @@ export default function EditLeaderPage() {
                 </div>
                 <div>
                   <label className={LABEL}>Appointment</label>
-                  <select className={INPUT + " bg-white cursor-pointer"} value={form.appointment} onChange={e => setForm({ ...form, appointment: e.target.value })}>
+                  <select
+                    className={INPUT + " bg-white cursor-pointer"}
+                    value={customAppointment ? "__other__" : form.appointment}
+                    onChange={e => {
+                      if (e.target.value === "__other__") {
+                        setCustomAppointment(true);
+                        setForm({ ...form, appointment: "" });
+                      } else {
+                        setCustomAppointment(false);
+                        setForm({ ...form, appointment: e.target.value });
+                      }
+                    }}
+                  >
                     <option value="">Select appointment</option>
                     {APPOINTMENTS.map(a => <option key={a} value={a}>{a}</option>)}
+                    <option value="__other__">Other…</option>
                   </select>
+                  {customAppointment && (
+                    <input
+                      className={INPUT + " mt-2"}
+                      placeholder="Type custom appointment"
+                      value={form.appointment}
+                      onChange={e => setForm({ ...form, appointment: e.target.value })}
+                    />
+                  )}
                 </div>
                 <div>
                   <label className={LABEL}>Abbreviation</label>

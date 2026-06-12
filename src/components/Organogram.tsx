@@ -23,8 +23,16 @@ function CommandNode({ data }: NodeProps) {
       <p className="text-[hsl(45,68%,47%)] text-[10px] font-black uppercase tracking-[0.2em] leading-tight">
         {data.label}
       </p>
-      <Handle type="target" position={Position.Top} className="!bg-[hsl(45,68%,47%)] !border-0 !w-2 !h-2" />
-      <Handle type="source" position={Position.Bottom} className="!bg-[hsl(45,68%,47%)] !border-0 !w-2 !h-2" />
+      <Handle
+        type="target"
+        position={Position.Top}
+        className="!bg-[hsl(45,68%,47%)] !border-0 !w-2 !h-2"
+      />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        className="!bg-[hsl(45,68%,47%)] !border-0 !w-2 !h-2"
+      />
     </div>
   );
 }
@@ -37,8 +45,16 @@ function StaffNode({ data }: NodeProps) {
       <p className="text-white text-[10px] font-bold uppercase tracking-wider leading-tight">
         {data.label}
       </p>
-      <Handle type="target" position={Position.Top} className="!bg-[hsl(350,66%,33%)] !border-0 !w-2 !h-2" />
-      <Handle type="source" position={Position.Bottom} className="!bg-[hsl(350,66%,33%)] !border-0 !w-2 !h-2" />
+      <Handle
+        type="target"
+        position={Position.Top}
+        className="!bg-[hsl(350,66%,33%)] !border-0 !w-2 !h-2"
+      />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        className="!bg-[hsl(350,66%,33%)] !border-0 !w-2 !h-2"
+      />
     </div>
   );
 }
@@ -50,8 +66,16 @@ function UnitNode({ data }: NodeProps) {
       <p className="text-white/85 text-[9px] font-semibold leading-tight">
         {data.label}
       </p>
-      <Handle type="target" position={Position.Top} className="!bg-white/40 !border-0 !w-1.5 !h-1.5" />
-      <Handle type="source" position={Position.Bottom} className="!bg-white/40 !border-0 !w-1.5 !h-1.5" />
+      <Handle
+        type="target"
+        position={Position.Top}
+        className="!bg-white/40 !border-0 !w-1.5 !h-1.5"
+      />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        className="!bg-white/40 !border-0 !w-1.5 !h-1.5"
+      />
     </div>
   );
 }
@@ -64,49 +88,230 @@ const nodeTypes = {
 
 const NODES: Node[] = [
   // Top command
-  { id: "1",  type: "command", position: { x: 480, y: 0 },   data: { label: "Air Officer Commanding (AOC)" } },
+  {
+    id: "1",
+    type: "command",
+    position: { x: 480, y: 0 },
+    data: { label: "Air Officer Commanding (AOC)" },
+  },
   // Immediate staff
-  { id: "2",  type: "staff",   position: { x: 760, y: 110 }, data: { label: "Chief of Staff (COS)" } },
-  { id: "3",  type: "staff",   position: { x: 490, y: 110 }, data: { label: "Principal Staff Officers (PSOs)" } },
-  { id: "4",  type: "staff",   position: { x: 220, y: 110 }, data: { label: "Air Assistant (AA)" } },
+  {
+    id: "2",
+    type: "staff",
+    position: { x: 760, y: 110 },
+    data: { label: "Chief of Staff (COS)" },
+  },
+  {
+    id: "3",
+    type: "staff",
+    position: { x: 490, y: 110 },
+    data: { label: "Principal Staff Officers (PSOs)" },
+  },
+  {
+    id: "4",
+    type: "staff",
+    position: { x: 220, y: 110 },
+    data: { label: "Air Assistant (AA)" },
+  },
   // Units hub
-  { id: "5",  type: "command", position: { x: 480, y: 230 }, data: { label: "UNITS" } },
+  {
+    id: "5",
+    type: "command",
+    position: { x: 480, y: 230 },
+    data: { label: "UNITS" },
+  },
   // Units — Kaduna cluster
-  { id: "6",  type: "unit",    position: { x: 0,   y: 370 }, data: { label: "401 FTS, Kaduna" } },
-  { id: "7",  type: "unit",    position: { x: 0,   y: 440 }, data: { label: "Air Traffic Services Training Centre" } },
-  { id: "8",  type: "unit",    position: { x: 0,   y: 510 }, data: { label: "413 FPG, Kaduna" } },
-  { id: "9",  type: "unit",    position: { x: 0,   y: 580 }, data: { label: "431 Engineering Group" } },
-  { id: "10", type: "unit",    position: { x: 0,   y: 650 }, data: { label: "441 Communications Group" } },
-  { id: "11", type: "unit",    position: { x: 0,   y: 720 }, data: { label: "453 Base Services Group" } },
-  { id: "12", type: "unit",    position: { x: 0,   y: 790 }, data: { label: "461 NAF Hospital, Kaduna" } },
-  { id: "13", type: "unit",    position: { x: 0,   y: 860 }, data: { label: "Central Avionics Overhaul Centre" } },
-  { id: "14", type: "unit",    position: { x: 0,   y: 930 }, data: { label: "AF Comprehensive School, Kaduna" } },
+  {
+    id: "6",
+    type: "unit",
+    position: { x: 0, y: 370 },
+    data: { label: "401 Flying Training School, Kaduna" },
+  },
+  {
+    id: "7",
+    type: "unit",
+    position: { x: 0, y: 440 },
+    data: { label: "Air Traffic Services Training Centre" },
+  },
+  {
+    id: "8",
+    type: "unit",
+    position: { x: 0, y: 510 },
+    data: { label: "413 Force Protection Group, Kaduna" },
+  },
+  {
+    id: "9",
+    type: "unit",
+    position: { x: 0, y: 580 },
+    data: { label: "431 Engineering Group" },
+  },
+  {
+    id: "10",
+    type: "unit",
+    position: { x: 0, y: 650 },
+    data: { label: "441 Communications Group" },
+  },
+  {
+    id: "11",
+    type: "unit",
+    position: { x: 0, y: 720 },
+    data: { label: "453 Base Services Group" },
+  },
+  {
+    id: "12",
+    type: "unit",
+    position: { x: 0, y: 790 },
+    data: { label: "461 NAF Hospital, Kaduna" },
+  },
+  {
+    id: "13",
+    type: "unit",
+    position: { x: 0, y: 860 },
+    data: { label: "Central Avionics Overhaul Centre" },
+  },
+  {
+    id: "14",
+    type: "unit",
+    position: { x: 0, y: 930 },
+    data: { label: "Air Force Comprehensive School, Kaduna" },
+  },
   // Units — Kano cluster
-  { id: "15", type: "unit",    position: { x: 240, y: 370 }, data: { label: "403 FTS, Kano" } },
-  { id: "16", type: "unit",    position: { x: 240, y: 440 }, data: { label: "455 Base Services Group, Kano" } },
-  { id: "17", type: "unit",    position: { x: 240, y: 510 }, data: { label: "465 NAF Hospital, Kano" } },
-  { id: "18", type: "unit",    position: { x: 240, y: 580 }, data: { label: "ATSTC, Kaduna" } },
-  { id: "19", type: "unit",    position: { x: 240, y: 650 }, data: { label: "AF Comprehensive School, Kano" } },
+  {
+    id: "15",
+    type: "unit",
+    position: { x: 240, y: 370 },
+    data: { label: "403 Flying Training School, Kano" },
+  },
+  {
+    id: "16",
+    type: "unit",
+    position: { x: 240, y: 440 },
+    data: { label: "455 Base Services Group, Kano" },
+  },
+  {
+    id: "17",
+    type: "unit",
+    position: { x: 240, y: 510 },
+    data: { label: "465 NAF Hospital, Kano" },
+  },
+  {
+    id: "18",
+    type: "unit",
+    position: { x: 240, y: 580 },
+    data: { label: "Air Traffic Services Training Centre (ATSTC), Kaduna" },
+  },
+  {
+    id: "19",
+    type: "unit",
+    position: { x: 240, y: 650 },
+    data: { label: "Air Force Comprehensive School, Kano" },
+  },
   // Units — Enugu / South cluster
-  { id: "20", type: "unit",    position: { x: 480, y: 370 }, data: { label: "405 Helicopter Combat Training Group, Enugu" } },
-  { id: "21", type: "unit",    position: { x: 480, y: 440 }, data: { label: "409 International Helicopter Flying School, Enugu" } },
-  { id: "22", type: "unit",    position: { x: 480, y: 510 }, data: { label: "410 Central Flying School, Katsina" } },
-  { id: "23", type: "unit",    position: { x: 480, y: 580 }, data: { label: "407 Air Combat Training Group, Kainji" } },
+  {
+    id: "20",
+    type: "unit",
+    position: { x: 480, y: 370 },
+    data: { label: "405 Helicopter Combat Training Group, Enugu" },
+  },
+  {
+    id: "21",
+    type: "unit",
+    position: { x: 480, y: 440 },
+    data: { label: "409 International Helicopter Flying School, Enugu" },
+  },
+  {
+    id: "22",
+    type: "unit",
+    position: { x: 480, y: 510 },
+    data: { label: "410 Central Flying School, Katsina" },
+  },
+  {
+    id: "23",
+    type: "unit",
+    position: { x: 480, y: 580 },
+    data: { label: "407 Air Combat Training Group, Kainji" },
+  },
   // Units — Other locations
-  { id: "24", type: "unit",    position: { x: 720, y: 370 }, data: { label: "NAF School of Air Intelligence, Makurdi" } },
-  { id: "25", type: "unit",    position: { x: 720, y: 440 }, data: { label: "AF Girls Comprehensive School, Abuja" } },
-  { id: "26", type: "unit",    position: { x: 720, y: 510 }, data: { label: "NAF Institute of Safety, Ipetu-Ijesha" } },
+  {
+    id: "24",
+    type: "unit",
+    position: { x: 720, y: 370 },
+    data: { label: "NAF School of Air Intelligence, Makurdi" },
+  },
+  {
+    id: "25",
+    type: "unit",
+    position: { x: 720, y: 440 },
+    data: { label: "Air Force Girls Comprehensive School, Abuja" },
+  },
+  {
+    id: "26",
+    type: "unit",
+    position: { x: 720, y: 510 },
+    data: { label: "NAF Institute of Safety, Ipetu-Ijesha" },
+  },
+  {
+    id: "27",
+    type: "unit",
+    position: { x: 720, y: 560 },
+    data: { label: "Air Force Secondary School, Kaduna" },
+  },
 ];
 
-const UNIT_IDS = ["6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26"];
+const UNIT_IDS = [
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+  "24",
+  "25",
+  "26",
+  "27",
+];
 
 const EDGES: Edge[] = [
   // AOC → staff
-  { id: "e1-2", source: "1", target: "2", style: { stroke: "hsl(350,66%,33%)", strokeWidth: 1.5 }, animated: false },
-  { id: "e1-3", source: "1", target: "3", style: { stroke: "hsl(350,66%,33%)", strokeWidth: 1.5 } },
-  { id: "e1-4", source: "1", target: "4", style: { stroke: "hsl(350,66%,33%)", strokeWidth: 1.5 } },
+  {
+    id: "e1-2",
+    source: "1",
+    target: "2",
+    style: { stroke: "hsl(350,66%,33%)", strokeWidth: 1.5 },
+    animated: false,
+  },
+  {
+    id: "e1-3",
+    source: "1",
+    target: "3",
+    style: { stroke: "hsl(350,66%,33%)", strokeWidth: 1.5 },
+  },
+  {
+    id: "e1-4",
+    source: "1",
+    target: "4",
+    style: { stroke: "hsl(350,66%,33%)", strokeWidth: 1.5 },
+  },
   // AOC → units hub
-  { id: "e1-5", source: "1", target: "5", style: { stroke: "hsl(45,68%,47%)", strokeWidth: 2 }, animated: true },
+  {
+    id: "e1-5",
+    source: "1",
+    target: "5",
+    style: { stroke: "hsl(45,68%,47%)", strokeWidth: 2 },
+    animated: true,
+  },
   // Units hub → each unit
   ...UNIT_IDS.map((uid) => ({
     id: `e5-${uid}`,
