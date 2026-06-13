@@ -55,22 +55,23 @@ export async function PUT(
 
     const unitId = existing.unitId;
 
-    //  If editing dates → prevent overlap issues
-    if (body.startDate || body.endDate) {
+    // Only check date overlap if dates actually changed
+    const newStartDate = body.startDate ? new Date(body.startDate) : null;
+    const newEndDate = body.endDate ? new Date(body.endDate) : null;
+    const startDateChanged =
+      newStartDate &&
+      existing.startDate?.getTime() !== newStartDate.getTime();
+    const endDateChanged =
+      body.endDate !== undefined &&
+      (existing.endDate?.getTime() ?? null) !== (newEndDate?.getTime() ?? null);
+
+    if (startDateChanged || endDateChanged) {
+      const checkStart = newStartDate || existing.startDate;
       const overlapping = await db.collection("commanders").findOne({
         _id: { $ne: commanderId },
         unitId,
-        $or: [
-          { endDate: null },
-          {
-            startDate: {
-              $lte: new Date(body.startDate || existing.startDate),
-            },
-            endDate: {
-              $gte: new Date(body.startDate || existing.startDate),
-            },
-          },
-        ],
+        endDate: { $ne: null, $gte: checkStart },
+        startDate: { $lte: checkStart },
       });
 
       if (overlapping) {
