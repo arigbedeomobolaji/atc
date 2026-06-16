@@ -131,7 +131,7 @@ const NODES: Node[] = [
     id: "7",
     type: "unit",
     position: { x: 0, y: 440 },
-    data: { label: "Air Traffic Services Training Centre" },
+    data: { label: "Air Traffic Services Training Centre (ATSTC), Kaduna" },
   },
   {
     id: "8",
@@ -198,7 +198,7 @@ const NODES: Node[] = [
     id: "18",
     type: "unit",
     position: { x: 240, y: 580 },
-    data: { label: "Air Traffic Services Training Centre (ATSTC), Kaduna" },
+    data: { label: "Air Force Secondary School, Kaduna" },
   },
   {
     id: "19",
@@ -249,12 +249,6 @@ const NODES: Node[] = [
     type: "unit",
     position: { x: 720, y: 510 },
     data: { label: "NAF Institute of Safety, Ipetu-Ijesha" },
-  },
-  {
-    id: "27",
-    type: "unit",
-    position: { x: 720, y: 560 },
-    data: { label: "Air Force Secondary School, Kaduna" },
   },
 ];
 
