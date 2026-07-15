@@ -108,7 +108,7 @@ export function VisionStatement({
               </div>
               {/* Appointment */}
               <p className="text-white/65 text-[11px] uppercase tracking-wide leading-snug mt-1">
-                {appointment}
+                {appointment}, Air Training Command
               </p>
               {/* Service */}
               <p className="text-[hsl(45,68%,47%)] text-[10px] font-bold uppercase tracking-[0.2em] mt-1">
@@ -152,7 +152,7 @@ export function VisionStatement({
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[hsl(45,68%,47%)]/10 border border-[hsl(45,68%,47%)]/20">
                 <div className="w-2 h-2 rounded-full bg-[hsl(45,68%,47%)]" />
                 <span className="text-[hsl(45,68%,47%)] text-xs font-bold uppercase tracking-wider">
-                  {name} &mdash; {abbrevRank(rank)}
+                  {name}
                 </span>
               </div>
             </div>

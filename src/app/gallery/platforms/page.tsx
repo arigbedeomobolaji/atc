@@ -2,81 +2,31 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { GalleryCard } from "@/components/GalleryCard";
 import { Radio, Plane } from "lucide-react";
-import ABT18 from "../../../assets/ATC_PLATFORMS/ABT18.jpeg";
-import L39ZA from "../../../assets/ATC_PLATFORMS/L39ZA.jpeg";
-import DA40 from "../../../assets/ATC_PLATFORMS/DA40.jpg";
-import DA42 from "../../../assets/ATC_PLATFORMS/DA42.jpg";
-import ALPHA_JET from "../../../assets/ATC_PLATFORMS/ALPHA_JET.webp";
-import SUPER_TUCANO from "../../../assets/ATC_PLATFORMS/SUPER_TUCANO.jpg";
-import DO228 from "../../../assets/ATC_PLATFORMS/DO228.jpg";
-import AGUSTA109 from "../../../assets/ATC_PLATFORMS/AGUSTA109.jpg";
-import AW109S from "../../../assets/ATC_PLATFORMS/AW109S.jpg";
-import SUPER_MUSHSHACK from "../../../assets/ATC_PLATFORMS/SUPER_MUSHSHACK.jpeg";
+import { connectToDatabase } from "@/lib/db";
 
-const PLATFORMS = [
-  {
-    imageSrc: ABT18,
-    caption: "ABT-18: NAF ab-initio training aircraft",
-    description:
-      "The ABT-18 is one of the earliest aircraft inducted into the Nigerian Air Force inventory. It is primarily used for ab-initio flying training of student pilots, providing them with foundational skills for all subsequent aircraft.",
-  },
-  {
-    imageSrc: DA40,
-    caption: "DA-40: NAF basic transport trainer",
-    description:
-      "The DA-40 serves as a primary training aircraft for the Nigerian Air Force, helping new transport pilot cadets learn flight operations. Its design also allows for light surveillance and reconnaissance roles.",
-  },
-  {
-    imageSrc: DA42,
-    caption: "DA-42: NAF ISR and training aircraft",
-    description:
-      "The DA-42 is a twin-engine aircraft used for ab-initio transport pilot training as well as intelligence, surveillance, and reconnaissance (ISR) missions.",
-  },
-  {
-    imageSrc: SUPER_MUSHSHACK,
-    caption: "Super Mushshak: NAF fighter trainer",
-    description:
-      "The Super Mushshak is a dedicated trainer aircraft used for developing the skills of future NAF fighter pilots before they progress to jet aircraft.",
-  },
-  {
-    imageSrc: L39ZA,
-    caption: "L-39ZA: NAF advanced jet trainer",
-    description:
-      "The L-39ZA is an attack/fighter trainer aircraft used for advanced fighter pilot training. With recent R&D upgrades, it can also perform limited combat operations.",
-  },
-  {
-    imageSrc: ALPHA_JET,
-    caption: "Alpha Jet: NAF flagship fighter trainer",
-    description:
-      "The Alpha Jet is regarded as the flagship fighter aircraft of the Nigerian Air Force, used for advanced pilot training and light combat operations.",
-  },
-  {
-    imageSrc: SUPER_TUCANO,
-    caption: "A-29 Super Tucano: NAF precision strike",
-    description:
-      "The A-29 Super Tucano was inducted for combat roles due to its precise combat capabilities. Within three years, the fleet attained 10,000 flight hours — a milestone rarely achieved globally.",
-  },
-  {
-    imageSrc: DO228,
-    caption: "DO-228: NAF transport and VIP aircraft",
-    description:
-      "The DO-228 is a versatile transport aircraft used for moving troops, cargo, and VIP personnel — supporting both routine logistics and operational deployments.",
-  },
-  {
-    imageSrc: AGUSTA109,
-    caption: "Agusta-109 LUH: NAF attack helicopter",
-    description:
-      "The Agusta-109 LUH is an agile attack helicopter that supports troop movements and VIP transport while being equipped for close combat missions.",
-  },
-  {
-    imageSrc: AW109S,
-    caption: "AW109S Trekker: NAF light attack helicopter",
-    description:
-      "The AW109S Trekker is a light attack helicopter for in-theatre operations and troop transport, with skids allowing efficient landings in confined or rough areas.",
-  },
-];
+async function getPlatforms() {
+  try {
+    const { db } = await connectToDatabase();
+    const rows = await db
+      .collection("platforms")
+      .find({})
+      .sort({ order: 1, createdAt: 1 })
+      .toArray();
 
-export default function PlatformsPage() {
+    return rows.map((p) => ({
+      _id: p._id.toString(),
+      caption: p.caption as string,
+      description: (p.description || "") as string,
+      image: (p.image || null) as string | null,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export default async function PlatformsPage() {
+  const platforms = await getPlatforms();
+
   return (
     <div className="bg-[hsl(220,64%,8%)]">
       <Navbar />
@@ -132,11 +82,24 @@ export default function PlatformsPage() {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {PLATFORMS.map((platform, i) => (
-              <GalleryCard key={i} {...platform} index={i} />
-            ))}
-          </div>
+          {platforms.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 text-white/30">
+              <Plane size={48} className="mb-4" />
+              <p className="text-lg font-semibold">No platforms available</p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {platforms.map((platform, i) => (
+                <GalleryCard
+                  key={platform._id}
+                  imageSrc={platform.image || "/images/placeholder-rect.jpeg"}
+                  caption={platform.caption}
+                  description={platform.description}
+                  index={i}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

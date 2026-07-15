@@ -19,7 +19,9 @@ export async function GET() {
       })
       .toArray();
 
-    return NextResponse.json({ news });
+    return NextResponse.json({
+      news: news.map((n) => ({ ...n, _id: n._id.toString() })),
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ news: [] });

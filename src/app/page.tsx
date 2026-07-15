@@ -7,11 +7,36 @@ import UnitsGrid from "@/components/UnitsGrid";
 import { SidebarNews } from "@/components/news/SidebarNews";
 import { getPaginatedNews } from "@/lib/services/news.services";
 import CommandStats from "@/components/CommandStats";
-import AOC from "../assets/leadership.jpg";
 import LeadershipSection from "@/components/LeadershipSection";
+import { connectToDatabase } from "@/lib/db";
+import AOC_FALLBACK from "../assets/leadership.jpg";
+
+async function getAOC() {
+  try {
+    const { db } = await connectToDatabase();
+    const doc = await db.collection("aoc").findOne({});
+    if (!doc) return null;
+    return {
+      name: doc.name as string,
+      rank: doc.rank as string,
+      awards: (doc.awards || "") as string,
+      appointment: doc.appointment as string,
+      statementType: (doc.statementType || "Vision") as "Vision" | "Mission",
+      statement: doc.statement as string,
+      image: (doc.image || null) as string | null,
+    };
+  } catch {
+    return null;
+  }
+}
 
 export default async function Home() {
-  const { news } = await getPaginatedNews({ page: 1, limit: 15 });
+  const [{ news }, aoc] = await Promise.all([
+    getPaginatedNews({ page: 1, limit: 15 }),
+    getAOC(),
+  ]);
+
+  console.log("AOC:", aoc, "aocImage", aoc?.image);
 
   return (
     <div className="relative">
@@ -20,13 +45,16 @@ export default async function Home() {
       <HeroSection />
       <CommandStats />
       <VisionStatement
-        imageSrc={AOC}
-        name="AVM EP EFANGA"
-        rank="AVM"
-        awards="GSS PSC(+) FDC GSM FCM MNSE MNIM"
-        appointment="Air Officer Commanding, Air Training Command"
-        statementType="Vision"
-        statement="To lead in aviation training..."
+        imageSrc={aoc?.image || AOC_FALLBACK}
+        name={aoc?.name as string}
+        rank={aoc?.rank as string}
+        awards={aoc?.awards as string}
+        appointment={aoc?.appointment as string}
+        statementType={aoc?.statementType || "Vision"}
+        statement={
+          aoc?.statement ||
+          "To lead in aviation training excellence across the Nigerian Air Force."
+        }
       />
       <UnitsGrid />
       <LeadershipSection />

@@ -76,9 +76,9 @@ export function GalleryCard({ imageSrc, caption, description, index = 0 }: Galle
             </div>
 
             <div className="p-6">
-              <h4 className="font-heading font-black text-white uppercase tracking-wide text-base mb-2">
+              <Dialog.Title className="font-heading font-black text-white uppercase tracking-wide text-base mb-2">
                 {caption}
-              </h4>
+              </Dialog.Title>
               <p className="text-white/55 text-sm leading-relaxed">{description}</p>
             </div>
           </motion.div>

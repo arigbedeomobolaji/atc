@@ -7,7 +7,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Radio } from "lucide-react";
-import { HeadquartersAndLeaderships } from "./GalleryTabs";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -37,6 +36,7 @@ export function AppCarousel() {
 
   return (
     <div className="relative w-full h-[82vh] min-h-[520px] overflow-hidden bg-[hsl(220,64%,8%)]">
+      {slides.length > 0 && (
       <Swiper
         modules={[Autoplay, Navigation, Pagination, EffectFade]}
         autoplay={{ delay: 6000, disableOnInteraction: false }}
@@ -60,59 +60,29 @@ export function AppCarousel() {
               <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/95 via-[hsl(220,64%,16%)]/50 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-r from-[hsl(220,64%,8%)]/60 via-transparent to-transparent" />
               <SlideContent
-                badge="Latest News"
                 title={item.title}
                 excerpt={item.excerpt}
                 href={`/news/${item.slug}`}
-                cta="Read Full Article"
               />
             </div>
           </SwiperSlide>
         ))}
-
-        {HeadquartersAndLeaderships.map(
-          ({ imageSrc, caption }, i) =>
-            i > 0 && (
-              <SwiperSlide key={`static-${i}`}>
-                <div className="relative w-full h-full overflow-hidden">
-                  <Image
-                    src={imageSrc}
-                    alt={caption}
-                    fill
-                    className="object-cover scale-[1.04]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/90 via-[hsl(220,64%,16%)]/45 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[hsl(220,64%,8%)]/55 via-transparent to-transparent" />
-                  <SlideContent
-                    badge="HQ ATC"
-                    title={caption}
-                    href="/gallery"
-                    cta="View Gallery"
-                  />
-                </div>
-              </SwiperSlide>
-            )
-        )}
       </Swiper>
+      )}
 
-      {/* Fade into page background below */}
       <div className="absolute bottom-0 left-0 w-full h-28 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
     </div>
   );
 }
 
 function SlideContent({
-  badge,
   title,
   excerpt,
   href,
-  cta,
 }: {
-  badge: string;
   title: string;
   excerpt?: string;
   href: string;
-  cta: string;
 }) {
   return (
     <div className="absolute inset-0 flex items-end z-10">
@@ -126,7 +96,7 @@ function SlideContent({
           <div className="flex items-center gap-2 mb-4">
             <Radio size={11} className="text-[hsl(350,66%,55%)] animate-pulse" />
             <span className="text-[hsl(45,68%,47%)] text-[11px] font-black uppercase tracking-[0.3em]">
-              {badge}
+              Latest News
             </span>
           </div>
 
@@ -151,7 +121,7 @@ function SlideContent({
             href={href}
             className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-[hsl(45,68%,47%)] text-[hsl(220,64%,16%)] text-sm font-black uppercase tracking-wide hover:bg-[hsl(45,68%,55%)] transition-colors duration-200 shadow-xl"
           >
-            {cta}
+            Read Full Article
             <ArrowRight size={14} />
           </Link>
         </motion.div>

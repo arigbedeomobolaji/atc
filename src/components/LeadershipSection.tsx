@@ -32,6 +32,13 @@ export default function LeadershipSection() {
       });
   }, []);
 
+  // Re-check arrow states whenever leaders render into the DOM
+  useEffect(() => {
+    if (leaders.length > 0) {
+      requestAnimationFrame(updateArrows);
+    }
+  }, [leaders]);
+
   function updateArrows() {
     const el = scrollRef.current;
     if (!el) return;
@@ -51,7 +58,7 @@ export default function LeadershipSection() {
     <section className="relative py-24 bg-[hsl(220,64%,13%)] overflow-hidden">
       {/* Radial grid pattern */}
       <div
-        className="absolute inset-0 opacity-[0.035]"
+        className="absolute inset-0 opacity-[0.035] pointer-events-none"
         style={{
           backgroundImage:
             "radial-gradient(circle, white 1px, transparent 1px)",
@@ -124,23 +131,25 @@ export default function LeadershipSection() {
           </div>
         </div>
       ) : (
-        <div
-          ref={scrollRef}
-          onScroll={updateArrows}
-          className="overflow-x-auto scrollbar-hide"
-        >
-          <div className="flex gap-5 px-6 max-w-none w-max pb-2">
-            {leaders.map((leader, i) => (
-              <motion.div
-                key={leader._id}
-                initial={{ opacity: 0, x: 24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.45, delay: i * 0.06 }}
-              >
-                <LeadershipCard leader={leader} />
-              </motion.div>
-            ))}
+        <div className="max-w-7xl mx-auto px-6">
+          <div
+            ref={scrollRef}
+            onScroll={updateArrows}
+            className="overflow-x-auto scrollbar-hide -mr-6 pr-6"
+          >
+            <div className="flex gap-5 pb-2 w-max">
+              {leaders.map((leader, i) => (
+                <motion.div
+                  key={leader._id}
+                  initial={{ opacity: 0, x: 24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.45, delay: i * 0.06 }}
+                >
+                  <LeadershipCard leader={leader} />
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       )}
