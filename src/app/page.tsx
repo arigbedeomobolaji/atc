@@ -21,9 +21,9 @@ export default async function Home() {
       <CommandStats />
       <VisionStatement
         imageSrc={AOC}
-        name="AVM JA EFANGA"
+        name="AVM EP EFANGA"
         rank="AVM"
-        awards="psc(+), mni, fdc"
+        awards="GSS PSC(+) FDC GSM FCM MNSE MNIM"
         appointment="Air Officer Commanding, Air Training Command"
         statementType="Vision"
         statement="To lead in aviation training..."

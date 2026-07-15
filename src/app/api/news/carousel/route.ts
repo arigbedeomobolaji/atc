@@ -8,12 +8,13 @@ export async function GET() {
     const news = await db
       .collection("news")
       .find({})
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
       .limit(10)
       .project({
         title: 1,
         slug: 1,
         coverImage: 1,
+        excerpt: 1,
         createdAt: 1,
       })
       .toArray();

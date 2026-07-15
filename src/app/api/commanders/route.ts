@@ -77,12 +77,12 @@ export async function POST(req: Request) {
     const isPast = !!body.endDate;
 
     if (!isPast) {
-      // ONLY for current commander
+      // ONLY for current commander — close at the new commander's start date
       await db
         .collection("commanders")
         .updateMany(
           { unitId, endDate: null },
-          { $set: { endDate: new Date() } }
+          { $set: { endDate: new Date(body.startDate || Date.now()) } }
         );
     }
     // ✅ NEW COMMANDER OBJECT

@@ -76,7 +76,14 @@ export function VisionStatement({
           >
             {/* Image — top */}
             <div className="relative w-full max-w-sm mx-auto rounded-t-2xl overflow-hidden shadow-2xl border-x-2 border-t-2 border-[hsl(45,68%,47%)]/50">
-              <Image src={imageSrc} alt={name} width={0} height={0} sizes="100vw" className="w-full h-auto object-contain" />
+              <Image
+                src={imageSrc}
+                alt={name}
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="w-full h-auto object-contain"
+              />
             </div>
 
             {/* Caption panel — below the image */}

@@ -39,6 +39,7 @@ export async function getPaginatedNews({
 
   const sort: any = {
     [sortBy]: sortOrder === "asc" ? 1 : -1,
+    _id: sortOrder === "asc" ? 1 : -1,
   };
 
   const [news, total] = await Promise.all([
@@ -71,7 +72,7 @@ export async function getOldestNews(limit = 15) {
   const rows = await db
     .collection("news")
     .find({})
-    .sort({ createdAt: 1 })
+    .sort({ createdAt: -1, _id: -1 })
     .limit(limit)
     .toArray();
 
