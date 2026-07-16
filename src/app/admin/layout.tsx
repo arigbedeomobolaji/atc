@@ -12,7 +12,6 @@ import {
   Users,
   Star,
   Images,
-  CalendarDays,
   LogOut,
   Menu,
   X,
@@ -50,8 +49,7 @@ const NAV: NavGroup[] = [
     group: "Gallery",
     collapsible: true,
     items: [
-      { name: "Gallery Photos", href: "/admin/gallery", icon: Images },
-      { name: "Events", href: "/admin/events", icon: CalendarDays },
+      { name: "Albums", href: "/admin/gallery", icon: Images },
       { name: "Platforms", href: "/admin/platforms", icon: Plane },
     ],
   },
