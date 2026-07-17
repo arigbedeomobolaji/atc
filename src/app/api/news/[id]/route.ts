@@ -21,7 +21,6 @@ export async function GET(
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ news: item });
   } catch (err) {
-    console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
@@ -67,7 +66,6 @@ export async function PUT(
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error(err);
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 }

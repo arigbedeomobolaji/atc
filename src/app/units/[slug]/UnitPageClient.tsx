@@ -131,7 +131,7 @@ function Gallery({ galleries }: { galleries: any[] }) {
               {selected && (
                 <div className="flex flex-col overflow-hidden max-h-[85vh]">
                   <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
-                    <h4 className="text-white font-bold text-sm">{selected.caption}</h4>
+                    <Dialog.Title className="text-white font-bold text-sm">{selected.caption}</Dialog.Title>
                     <Dialog.Close className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors">
                       <X size={16} />
                     </Dialog.Close>
@@ -208,14 +208,23 @@ export default function UnitPageClient({ unit }: any) {
     Promise.all([
       fetch(`/api/commanders/current/${unit._id}`).then((r) => r.ok ? r.json() : null),
       fetch(`/api/commanders/history/${unit._id}`).then((r) => r.json()),
-      fetch(`/api/gallery/unit/${unit._id}`).then((r) => r.json()),
+      fetch(`/api/albums?unitId=${unit._id}`).then((r) => r.ok ? r.json() : { albums: [] }),
     ])
-      .then(([cur, hist, gal]) => {
+      .then(([cur, hist, albumsRes]) => {
         setCurrentCommander(cur?._id ? cur : null);
         setPastCommanders(Array.isArray(hist) ? hist : []);
-        setGalleryImages((gal || []).map((g: any) => ({ caption: g.caption, cover: g.images[0]?.url, images: g.images })));
+        const albums = albumsRes?.albums ?? [];
+        setGalleryImages(
+          albums
+            .filter((a: any) => a.coverImage || a.images?.length > 0)
+            .map((a: any) => ({
+              caption: a.title,
+              cover: a.coverImage || a.images[0]?.url,
+              images: a.images,
+            }))
+        );
       })
-      .catch(console.error);
+      .catch(() => {});
   }, [unit._id]);
 
   const NAVY_SECTION   = "bg-[hsl(220,64%,10%)]";

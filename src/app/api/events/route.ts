@@ -51,7 +51,6 @@ export async function POST(req: Request) {
       id: result.insertedId.toString(),
     });
   } catch (error) {
-    console.error("EVENT CREATE ERROR:", error);
     return NextResponse.json(
       { error: "Failed to create event" },
       { status: 500 }

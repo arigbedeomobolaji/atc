@@ -55,7 +55,6 @@ export async function POST(req: Request) {
       height: result.height,
     });
   } catch (err) {
-    console.error("News image upload error:", err);
     return NextResponse.json({ error: "Image upload failed." }, { status: 500 });
   }
 }

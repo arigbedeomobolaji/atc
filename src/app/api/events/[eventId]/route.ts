@@ -29,10 +29,10 @@ export async function GET(
       return NextResponse.json({ error: "Event not found" }, { status: 404 });
     }
 
-    const images = await db
-      .collection("galleries")
-      .find({ eventId: new ObjectId(id) })
-      .toArray();
+    // Look up the album that was migrated from this event (or manually linked)
+    const album = await db.collection("albums").findOne({
+      _migratedFromEventId: new ObjectId(id),
+    });
 
     return NextResponse.json({
       event: {
@@ -40,13 +40,13 @@ export async function GET(
         _id: event._id.toString(),
         unitId: event.unitId?.toString(),
       },
-      images: images.map((img) => ({
-        ...img,
-        _id: img._id.toString(),
+      images: (album?.images ?? []).map((img: any, idx: number) => ({
+        _id: idx.toString(),
+        imageUrl: img.url,
+        caption: img.caption ?? "",
       })),
     });
   } catch (error) {
-    console.error("GET EVENT ERROR:", error);
     return NextResponse.json(
       { error: "Failed to fetch event" },
       { status: 500 }
@@ -104,9 +104,9 @@ export async function DELETE(
       _id: new ObjectId(eventId),
     });
 
-    //  ALSO delete related images
-    await db.collection("galleries").deleteMany({
-      eventId: new ObjectId(eventId),
+    // Delete the linked album (migrated or manually linked)
+    await db.collection("albums").deleteMany({
+      _migratedFromEventId: new ObjectId(eventId),
     });
 
     return NextResponse.json({ message: "Deleted" });

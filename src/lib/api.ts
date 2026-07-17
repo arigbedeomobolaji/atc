@@ -14,12 +14,17 @@ async function request<T = unknown>(
   }
 
   const res = await fetch(path, { method, headers, body: bodyPayload });
-  const json = await res.json();
 
   if (!res.ok) {
-    throw new Error(json.error || `Request failed with status ${res.status}`);
+    const contentType = res.headers.get("content-type") ?? "";
+    if (contentType.includes("application/json")) {
+      const json = await res.json();
+      throw new Error(json.error || `Request failed with status ${res.status}`);
+    }
+    throw new Error(`Request failed with status ${res.status}`);
   }
 
+  const json = await res.json();
   return json as T;
 }
 

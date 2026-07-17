@@ -126,7 +126,6 @@ export async function POST(req: Request) {
       id: result.insertedId.toString(),
     });
   } catch (error) {
-    console.error("COMMANDER CREATE ERROR:", error);
     return NextResponse.json(
       { error: "Failed to create commander" },
       { status: 500 }

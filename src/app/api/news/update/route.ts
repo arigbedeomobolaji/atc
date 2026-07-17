@@ -38,7 +38,6 @@ export async function POST(req: Request) {
     await db.collection("news").updateOne({ _id: new ObjectId(id) }, update);
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

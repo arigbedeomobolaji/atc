@@ -13,8 +13,11 @@ import {
   Menu,
   X,
   Plane,
+  Building2,
 } from "lucide-react";
 import ATCLogo from "../assets/ATC_logo_big_trans.png";
+
+type Unit = { _id: string; abbreviation: string; slug: string; unit: string };
 
 const NAV_ITEMS = [
   {
@@ -40,6 +43,14 @@ export function Navbar() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [units, setUnits] = useState<Unit[]>([]);
+
+  useEffect(() => {
+    fetch("/api/units")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data) => setUnits(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -137,6 +148,7 @@ export function Navbar() {
                 isItemActive={isActive}
               />
             ))}
+            <UnitsDropdown units={units} activeSlug={pathname.startsWith("/units/") ? pathname.split("/")[2] : ""} />
           </nav>
 
           {/* ─── Hamburger ─── */}
@@ -265,12 +277,143 @@ export function Navbar() {
                     </div>
                   );
                 })}
+
+                {/* Units section in mobile */}
+                {units.length > 0 && (
+                  <div className="mb-0.5">
+                    <button
+                      onClick={() => setMobileExpanded(mobileExpanded === "Units" ? null : "Units")}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                        pathname.startsWith("/units/")
+                          ? "bg-[hsl(220,64%,16%)] text-white"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <Building2 size={15} />
+                        Units
+                      </span>
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform ${mobileExpanded === "Units" ? "rotate-180" : ""}`}
+                      />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {mobileExpanded === "Units" && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="ml-4 mt-0.5 mb-1 pl-4 border-l-2 border-[hsl(45,68%,47%)]/40 space-y-0.5">
+                            {units.map((u) => (
+                              <Link
+                                key={u._id}
+                                href={`/units/${u.slug}`}
+                                onClick={() => setMobileOpen(false)}
+                                className={`block px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                                  pathname === `/units/${u.slug}`
+                                    ? "text-[hsl(220,64%,16%)] font-semibold"
+                                    : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
+                                }`}
+                              >
+                                {u.abbreviation.toUpperCase()}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
               </nav>
             </motion.div>
           </>
         )}
       </AnimatePresence>
     </header>
+  );
+}
+
+/* ── Units mega-dropdown (desktop) ─────────── */
+function UnitsDropdown({ units, activeSlug }: { units: Unit[]; activeSlug: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const isActive = activeSlug.length > 0;
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  if (units.length === 0) return null;
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-semibold transition-colors relative ${
+          isActive
+            ? "text-[hsl(220,64%,16%)]"
+            : "text-slate-600 hover:text-[hsl(220,64%,16%)] hover:bg-slate-50"
+        }`}
+      >
+        Units
+        <ChevronDown size={13} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        {isActive && (
+          <span className="absolute bottom-0 left-4 right-4 h-0.5 rounded-full bg-[hsl(45,68%,47%)]" />
+        )}
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 6, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full right-0 pt-2 w-[520px]"
+          >
+            <div className="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden py-3">
+              <div className="h-0.5 bg-gradient-to-r from-[hsl(45,68%,47%)] to-[hsl(220,64%,16%)] mx-3 mb-3 rounded-full" />
+              <p className="px-4 pb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                Command Units
+              </p>
+              <div className="grid grid-cols-3 gap-0.5 px-2">
+                {units.map((u) => (
+                  <Link
+                    key={u._id}
+                    href={`/units/${u.slug}`}
+                    onClick={() => setOpen(false)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-colors group ${
+                      activeSlug === u.slug
+                        ? "bg-[hsl(220,64%,16%)] text-white"
+                        : "text-slate-600 hover:bg-[hsl(220,64%,16%)]/6 hover:text-[hsl(220,64%,16%)]"
+                    }`}
+                  >
+                    <Building2
+                      size={11}
+                      className={`shrink-0 ${activeSlug === u.slug ? "text-[hsl(45,68%,47%)]" : "text-slate-300 group-hover:text-[hsl(45,68%,47%)]"}`}
+                    />
+                    <span className="truncate">{u.abbreviation.toUpperCase()}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

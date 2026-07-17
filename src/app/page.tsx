@@ -36,8 +36,6 @@ export default async function Home() {
     getAOC(),
   ]);
 
-  console.log("AOC:", aoc, "aocImage", aoc?.image);
-
   return (
     <div className="relative">
       <Navbar />

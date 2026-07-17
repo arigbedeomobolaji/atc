@@ -103,7 +103,6 @@ export async function POST(req: Request) {
       id: result.insertedId.toString(),
     });
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { error: "Failed to create unit" },
       { status: 500 }
@@ -128,7 +127,6 @@ export async function GET() {
       }))
     );
   } catch (error) {
-    console.error("GET UNITS ERROR:", error);
     return NextResponse.json(
       { error: "Failed to fetch units" },
       { status: 500 }

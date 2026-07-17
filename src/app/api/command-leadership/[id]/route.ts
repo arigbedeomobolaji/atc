@@ -23,7 +23,6 @@ export async function GET(
 
     return NextResponse.json(leader);
   } catch (err) {
-    console.error(err);
     return NextResponse.json(
       { error: "Failed to fetch leader" },
       { status: 500 }

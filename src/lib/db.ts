@@ -25,7 +25,6 @@ export async function connectToDatabase() {
     serverSelectionTimeoutMS: 5000, // 5 seconds timeout
   });
   await client.connect();
-  console.log(client);
 
   const db = client.db(dbName);
 

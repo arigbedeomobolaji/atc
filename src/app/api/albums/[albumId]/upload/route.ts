@@ -29,10 +29,9 @@ export async function POST(req: NextRequest, { params }: Ctx) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const folder =
-      album.scope === "UNIT" && album.unitId
-        ? `atc/units/${album.unitId}/albums`
-        : "atc/command/albums";
+    const folder = album.unitId
+      ? `atc/units/${album.unitId}/albums`
+      : "atc/command/albums";
 
     const uploadRes: any = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream({ folder }, (err, result) => {

@@ -41,7 +41,6 @@ export async function POST(req: Request) {
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error("Email Error:", error);
     return NextResponse.json(
       { error: "Failed to send email." },
       { status: 500 }

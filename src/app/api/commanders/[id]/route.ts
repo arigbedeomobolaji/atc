@@ -108,7 +108,6 @@ export async function PUT(
       try {
         await cloudinary.uploader.destroy(existing.portraitPublicId);
       } catch (err) {
-        console.error("Failed to delete old image:", err);
       }
     }
 
@@ -129,7 +128,6 @@ export async function PUT(
 
     return NextResponse.json({ message: "Commander updated" });
   } catch (error) {
-    console.error("COMMANDER UPDATE ERROR:", error);
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 }

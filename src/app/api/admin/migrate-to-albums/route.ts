@@ -17,59 +17,41 @@ export async function POST(req: NextRequest) {
   try {
     const { db } = await connectToDatabase();
 
-    const existingCount = await db.collection("albums").countDocuments();
-    if (existingCount > 0) {
-      return NextResponse.json(
-        { error: "Albums collection already has data. Drop it first or use force=true." },
-        { status: 409 }
-      );
-    }
+    // Build a set of gallery IDs already tracked in albums
+    const migratedIds = await db
+      .collection("albums")
+      .distinct("_migratedFromGalleryId", { _migratedFromGalleryId: { $ne: null } });
+    const migratedSet = new Set(migratedIds.map((id: any) => id.toString()));
 
-    const [events, galleries] = await Promise.all([
-      db.collection("events").find({}).toArray(),
-      db.collection("galleries").find({}).toArray(),
-    ]);
+    // Build a set of existing album fingerprints (title + unitId) to avoid content duplicates
+    const existing = await db.collection("albums").find({}, { projection: { title: 1, unitId: 1 } }).toArray();
+    const fingerprintSet = new Set(
+      existing.map((a) => `${a.title}||${a.unitId?.toString() ?? "null"}`)
+    );
 
-    const albumsToInsert: any[] = [];
-    const migratedGalleryIds = new Set<string>();
+    const galleries = await db.collection("galleries").find({}).toArray();
+    const events = await db.collection("events").find({}).toArray();
+    const eventMap = new Map(events.map((e) => [e._id.toString(), e]));
 
-    for (const event of events) {
-      const gallery = galleries.find(
-        (g) => g.eventId && g.eventId.toString() === event._id.toString()
-      );
+    const toInsert: any[] = [];
 
-      if (gallery) migratedGalleryIds.add(gallery._id.toString());
-
-      albumsToInsert.push({
-        title: event.title,
-        description: event.description || "",
-        category: CATEGORY_MAP[event.category] ?? event.category,
-        scope: event.scope,
-        unitId: event.unitId ?? null,
-        date: event.createdAt ?? new Date(),
-        coverImage: event.coverImage || (gallery?.images?.[0]?.url ?? null),
-        images: (gallery?.images ?? []).map((img: any) => ({
-          url: img.url,
-          publicId: img.publicId,
-          caption: gallery?.caption || "",
-        })),
-        createdAt: event.createdAt ?? new Date(),
-        updatedAt: event.updatedAt ?? new Date(),
-        _migratedFromEventId: event._id,
-        _migratedFromGalleryId: gallery?._id ?? null,
-      });
-    }
-
-    // Orphaned galleries (no matching event)
     for (const gallery of galleries) {
-      if (migratedGalleryIds.has(gallery._id.toString())) continue;
+      const gid = gallery._id.toString();
+      if (migratedSet.has(gid)) continue; // already tracked
 
-      albumsToInsert.push({
-        title: gallery.caption || "Untitled Album",
-        description: "",
-        category: CATEGORY_MAP[gallery.category] ?? gallery.category ?? "COMMUNITY",
-        scope: gallery.scope || "COMMAND",
-        unitId: gallery.unitId ?? null,
+      const event = gallery.eventId ? eventMap.get(gallery.eventId.toString()) : null;
+      const title = event?.title || gallery.caption || "Untitled Album";
+      const unitId = gallery.unitId ?? event?.unitId ?? null;
+      const fingerprint = `${title}||${unitId?.toString() ?? "null"}`;
+
+      if (fingerprintSet.has(fingerprint)) continue; // content already exists
+
+      toInsert.push({
+        title,
+        description: event?.description || "",
+        category: CATEGORY_MAP[gallery.category ?? event?.category] ?? "COMMUNITY",
+        unitId,
+        unitName: null,
         date: gallery.createdAt ?? new Date(),
         coverImage: gallery.images?.[0]?.url ?? null,
         images: (gallery.images ?? []).map((img: any) => ({
@@ -79,24 +61,20 @@ export async function POST(req: NextRequest) {
         })),
         createdAt: gallery.createdAt ?? new Date(),
         updatedAt: gallery.createdAt ?? new Date(),
-        _migratedFromEventId: null,
         _migratedFromGalleryId: gallery._id,
+        _migratedFromEventId: gallery.eventId ?? null,
       });
+
+      fingerprintSet.add(fingerprint); // prevent intra-batch duplicates
     }
 
-    if (albumsToInsert.length === 0) {
-      return NextResponse.json({ message: "Nothing to migrate", migrated: 0 });
+    if (toInsert.length === 0) {
+      return NextResponse.json({ message: "Nothing new to migrate", migrated: 0 });
     }
 
-    const result = await db.collection("albums").insertMany(albumsToInsert);
-    return NextResponse.json({
-      message: "Migration complete",
-      migrated: result.insertedCount,
-      fromEvents: events.length,
-      fromOrphanedGalleries: albumsToInsert.length - events.length,
-    });
+    const result = await db.collection("albums").insertMany(toInsert);
+    return NextResponse.json({ message: "Migration complete", migrated: result.insertedCount });
   } catch (error) {
-    console.error("MIGRATION ERROR:", error);
     return NextResponse.json({ error: "Migration failed" }, { status: 500 });
   }
 }

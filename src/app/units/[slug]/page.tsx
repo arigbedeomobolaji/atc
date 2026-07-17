@@ -33,6 +33,7 @@ async function getUnit(slug: string) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/units/slug/${slug}`,
     { cache: "no-store" }
   );
+  if (!res.ok) return null;
   return res.json();
 }
 
@@ -41,6 +42,7 @@ async function getGallery(unitId: string) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/units/${unitId}/gallery`,
     { cache: "no-store" }
   );
+  if (!res.ok) return [];
   return res.json();
 }
 

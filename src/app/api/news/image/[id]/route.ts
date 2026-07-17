@@ -38,7 +38,6 @@ export async function GET(
       },
     });
   } catch (err) {
-    console.error(err);
     return new Response("Server error", { status: 500 });
   }
 }

@@ -6,6 +6,7 @@ import { Menu, X, Home, ChevronRight, ExternalLink } from "lucide-react";
 import { ATCUnit } from "@/utils/units_in_ATC";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import ATCLogo from "../../assets/ATC_logo_big_trans.png";
 
 const NAV_LINKS = [
@@ -20,6 +21,11 @@ export function UnitNavbar({ unit }: { unit: ATCUnit }) {
   const [open, setOpen]       = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive]   = useState("");
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Derive the unit root path (e.g. /units/441-cis-group)
+  const unitRoot = `/units/${unit.slug}`;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -33,10 +39,14 @@ export function UnitNavbar({ unit }: { unit: ATCUnit }) {
   }, [open]);
 
   function scrollTo(id: string) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     setActive(id);
     setOpen(false);
+    if (pathname !== unitRoot) {
+      router.push(`${unitRoot}#${id}`);
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (

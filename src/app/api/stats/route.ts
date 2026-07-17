@@ -36,7 +36,6 @@ export async function GET(req: Request) {
       })),
     });
   } catch (err) {
-    console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

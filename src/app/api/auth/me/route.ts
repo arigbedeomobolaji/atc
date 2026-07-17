@@ -22,7 +22,6 @@ export async function GET(req: Request) {
       { status: 200 }
     );
   } catch (err) {
-    console.error(err);
     return NextResponse.json({ authenticated: false }, { status: 200 });
   }
 }

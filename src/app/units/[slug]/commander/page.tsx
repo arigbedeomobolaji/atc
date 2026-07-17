@@ -10,6 +10,7 @@ async function getCommanderData(unitId: string) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/commanders/current/${unitId}`,
     { cache: "no-store" }
   );
+  if (!res.ok) return null;
   return res.json();
 }
 
@@ -17,12 +18,14 @@ async function getUnit(slug: string) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/units/slug/${slug}`
   );
+  if (!res.ok) return null;
   return res.json();
 }
 
 export default async function CommanderFullPage({ params }: any) {
   const { slug } = await params;
   const unit = await getUnit(slug);
+  if (!unit) return notFound();
   const commander = await getCommanderData(unit._id);
 
   if (!commander) return notFound();
