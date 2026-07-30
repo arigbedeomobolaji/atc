@@ -108,7 +108,7 @@ export function VisionStatement({
               </div>
               {/* Appointment */}
               <p className="text-white/65 text-[11px] uppercase tracking-wide leading-snug mt-1">
-                {appointment}, Air Training Command
+                {appointment} Air Training Command
               </p>
               {/* Service */}
               <p className="text-[hsl(45,68%,47%)] text-[10px] font-bold uppercase tracking-[0.2em] mt-1">

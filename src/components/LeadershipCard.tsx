@@ -115,7 +115,7 @@ export default function LeadershipCard({ leader }: { leader: Leader }) {
                     {leader.name}
                   </h2>
                   <p className="text-sm text-slate-500 mt-0.5">
-                    {leader.rank} &bull; {leader.appointment}
+                    {leader.rank} {leader.appointment}
                   </p>
                 </div>
                 <Dialog.Close className="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors self-start shrink-0">
@@ -141,7 +141,10 @@ export default function LeadershipCard({ leader }: { leader: Leader }) {
               {/* Awards */}
               {leader.awards && (
                 <div className="flex items-start gap-3 p-4 rounded-xl bg-[hsl(220,64%,16%)]/4 border border-[hsl(220,64%,16%)]/8">
-                  <Medal size={16} className="text-[hsl(45,68%,47%)] mt-0.5 shrink-0" />
+                  <Medal
+                    size={16}
+                    className="text-[hsl(45,68%,47%)] mt-0.5 shrink-0"
+                  />
                   <div>
                     <p className="text-[11px] font-bold uppercase tracking-wider text-[hsl(220,64%,16%)] mb-1">
                       Awards & Decorations
