@@ -149,31 +149,13 @@ const NODES: Node[] = [
     id: "10",
     type: "unit",
     position: { x: 0, y: 650 },
-    data: { label: "441 Communications Group" },
+    data: { label: "441 Communications Information Systems Group" },
   },
   {
     id: "11",
     type: "unit",
     position: { x: 0, y: 720 },
     data: { label: "453 Base Services Group" },
-  },
-  {
-    id: "12",
-    type: "unit",
-    position: { x: 0, y: 790 },
-    data: { label: "461 NAF Hospital, Kaduna" },
-  },
-  {
-    id: "13",
-    type: "unit",
-    position: { x: 0, y: 860 },
-    data: { label: "Central Avionics Overhaul Centre" },
-  },
-  {
-    id: "14",
-    type: "unit",
-    position: { x: 0, y: 930 },
-    data: { label: "Air Force Comprehensive School, Kaduna" },
   },
   // Units — Kano cluster
   {
@@ -206,6 +188,12 @@ const NODES: Node[] = [
     position: { x: 240, y: 650 },
     data: { label: "Air Force Comprehensive School, Kano" },
   },
+  {
+    id: "12",
+    type: "unit",
+    position: { x: 240, y: 700 },
+    data: { label: "461 NAF Hospital, Kaduna" },
+  },
   // Units — Enugu / South cluster
   {
     id: "20",
@@ -231,6 +219,12 @@ const NODES: Node[] = [
     position: { x: 480, y: 580 },
     data: { label: "407 Air Combat Training Group, Kainji" },
   },
+  {
+    id: "13",
+    type: "unit",
+    position: { x: 480, y: 650 },
+    data: { label: "Central Avionics Overhaul Centre" },
+  },
   // Units — Other locations
   {
     id: "24",
@@ -249,6 +243,18 @@ const NODES: Node[] = [
     type: "unit",
     position: { x: 720, y: 510 },
     data: { label: "NAF Institute of Safety, Ipetu-Ijesha" },
+  },
+  {
+    id: "27",
+    type: "unit",
+    position: { x: 720, y: 610 },
+    data: { label: "457 Base Services Group, Kainji" },
+  },
+  {
+    id: "14",
+    type: "unit",
+    position: { x: 720, y: 700 },
+    data: { label: "Air Force Comprehensive School, Kaduna" },
   },
 ];
 
