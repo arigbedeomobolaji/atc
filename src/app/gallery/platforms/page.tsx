@@ -13,6 +13,8 @@ async function getPlatforms() {
       .sort({ order: 1, createdAt: 1 })
       .toArray();
 
+    console.log({ rows });
+
     return rows.map((p) => ({
       _id: p._id.toString(),
       caption: p.caption as string,
@@ -26,6 +28,7 @@ async function getPlatforms() {
 
 export default async function PlatformsPage() {
   const platforms = await getPlatforms();
+  console.log({ platforms });
 
   return (
     <div className="bg-[hsl(220,64%,8%)]">
@@ -45,7 +48,10 @@ export default async function PlatformsPage() {
 
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-2 mb-5">
-            <Radio size={11} className="text-[hsl(350,66%,55%)] animate-pulse" />
+            <Radio
+              size={11}
+              className="text-[hsl(350,66%,55%)] animate-pulse"
+            />
             <span className="text-[hsl(45,68%,47%)] text-[11px] font-black uppercase tracking-[0.3em]">
               Air Training Command
             </span>
