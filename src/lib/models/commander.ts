@@ -20,7 +20,7 @@ export type Commander = {
   //  Awards & Decorations
   awards?: string;
 
-  appointment: "COMMANDER" | "COMMANDANT" | "AOC";
+  appointment: "COMMANDER" | "COMMANDANT" | "AOC" | "ACTING COMMANDER" | "ACTING COMMANDANT";
 
   createdAt: Date;
 };

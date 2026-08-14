@@ -381,7 +381,13 @@ export default function UnitPageClient({ unit }: any) {
               {/* Portrait */}
               <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.6 }} className="relative">
                 <div className="relative w-full max-w-xs mx-auto aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[hsl(45,68%,47%)]/50 shadow-2xl">
-                  <img src={currentCommander.portrait} alt={currentCommander.name} className="w-full h-full object-cover" />
+                  {currentCommander.portrait ? (
+                    <img src={currentCommander.portrait} alt={currentCommander.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-[hsl(220,64%,16%)] flex items-center justify-center">
+                      <User size={64} className="text-white/20" />
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/80 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <div className="flex items-center gap-1.5 mb-1">
@@ -506,7 +512,13 @@ export default function UnitPageClient({ unit }: any) {
               {/* Portrait */}
               <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.65 }} className="relative">
                 <div className="relative w-full max-w-sm mx-auto aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[hsl(45,68%,47%)]/50 shadow-2xl">
-                  <img src={currentCommander.portrait} alt={currentCommander.name} className="w-full h-full object-cover" />
+                  {currentCommander.portrait ? (
+                    <img src={currentCommander.portrait} alt={currentCommander.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-[hsl(220,64%,16%)] flex items-center justify-center">
+                      <User size={72} className="text-white/20" />
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/85 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-5">
                     <div className="flex items-center gap-1.5 mb-1">

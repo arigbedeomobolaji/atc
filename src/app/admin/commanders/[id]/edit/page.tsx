@@ -10,7 +10,7 @@ import imageCompression from "browser-image-compression";
 import { ArrowLeft, Loader2, Save, Upload, User } from "lucide-react";
 import { abbrevRank } from "@/lib/rankAbbr";
 
-const APPOINTMENTS = ["COMMANDER", "COMMANDANT", "AOC"] as const;
+const APPOINTMENTS = ["COMMANDER", "COMMANDANT", "AOC", "ACTING COMMANDER", "ACTING COMMANDANT"] as const;
 const INPUT = "w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(220,64%,16%)]/20 focus:border-[hsl(220,64%,16%)]/40 transition-colors placeholder:text-slate-300";
 const LABEL = "block text-sm font-semibold text-slate-700 mb-1.5";
 

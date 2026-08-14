@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     //   );
     // }
 
-    const allowed = ["COMMANDER", "COMMANDANT", "AOC"];
+    const allowed = ["COMMANDER", "COMMANDANT", "AOC", "ACTING COMMANDER", "ACTING COMMANDANT"];
 
     if (!allowed.includes(body.appointment)) {
       return NextResponse.json(

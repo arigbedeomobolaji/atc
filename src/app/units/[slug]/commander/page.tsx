@@ -71,12 +71,19 @@ export default async function CommanderFullPage({ params }: any) {
             <div className="sticky top-24 space-y-5">
               {/* Portrait */}
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[hsl(45,68%,47%)]/50 shadow-2xl">
-                <Image
-                  src={commander.portrait}
-                  alt={commander.name}
-                  fill
-                  className="object-cover"
-                />
+                {commander.portrait ? (
+                  <Image
+                    src={commander.portrait}
+                    alt={commander.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[hsl(220,64%,16%)] flex items-center justify-center">
+                    <User size={80} className="text-white/20" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,64%,8%)]/80 via-transparent to-transparent" />
                 <div className="absolute -top-3 -left-3 w-12 h-12 border-t-2 border-l-2 border-[hsl(45,68%,47%)] rounded-tl-xl" />
                 <div className="absolute -bottom-3 -right-3 w-12 h-12 border-b-2 border-r-2 border-[hsl(45,68%,47%)] rounded-br-xl" />
