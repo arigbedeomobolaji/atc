@@ -11,6 +11,20 @@ import { ArrowLeft, Loader2, Save, Upload, User } from "lucide-react";
 import { abbrevRank } from "@/lib/rankAbbr";
 
 const APPOINTMENTS = ["COMMANDER", "COMMANDANT", "AOC", "ACTING COMMANDER", "ACTING COMMANDANT"] as const;
+
+const RANKS = [
+  "Pilot Officer",
+  "Flying Officer",
+  "Flight Lieutenant",
+  "Squadron Leader",
+  "Wing Commander",
+  "Group Captain",
+  "Air Commodore",
+  "Air Vice Marshal",
+  "Air Marshal",
+  "Air Chief Marshal",
+  "Marshal of the Nigerian Air Force",
+] as const;
 const INPUT = "w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(220,64%,16%)]/20 focus:border-[hsl(220,64%,16%)]/40 transition-colors placeholder:text-slate-300";
 const LABEL = "block text-sm font-semibold text-slate-700 mb-1.5";
 
@@ -150,7 +164,10 @@ export default function EditCommanderPage() {
                 </div>
                 <div>
                   <label className={LABEL}>Rank</label>
-                  <input className={INPUT} value={form.rank} onChange={e => setForm({ ...form, rank: e.target.value })} />
+                  <select className={INPUT + " bg-white cursor-pointer"} value={form.rank} onChange={e => setForm({ ...form, rank: e.target.value })}>
+                    <option value="">Select rank</option>
+                    {RANKS.map(r => <option key={r} value={r}>{r}</option>)}
+                  </select>
                 </div>
                 <div>
                   <label className={LABEL}>Service Number</label>
