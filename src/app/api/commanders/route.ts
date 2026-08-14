@@ -34,20 +34,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    if (!body.endDate) {
-      const overlapping = await db.collection("commanders").findOne({
-        unitId,
-        endDate: null,
-      });
-
-      if (overlapping) {
-        return NextResponse.json(
-          { error: "A current commander already exists" },
-          { status: 400 }
-        );
-      }
-    }
-
     // 🔍 Validate unit
     const unit = await db.collection("units").findOne({ _id: unitId });
 
