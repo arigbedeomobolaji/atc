@@ -152,7 +152,7 @@
   }
 
   p {
-    @apply font-body text-base leading-relaxed;
+    @apply font-body text-base leading-relaxed text-justify;
   }
 
   small {
